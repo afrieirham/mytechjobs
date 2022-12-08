@@ -1,4 +1,5 @@
 import { load } from "cheerio";
+import { getHtmlSPA } from "./getHtmlSPA";
 import { getUrlBody } from "./fetch";
 
 export const extractJobDetails = async (url) => {
@@ -7,7 +8,19 @@ export const extractJobDetails = async (url) => {
 
   // Get json-ld of the page
   const $ = load(response);
-  const jsonLdContent = $("script[type='application/ld+json']").text();
+  const staticJobSchema = $("script[type='application/ld+json']").text();
+
+  if (staticJobSchema) {
+    return { url, ...extract(staticJobSchema) };
+  }
+
+  // SPAs
+  const spaResponse = await getHtmlSPA(url);
+  if (spaResponse) {
+    const spa$ = load(spaResponse);
+    const spajobSchema = spa$("script[type='application/ld+json']").text();
+    return { url, ...extract(spajobSchema) };
+  }
 
   // for briohr
   const jobTitle = $(".main-header .title-wrapper .title h1").text().trim();
@@ -15,7 +28,7 @@ export const extractJobDetails = async (url) => {
   const location = $(".location").text().trim();
   const description = $(".description .wrapper span").html();
 
-  // SPAs
+  // no job schema
   const pageTitle = $("title").text();
   const metaDescription = $("meta[name=description]").attr("content");
 
@@ -30,12 +43,12 @@ export const extractJobDetails = async (url) => {
     metaDescription,
   };
 
-  if (!jsonLdContent) {
-    return manual;
-  }
+  return manual;
+};
 
+const extract = (html) => {
   // Check if multiple json-ld
-  const split = jsonLdContent.split("}{");
+  const split = html.split("}{");
 
   // Find jsob-ld for "JobPosting"
   if (split.length > 1) {
@@ -48,10 +61,10 @@ export const extractJobDetails = async (url) => {
   }
 
   // Check if jsob-ld is "JobPosting"
-  const needed = JSON.parse(jsonLdContent);
+  const needed = JSON.parse(html);
   if (needed["@type"] === "JobPosting") {
     return needed;
   }
 
-  return manual;
+  return null;
 };
