@@ -3,11 +3,21 @@ import { stringifyUrl } from "query-string";
 import { constructUrlQuery } from "../../helpers/constructUrlQuery";
 import { extractJobDetails } from "../../helpers/extractJobDetails";
 
-const cx = process.env.GOOGLE_SEARCH_CX;
-const key = process.env.GOOGLE_SEARCH_KEY;
 const URL = "https://www.googleapis.com/customsearch/v1";
 
 export default async function handler(req, res) {
+  const { method, body } = req;
+
+  if (method !== "POST") {
+    return res.status(405).json({ message: "not allowed" });
+  }
+
+  const { cx, key } = body;
+
+  if (!cx || !key) {
+    return res.status(400).json({ message: "no body" });
+  }
+
   const q = constructUrlQuery();
 
   let results = [];
