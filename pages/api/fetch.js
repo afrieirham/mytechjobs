@@ -50,7 +50,5 @@ export default async function handler(req, res) {
     schema: schemas[i],
   }));
 
-  console.log(withSchmeas);
-
   res.status(200).json({ status: "OK", count: withSchmeas.length });
 }
