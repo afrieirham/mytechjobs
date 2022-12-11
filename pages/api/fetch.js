@@ -9,13 +9,13 @@ export default async function handler(req, res) {
   const { method, body } = req;
 
   if (method !== "POST") {
-    return res.status(405).json({ message: "not allowed" });
+    return res.status(405).json({ status: "not allowed" });
   }
 
   const { cx, key } = body;
 
   if (!cx || !key) {
-    return res.status(400).json({ message: "no body" });
+    return res.status(400).json({ status: "no body" });
   }
 
   const q = constructUrlQuery();
@@ -50,5 +50,7 @@ export default async function handler(req, res) {
     schema: schemas[i],
   }));
 
-  res.status(200).json({ jobs: withSchmeas });
+  console.log(withSchmeas);
+
+  res.status(200).json({ status: "OK", count: withSchmeas.length });
 }
