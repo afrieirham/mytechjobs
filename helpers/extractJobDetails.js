@@ -1,8 +1,15 @@
+import fetch from "node-fetch";
 import { load } from "cheerio";
 import { getHtmlSPA } from "./getHtmlSPA";
 import { getUrlBody } from "./fetch";
 
 export const extractJobDetails = async (url) => {
+  // Check if broken url
+  const status = await fetch(url).then((res) => res.status);
+  if (status >= 400) {
+    return null;
+  }
+
   // Fetch url content
   const response = await getUrlBody(url);
 
