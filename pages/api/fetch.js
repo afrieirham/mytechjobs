@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 import { stringifyUrl } from "query-string";
+import { createManyJobs } from "../../controllers/jobs";
 import { constructUrlQuery } from "../../helpers/constructUrlQuery";
 import { extractJobDetails } from "../../helpers/extractJobDetails";
 
@@ -29,8 +30,13 @@ export default async function handler(req, res) {
       query: { start, cx, key, q },
     });
     const result = await fetch(requestUrl).then((res) => res.json());
-    results.push(...result.items);
 
+    // add if has result
+    if (result?.items?.length > 0) {
+      results.push(...result.items);
+    }
+
+    // stop if no next page
     if (!result?.queries?.nextPage) {
       break;
     }
@@ -38,17 +44,20 @@ export default async function handler(req, res) {
     start += 10;
   }
 
-  const cleanResults = results.map(({ pagemap, ...rest }) => rest);
+  if (results?.length === 0) {
+    return res.json({ status: "OK", message: "no jobs added" });
+  }
 
   const schemas = await Promise.all(
-    cleanResults.map(({ link }) => extractJobDetails(link))
+    results.map(({ link }) => extractJobDetails(link))
   );
 
-  const withSchmeas = cleanResults.map((r, i) => ({
-    ...r,
-    createdAt: new Date().toISOString(),
+  const withSchmeas = results.map(({ pagemap, ...rest }, i) => ({
+    ...rest,
     schema: schemas[i],
   }));
 
-  res.status(200).json({ status: "OK", count: withSchmeas.length });
+  await createManyJobs(withSchmeas);
+
+  res.json({ status: "OK", count: withSchmeas.length });
 }

@@ -23,6 +23,11 @@ export const extractJobDetails = async (url) => {
 
   // SPAs
   const spaResponse = await getHtmlSPA(url);
+
+  if (!spaResponse.includes("JobPosting")) {
+    return null;
+  }
+
   if (spaResponse) {
     const spa$ = load(spaResponse);
     const spajobSchema = spa$("script[type='application/ld+json']").text();

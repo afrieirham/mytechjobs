@@ -3,15 +3,6 @@ import { format, sub } from "date-fns";
 export const constructUrlQuery = () => {
   const time = `after:${format(sub(new Date(), { days: 1 }), "yyyy-MM-dd")}`;
 
-  const sites = constructSiteQuery([
-    "maukerja.my/job/*",
-    "lever.co",
-    "greenhouse.io",
-    "briohr.com",
-    "workable.com",
-    "my.hiredly.com",
-  ]);
-
   const location = constructLocationQuery([
     "Johor",
     "Kedah",
@@ -29,7 +20,6 @@ export const constructUrlQuery = () => {
     "Labuan",
     "Sabah",
     "Putrajaya",
-    "Malaysia",
   ]);
 
   const terms = constructLocationQuery([
@@ -41,15 +31,13 @@ export const constructUrlQuery = () => {
     "laravel",
     "flutter",
     "django",
+    "kotlin",
   ]);
 
-  const query = `${time} ${terms} ${location} ${sites}`;
+  const query = `${time} ${terms} ${location}`;
 
   return query;
 };
-
-const constructSiteQuery = (sites) =>
-  sites.map((site) => "site:" + site).join(" | ");
 
 const constructLocationQuery = (locations) => {
   const lQuery = locations
