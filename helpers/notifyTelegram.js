@@ -1,4 +1,5 @@
 import { stringifyUrl } from "query-string";
+import fetch from "node-fetch";
 
 export const notifyTelegram = (text) => {
   const token = process.env.TELEGRAM_HTTP_TOKEN;
