@@ -76,7 +76,8 @@ export default async function handler(req, res) {
     }
   });
 
-  notifyTelegram(telegram);
+  console.log(telegram);
+  await notifyTelegram(telegram);
 
   res.json({ status: "OK", count });
 }
