@@ -10,5 +10,5 @@ export const notifyTelegram = (text) => {
     url,
     query: { chat_id, text },
   });
-  fetch(telegramUrl);
+  return fetch(telegramUrl);
 };
