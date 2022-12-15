@@ -3,6 +3,7 @@ import { stringifyUrl } from "query-string";
 import { createManyJobs } from "../../controllers/jobs";
 import { constructUrlQuery } from "../../helpers/constructUrlQuery";
 import { extractJobDetails } from "../../helpers/extractJobDetails";
+import { notifyTelegram } from "../../helpers/notifyTelegram";
 
 const URL = "https://www.googleapis.com/customsearch/v1";
 
@@ -59,5 +60,23 @@ export default async function handler(req, res) {
 
   await createManyJobs(withSchmeas);
 
-  res.json({ status: "OK", count: withSchmeas.length });
+  // Send alert to telegram
+  const count = withSchmeas.length;
+  let telegram = `${count} new jobs!\n\n`;
+
+  withSchmeas.forEach((job) => {
+    const { schema, title, link } = job;
+    if (schema) {
+      const { title, hiringOrganization, url } = schema;
+      const company = hiringOrganization?.name;
+      const text = `${title} @ ${company}\n${url}\n\n\n`;
+      telegram += text;
+    } else {
+      telegram += `${title}\n${link}\n\n\n`;
+    }
+  });
+
+  notifyTelegram(telegram);
+
+  res.json({ status: "OK", count });
 }
