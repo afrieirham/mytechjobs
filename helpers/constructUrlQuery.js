@@ -20,6 +20,7 @@ export const constructUrlQuery = () => {
     "Labuan",
     "Sabah",
     "Putrajaya",
+    "Malaysia",
   ]);
 
   const terms = constructLocationQuery([
