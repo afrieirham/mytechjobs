@@ -21,18 +21,18 @@ export const extractJobDetails = async (url) => {
     return { url, ...extract(staticJobSchema) };
   }
 
-  // SPAs
-  const spaResponse = await getHtmlSPA(url);
+  // // SPAs
+  // const spaResponse = await getHtmlSPA(url);
 
-  if (!spaResponse.includes("JobPosting")) {
-    return null;
-  }
+  // if (!spaResponse.includes("JobPosting")) {
+  //   return null;
+  // }
 
-  if (spaResponse) {
-    const spa$ = load(spaResponse);
-    const spajobSchema = spa$("script[type='application/ld+json']").text();
-    return { url, ...extract(spajobSchema) };
-  }
+  // if (spaResponse) {
+  //   const spa$ = load(spaResponse);
+  //   const spajobSchema = spa$("script[type='application/ld+json']").text();
+  //   return { url, ...extract(spajobSchema) };
+  // }
 
   // for briohr
   const jobTitle = $(".main-header .title-wrapper .title h1").text().trim();
