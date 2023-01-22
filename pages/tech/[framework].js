@@ -14,6 +14,7 @@ import { capitalize } from "../../helpers/capitalize";
 import { getJobsByKeyword } from "../../controllers/jobs";
 import TechIcon from "../../components/TechIcon";
 import JobListing from "../../components/JobListing";
+import { frameworks } from "../../constants/paths";
 
 export const getStaticProps = async (context) => {
   const { framework } = context.params;
@@ -34,19 +35,6 @@ export const getStaticProps = async (context) => {
 };
 
 export async function getStaticPaths() {
-  const frameworks = [
-    "react",
-    "react-js",
-    "react-native",
-    "vue",
-    "angular",
-    "node-js",
-    "laravel",
-    "flutter",
-    "django",
-    "kotlin",
-  ];
-
   const paths = frameworks.map((item) => ({ params: { framework: item } }));
   return {
     paths,

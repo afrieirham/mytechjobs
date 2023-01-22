@@ -12,6 +12,7 @@ import React from "react";
 
 import FlagIcon from "../../components/FlagIcon";
 import JobListing from "../../components/JobListing";
+import { places } from "../../constants/paths";
 import { getJobsByKeyword } from "../../controllers/jobs";
 import { capitalize } from "../../helpers/capitalize";
 
@@ -40,28 +41,6 @@ export const getStaticProps = async (context) => {
 };
 
 export async function getStaticPaths() {
-  const places = [
-    "johor",
-    "kedah",
-    "kelantan",
-    "melaka",
-    "negeri-sembilan",
-    "ns",
-    "pahang",
-    "perak",
-    "perlis",
-    "pulau-pinang",
-    "penang",
-    "sarawak",
-    "selangor",
-    "terengganu",
-    "kuala-lumpur",
-    "kl",
-    "labuan",
-    "sabah",
-    "putrajaya",
-  ];
-
   const paths = places.map((item) => ({ params: { place: item } }));
   return {
     paths,
@@ -69,7 +48,7 @@ export async function getStaticPaths() {
   };
 }
 
-function Framework({ jobs, place }) {
+function Place({ jobs, place }) {
   const getActualPlace = () => {
     switch (place) {
       case "ns":
@@ -131,4 +110,4 @@ function Framework({ jobs, place }) {
   );
 }
 
-export default Framework;
+export default Place;
