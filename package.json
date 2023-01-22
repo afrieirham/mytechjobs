@@ -10,10 +10,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.4.9",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
     "cheerio": "^1.0.0-rc.12",
     "date-fns": "^2.29.3",
     "eslint": "8.29.0",
     "eslint-config-next": "13.0.6",
+    "framer-motion": "^8.5.0",
     "mongodb": "^4.12.1",
     "next": "13.0.6",
     "node-fetch": "^3.3.0",
