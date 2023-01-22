@@ -20,7 +20,7 @@ export const createManyJobs = async (data) => {
   return jobs;
 };
 
-export const getJobsByKeyword = async (keywords) => {
+export const getJobsByKeyword = async (keywords, query = []) => {
   const { db } = await connectToDatabase();
 
   const cursor = await db
@@ -40,6 +40,13 @@ export const getJobsByKeyword = async (keywords) => {
 
     return isLocal || isRemote;
   });
+
+  if (query.length > 0) {
+    return result.filter((job) => {
+      const isInLocation = job?.keywords?.includes(query[0]);
+      return isInLocation;
+    });
+  }
 
   return result;
 };

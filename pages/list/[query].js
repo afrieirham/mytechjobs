@@ -10,49 +10,63 @@ import {
 import Head from "next/head";
 import React from "react";
 
-import FlagIcon from "../../components/FlagIcon";
-import JobListing from "../../components/JobListing";
-import { places } from "../../constants/paths";
-import { getJobsByKeyword } from "../../controllers/jobs";
 import { capitalize } from "../../helpers/capitalize";
 import { getActualPlace } from "../../helpers/getActualPlace";
+import { getJobsByKeyword } from "../../controllers/jobs";
+import { frameworks, places } from "../../constants/paths";
+import TechIcon from "../../components/TechIcon";
+import FlagIcon from "../../components/FlagIcon";
+import JobListing from "../../components/JobListing";
 
 export const getStaticProps = async (context) => {
-  const { place } = context.params;
+  const { query } = context.params;
+  const [tech, place] = query.split("-in-");
 
-  let keywords = [place.replace("-", " ")];
+  let techKeyword = [tech.replace("-", " ")];
+  if (tech === "react") {
+    techKeyword = ["react js", "react native"];
+  }
+
+  let placeKeywords = [place.replace("-", " ")];
   if (place === "ns") {
-    keywords = ["negeri sembilan"];
+    placeKeywords = ["negeri sembilan"];
   }
   if (place === "penang") {
-    keywords = ["pulau pinang"];
+    placeKeywords = ["pulau pinang"];
   }
   if (place === "kl") {
-    keywords = ["kuala lumpur"];
+    placeKeywords = ["kuala lumpur"];
   }
 
-  const jobs = await getJobsByKeyword(keywords);
+  const jobs = await getJobsByKeyword(techKeyword, placeKeywords);
 
   return {
     props: {
       jobs,
-      place,
+      query,
     },
   };
 };
 
 export async function getStaticPaths() {
-  const paths = places.map((item) => ({ params: { place: item } }));
+  const techByLocation = frameworks
+    .map((tech) => places.map((place) => `${tech}-in-${place}`))
+    .flat();
+
+  const paths = techByLocation.map((item) => ({ params: { query: item } }));
   return {
     paths,
     fallback: false,
   };
 }
 
-function Place({ jobs, place }) {
+function Query({ jobs, query }) {
+  const [tech, place] = query.split("-in-");
   const actualPlace = getActualPlace(place);
-  const state = capitalize(actualPlace.replace("-", " "));
-  const pageTitle = `Tech Jobs in ${state}`;
+  const pageTitle = capitalize(`${tech} jobs in ${actualPlace}`).replaceAll(
+    "-",
+    " "
+  );
 
   return (
     <div>
@@ -68,22 +82,19 @@ function Place({ jobs, place }) {
           </BreadcrumbItem>
 
           <BreadcrumbItem isCurrentPage>
-            <BreadcrumbLink
-              href={`/location/${place}`}
-              textTransform="capitalize"
-            >
-              {state}
+            <BreadcrumbLink href={`/list/${query}`} textTransform="capitalize">
+              {pageTitle}
             </BreadcrumbLink>
           </BreadcrumbItem>
         </Breadcrumb>
 
         <HStack mt="2">
+          <TechIcon name={tech} />
           <Heading size="md" textTransform="capitalize">
             {pageTitle}
           </Heading>
           <FlagIcon name={actualPlace} />
         </HStack>
-
         <Flex mt="4">
           <Text fontSize="xs" color="gray.600">
             Total jobs: {jobs.length}
@@ -100,4 +111,4 @@ function Place({ jobs, place }) {
   );
 }
 
-export default Place;
+export default Query;
