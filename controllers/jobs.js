@@ -19,3 +19,27 @@ export const createManyJobs = async (data) => {
   const jobs = await db.collection("jobs").insertMany(formattedData);
   return jobs;
 };
+
+export const getJobsByKeyword = async (keywords) => {
+  const { db } = await connectToDatabase();
+
+  const cursor = await db
+    .collection("jobs")
+    .find({ keywords: { $in: keywords } })
+    .sort({ _id: -1 })
+    .toArray();
+
+  const jobs = JSON.parse(JSON.stringify(cursor));
+  const result = jobs.filter((job) => {
+    const isLocal =
+      job?.schema?.jobLocation?.address?.addressCountry?.toLowerCase() ===
+      "malaysia";
+    const isRemote =
+      job?.schema?.description?.includes("remote") ||
+      job?.schema?.responsibilities?.includes("remote");
+
+    return isLocal || isRemote;
+  });
+
+  return result;
+};
