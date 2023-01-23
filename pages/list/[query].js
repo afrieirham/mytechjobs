@@ -20,9 +20,6 @@ import JobListing from "../../components/JobListing";
 
 export const getStaticProps = async (context) => {
   const { query } = context.params;
-  let jobs = [];
-  let tech = "";
-  let place = "";
 
   const getQueryType = () => {
     if (query.includes("-in-")) {
@@ -39,9 +36,7 @@ export const getStaticProps = async (context) => {
   const type = getQueryType();
 
   if (type === "tech-location") {
-    const techPlace = query.split("-in-");
-    tech = techPlace[0];
-    place = techPlace[1];
+    const [tech, place] = query.split("-in-");
 
     let techKeyword = [tech.replace("-", " ")];
     if (tech === "react") {
@@ -58,40 +53,52 @@ export const getStaticProps = async (context) => {
     if (place === "kl") {
       placeKeywords = ["kuala lumpur"];
     }
-    jobs = await getJobsByKeyword(techKeyword, placeKeywords);
-  } else {
-    let keywords = [query.replace("-", " ")];
-    if (query === "ns") {
-      keywords = ["negeri sembilan"];
-    }
-    if (query === "penang") {
-      keywords = ["pulau pinang"];
-    }
-    if (query === "kl") {
-      keywords = ["kuala lumpur"];
-    }
-    if (query === "react") {
-      keywords = ["react js", "react native"];
-    }
-    jobs = await getJobsByKeyword(keywords);
 
-    if (type === "tech") {
-      tech = query;
-      place = "malaysia";
-    }
+    const jobs = await getJobsByKeyword(techKeyword, placeKeywords);
 
-    if (type === "location") {
-      tech = "tech";
-      place = query;
-    }
+    return {
+      props: {
+        jobs,
+        query,
+        tech,
+        place,
+      },
+    };
+  }
+
+  let keywords = [query.replace("-", " ")];
+  if (query === "ns") {
+    keywords = ["negeri sembilan"];
+  }
+  if (query === "penang") {
+    keywords = ["pulau pinang"];
+  }
+  if (query === "kl") {
+    keywords = ["kuala lumpur"];
+  }
+  if (query === "react") {
+    keywords = ["react js", "react native"];
+  }
+
+  const jobs = await getJobsByKeyword(keywords);
+
+  if (type === "tech") {
+    return {
+      props: {
+        jobs,
+        query,
+        tech: query,
+        place: "malaysia",
+      },
+    };
   }
 
   return {
     props: {
       jobs,
       query,
-      tech,
-      place,
+      tech: "tech",
+      place: query,
     },
   };
 };
