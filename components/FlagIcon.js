@@ -132,7 +132,7 @@ function FlagIcon({ name }) {
           width="36px"
         />
       );
-    case "malaysia":
+    case "all":
     case "remote":
       return null;
   }

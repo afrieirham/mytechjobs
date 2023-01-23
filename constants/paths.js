@@ -18,6 +18,7 @@ export const places = [
   "labuan",
   "sabah",
   "putrajaya",
+  "remote",
 ];
 
 export const frameworks = [
@@ -31,4 +32,5 @@ export const frameworks = [
   "flutter",
   "django",
   "kotlin",
+  "webflow",
 ];

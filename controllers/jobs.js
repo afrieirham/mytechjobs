@@ -1,13 +1,4 @@
-import { frameworks, places } from "../constants/paths";
 import { connectToDatabase } from "../libs/mongo";
-
-export const createOneJob = async (data) => {
-  const { db } = await connectToDatabase();
-  const job = await db
-    .collection("jobs")
-    .insertOne({ ...data, createdAt: new Date().toISOString() });
-  return job;
-};
 
 export const createManyJobs = async (data) => {
   const { db } = await connectToDatabase();
@@ -21,10 +12,10 @@ export const createManyJobs = async (data) => {
   return jobs;
 };
 
-export const getJobsByKeyword = async (query) => {
+export const getJobs = async ({ tech, location }) => {
   const { db } = await connectToDatabase();
 
-  const pipeline = constructPipeline(query);
+  const pipeline = constructPipeline({ tech, location });
 
   const cursor = await db
     .collection("jobs")
@@ -47,42 +38,35 @@ export const getJobsByKeyword = async (query) => {
   return { jobs };
 };
 
-const constructPipeline = (query) => {
-  const type = getQueryType(query);
-  const [tech, place] = getTechAndPlace(query);
+const constructPipeline = ({ tech, location }) => {
+  if (tech === "all") {
+    // all remote
+    if (location === "remote") {
+      return [
+        {
+          $match: {
+            $text: {
+              $search: "remote",
+            },
+          },
+        },
+      ];
+    }
 
-  if (type === "tech-location") {
+    // all specific
     return [
       {
         $match: {
           keywords: {
-            $in: getTechKeywords(tech),
-          },
-        },
-      },
-      {
-        $match: {
-          keywords: {
-            $in: getPlaceKeywords(place),
+            $in: getPlaceKeywords(location),
           },
         },
       },
     ];
   }
 
-  if (type === "location") {
-    return [
-      {
-        $match: {
-          keywords: {
-            $in: getPlaceKeywords(place),
-          },
-        },
-      },
-    ];
-  }
-
-  if (type === "tech") {
+  // specific all
+  if (location === "all") {
     return [
       {
         $match: {
@@ -94,10 +78,13 @@ const constructPipeline = (query) => {
     ];
   }
 
-  if (type === "remote") {
+  if (location === "remote") {
     return [
       {
         $match: {
+          keywords: {
+            $in: getTechKeywords(tech),
+          },
           $text: {
             $search: "remote",
           },
@@ -106,7 +93,23 @@ const constructPipeline = (query) => {
     ];
   }
 
-  return [];
+  // specific specific
+  return [
+    {
+      $match: {
+        keywords: {
+          $in: getTechKeywords(tech),
+        },
+      },
+    },
+    {
+      $match: {
+        keywords: {
+          $in: getPlaceKeywords(location),
+        },
+      },
+    },
+  ];
 };
 
 const getTechKeywords = (query) => {
@@ -131,33 +134,4 @@ const getPlaceKeywords = (query) => {
     return ["kuala lumpur"];
   }
   return [term];
-};
-
-const getQueryType = (query) => {
-  if (query.includes("-in-")) {
-    return "tech-location";
-  }
-  if (frameworks.includes(query)) {
-    return "tech";
-  }
-  if (places.includes(query)) {
-    return "location";
-  }
-  return "remote";
-};
-
-export const getTechAndPlace = (query) => {
-  const type = getQueryType(query);
-
-  if (type === "tech") {
-    return [query, "malaysia"];
-  }
-  if (type === "location") {
-    return ["tech", query];
-  }
-  if (type === "remote") {
-    return ["tech", "remote"];
-  }
-
-  return query.split("-in-");
 };

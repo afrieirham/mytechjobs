@@ -9,7 +9,7 @@ function TechIcon({ name }) {
       return (
         <Img
           src="https://github.com/get-icon/geticon/raw/master/icons/react.svg"
-          alt="React"
+          alt="react logo"
           width="21px"
           height="21px"
         />
@@ -18,7 +18,7 @@ function TechIcon({ name }) {
       return (
         <Img
           src="https://github.com/get-icon/geticon/raw/master/icons/angular-icon.svg"
-          alt="Angular"
+          alt="angular logo"
           width="21px"
           height="21px"
         />
@@ -27,7 +27,7 @@ function TechIcon({ name }) {
       return (
         <Img
           src="https://github.com/get-icon/geticon/raw/master/icons/nodejs-icon.svg"
-          alt="Nodejs"
+          alt="node.js logo"
           width="21px"
           height="21px"
         />
@@ -36,7 +36,7 @@ function TechIcon({ name }) {
       return (
         <Img
           src="https://github.com/get-icon/geticon/raw/master/icons/flutter.svg"
-          alt="Flutter"
+          alt="flutter logo"
           width="21px"
           height="21px"
         />
@@ -45,7 +45,7 @@ function TechIcon({ name }) {
       return (
         <Img
           src="https://github.com/get-icon/geticon/raw/master/icons/laravel.svg"
-          alt="Laravel"
+          alt="laravel logo"
           width="21px"
           height="21px"
         />
@@ -54,7 +54,7 @@ function TechIcon({ name }) {
       return (
         <Img
           src="https://github.com/get-icon/geticon/raw/master/icons/vue.svg"
-          alt="Vue"
+          alt="vue logo"
           width="21px"
           height="21px"
         />
@@ -63,7 +63,7 @@ function TechIcon({ name }) {
       return (
         <Img
           src="https://github.com/get-icon/geticon/raw/master/icons/django.svg"
-          alt="Vue"
+          alt="django logo"
           width="21px"
           height="21px"
         />
@@ -72,15 +72,24 @@ function TechIcon({ name }) {
       return (
         <Img
           src="https://github.com/get-icon/geticon/raw/master/icons/kotlin.svg"
-          alt="Vue"
+          alt="kotlin logo"
+          width="21px"
+          height="21px"
+        />
+      );
+    case "webflow":
+      return (
+        <Img
+          src="https://appthisway.com/wp-content/uploads/2018/08/webflow-logo.png"
+          alt="webflow logo"
           width="21px"
           height="21px"
         />
       );
     case "tech":
+    default:
       return null;
   }
-  return <div>TechIcon</div>;
 }
 
 export default TechIcon;
