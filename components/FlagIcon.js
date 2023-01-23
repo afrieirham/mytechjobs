@@ -133,7 +133,8 @@ function FlagIcon({ name }) {
         />
       );
     case "malaysia":
-      return <Text as="span">🇲🇾</Text>;
+    case "remote":
+      return null;
   }
   return <div>FlagIcon</div>;
 }

@@ -38,7 +38,7 @@ export async function getStaticPaths() {
     .map((tech) => places.map((place) => `${tech}-in-${place}`))
     .flat();
 
-  const allPaths = [...frameworks, ...places, ...techByLocation];
+  const allPaths = ["remote", ...frameworks, ...places, ...techByLocation];
 
   const paths = allPaths.map((item) => ({ params: { query: item } }));
   return {
@@ -48,11 +48,15 @@ export async function getStaticPaths() {
 }
 
 function Query({ jobs, query, tech, place }) {
+  const isRemote = place === "remote";
   const actualPlace = getActualPlace(place);
-  const pageTitle = capitalize(`${tech} jobs in ${actualPlace}`).replaceAll(
-    "-",
-    " "
-  );
+  const pageTitle = capitalize(
+    isRemote
+      ? `Remote ${tech} jobs 👨🏻‍💻 🏝`
+      : `${tech} jobs in ${
+          actualPlace === "malaysia" ? "Malaysia 🇲🇾" : actualPlace
+        }`
+  ).replaceAll("-", " ");
 
   return (
     <div>

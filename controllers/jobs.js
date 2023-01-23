@@ -24,11 +24,11 @@ export const createManyJobs = async (data) => {
 export const getJobsByKeyword = async (query) => {
   const { db } = await connectToDatabase();
 
-  const pipiline = constructPipeline(query);
+  const pipeline = constructPipeline(query);
 
   const cursor = await db
     .collection("jobs")
-    .aggregate(pipiline)
+    .aggregate(pipeline)
     .sort({ _id: -1 })
     .toArray();
 
@@ -94,6 +94,18 @@ const constructPipeline = (query) => {
     ];
   }
 
+  if (type === "remote") {
+    return [
+      {
+        $match: {
+          $text: {
+            $search: "remote",
+          },
+        },
+      },
+    ];
+  }
+
   return [];
 };
 
@@ -131,6 +143,7 @@ const getQueryType = (query) => {
   if (places.includes(query)) {
     return "location";
   }
+  return "remote";
 };
 
 export const getTechAndPlace = (query) => {
@@ -141,6 +154,9 @@ export const getTechAndPlace = (query) => {
   }
   if (type === "location") {
     return ["tech", query];
+  }
+  if (type === "remote") {
+    return ["tech", "remote"];
   }
 
   return query.split("-in-");
