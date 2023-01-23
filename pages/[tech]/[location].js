@@ -14,6 +14,7 @@ import JobListing from "../../components/JobListing";
 import TechIcon from "../../components/TechIcon";
 import { frameworks, places } from "../../constants/paths";
 import { getJobs } from "../../controllers/jobs";
+import { capitalize } from "../../helpers/capitalize";
 
 export const getStaticProps = async (context) => {
   const { tech, location } = context.params;
@@ -50,9 +51,10 @@ function JobList({ jobs, tech, location }) {
       location === "all" ? "malaysia 🇲🇾" : location.replaceAll("-", " ");
 
     if (location === "remote") {
-      return `Remote ${techName} jobs 👨🏻‍💻🏝`;
+      return capitalize(`Remote ${techName} jobs 👨🏻‍💻🏝`);
     }
-    return `${techName} jobs in ${locationName}`;
+
+    return capitalize(`${techName} jobs in ${locationName}`);
   };
 
   return (

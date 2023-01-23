@@ -114,6 +114,7 @@ const constructPipeline = ({ tech, location }) => {
 
 const getTechKeywords = (query) => {
   const term = query.replaceAll("-", " ");
+
   if (term === "react") {
     return ["react js", "react native"];
   }
@@ -123,15 +124,5 @@ const getTechKeywords = (query) => {
 
 const getPlaceKeywords = (query) => {
   const term = query.replaceAll("-", " ");
-
-  if (term === "ns") {
-    return ["negeri sembilan"];
-  }
-  if (term === "penang") {
-    return ["pulau pinang"];
-  }
-  if (term === "kl") {
-    return ["kuala lumpur"];
-  }
   return [term];
 };
