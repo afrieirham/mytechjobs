@@ -77,6 +77,8 @@ function TechIcon({ name }) {
           height="21px"
         />
       );
+    case "tech":
+      return null;
   }
   return <div>TechIcon</div>;
 }

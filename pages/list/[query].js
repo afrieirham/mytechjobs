@@ -21,10 +21,27 @@ import JobListing from "../../components/JobListing";
 export const getStaticProps = async (context) => {
   const { query } = context.params;
   let jobs = [];
-  let queryName = "";
+  let tech = "";
+  let place = "";
 
-  if (query.includes("-in-")) {
-    const [tech, place] = query.split("-in-");
+  const getQueryType = () => {
+    if (query.includes("-in-")) {
+      return "tech-location";
+    }
+    if (frameworks.includes(query)) {
+      return "tech";
+    }
+    if (places.includes(query)) {
+      return "location";
+    }
+  };
+
+  const type = getQueryType();
+
+  if (type === "tech-location") {
+    const techPlace = query.split("-in-");
+    tech = techPlace[0];
+    place = techPlace[1];
 
     let techKeyword = [tech.replace("-", " ")];
     if (tech === "react") {
@@ -42,7 +59,6 @@ export const getStaticProps = async (context) => {
       placeKeywords = ["kuala lumpur"];
     }
     jobs = await getJobsByKeyword(techKeyword, placeKeywords);
-    queryName = query;
   } else {
     let keywords = [query.replace("-", " ")];
     if (query === "ns") {
@@ -58,13 +74,24 @@ export const getStaticProps = async (context) => {
       keywords = ["react js", "react native"];
     }
     jobs = await getJobsByKeyword(keywords);
-    queryName = query + "-in-malaysia";
+
+    if (type === "tech") {
+      tech = query;
+      place = "malaysia";
+    }
+
+    if (type === "location") {
+      tech = "tech";
+      place = query;
+    }
   }
 
   return {
     props: {
       jobs,
-      query: queryName,
+      query,
+      tech,
+      place,
     },
   };
 };
@@ -83,8 +110,7 @@ export async function getStaticPaths() {
   };
 }
 
-function Query({ jobs, query }) {
-  const [tech, place] = query.split("-in-");
+function Query({ jobs, query, tech, place }) {
   const actualPlace = getActualPlace(place);
   const pageTitle = capitalize(`${tech} jobs in ${actualPlace}`).replaceAll(
     "-",
