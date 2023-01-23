@@ -12,7 +12,7 @@ import React from "react";
 
 import { capitalize } from "../../helpers/capitalize";
 import { getActualPlace } from "../../helpers/getActualPlace";
-import { getJobsByKeyword } from "../../controllers/jobs";
+import { getJobsByKeyword, getTechAndPlace } from "../../controllers/jobs";
 import { frameworks, places } from "../../constants/paths";
 import TechIcon from "../../components/TechIcon";
 import FlagIcon from "../../components/FlagIcon";
@@ -20,85 +20,15 @@ import JobListing from "../../components/JobListing";
 
 export const getStaticProps = async (context) => {
   const { query } = context.params;
-
-  const getQueryType = () => {
-    if (query.includes("-in-")) {
-      return "tech-location";
-    }
-    if (frameworks.includes(query)) {
-      return "tech";
-    }
-    if (places.includes(query)) {
-      return "location";
-    }
-  };
-
-  const type = getQueryType();
-
-  if (type === "tech-location") {
-    const [tech, place] = query.split("-in-");
-
-    let techKeyword = [tech.replace("-", " ")];
-    if (tech === "react") {
-      techKeyword = ["react js", "react native"];
-    }
-
-    let placeKeywords = [place.replace("-", " ")];
-    if (place === "ns") {
-      placeKeywords = ["negeri sembilan"];
-    }
-    if (place === "penang") {
-      placeKeywords = ["pulau pinang"];
-    }
-    if (place === "kl") {
-      placeKeywords = ["kuala lumpur"];
-    }
-
-    const jobs = await getJobsByKeyword(techKeyword, placeKeywords);
-
-    return {
-      props: {
-        jobs,
-        query,
-        tech,
-        place,
-      },
-    };
-  }
-
-  let keywords = [query.replace("-", " ")];
-  if (query === "ns") {
-    keywords = ["negeri sembilan"];
-  }
-  if (query === "penang") {
-    keywords = ["pulau pinang"];
-  }
-  if (query === "kl") {
-    keywords = ["kuala lumpur"];
-  }
-  if (query === "react") {
-    keywords = ["react js", "react native"];
-  }
-
-  const jobs = await getJobsByKeyword(keywords);
-
-  if (type === "tech") {
-    return {
-      props: {
-        jobs,
-        query,
-        tech: query,
-        place: "malaysia",
-      },
-    };
-  }
+  const { jobs } = await getJobsByKeyword(query);
+  const [tech, place] = getTechAndPlace(query);
 
   return {
     props: {
       jobs,
       query,
-      tech: "tech",
-      place: query,
+      tech,
+      place,
     },
   };
 };
