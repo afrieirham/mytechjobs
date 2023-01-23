@@ -20,30 +20,51 @@ import JobListing from "../../components/JobListing";
 
 export const getStaticProps = async (context) => {
   const { query } = context.params;
-  const [tech, place] = query.split("-in-");
+  let jobs = [];
+  let queryName = "";
 
-  let techKeyword = [tech.replace("-", " ")];
-  if (tech === "react") {
-    techKeyword = ["react js", "react native"];
-  }
+  if (query.includes("-in-")) {
+    const [tech, place] = query.split("-in-");
 
-  let placeKeywords = [place.replace("-", " ")];
-  if (place === "ns") {
-    placeKeywords = ["negeri sembilan"];
-  }
-  if (place === "penang") {
-    placeKeywords = ["pulau pinang"];
-  }
-  if (place === "kl") {
-    placeKeywords = ["kuala lumpur"];
-  }
+    let techKeyword = [tech.replace("-", " ")];
+    if (tech === "react") {
+      techKeyword = ["react js", "react native"];
+    }
 
-  const jobs = await getJobsByKeyword(techKeyword, placeKeywords);
+    let placeKeywords = [place.replace("-", " ")];
+    if (place === "ns") {
+      placeKeywords = ["negeri sembilan"];
+    }
+    if (place === "penang") {
+      placeKeywords = ["pulau pinang"];
+    }
+    if (place === "kl") {
+      placeKeywords = ["kuala lumpur"];
+    }
+    jobs = await getJobsByKeyword(techKeyword, placeKeywords);
+    queryName = query;
+  } else {
+    let keywords = [query.replace("-", " ")];
+    if (query === "ns") {
+      keywords = ["negeri sembilan"];
+    }
+    if (query === "penang") {
+      keywords = ["pulau pinang"];
+    }
+    if (query === "kl") {
+      keywords = ["kuala lumpur"];
+    }
+    if (query === "react") {
+      keywords = ["react js", "react native"];
+    }
+    jobs = await getJobsByKeyword(keywords);
+    queryName = query + "-in-malaysia";
+  }
 
   return {
     props: {
       jobs,
-      query,
+      query: queryName,
     },
   };
 };
@@ -53,7 +74,9 @@ export async function getStaticPaths() {
     .map((tech) => places.map((place) => `${tech}-in-${place}`))
     .flat();
 
-  const paths = techByLocation.map((item) => ({ params: { query: item } }));
+  const allPaths = [...frameworks, ...places, ...techByLocation];
+
+  const paths = allPaths.map((item) => ({ params: { query: item } }));
   return {
     paths,
     fallback: false,

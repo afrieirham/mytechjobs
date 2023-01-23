@@ -1,4 +1,4 @@
-import { Img } from "@chakra-ui/react";
+import { Img, Text } from "@chakra-ui/react";
 import React from "react";
 
 function FlagIcon({ name }) {
@@ -132,6 +132,8 @@ function FlagIcon({ name }) {
           width="36px"
         />
       );
+    case "malaysia":
+      return <Text as="span">🇲🇾</Text>;
   }
   return <div>FlagIcon</div>;
 }
