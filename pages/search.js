@@ -2,7 +2,7 @@ import React from "react";
 import Head from "next/head";
 import useSWR from "swr";
 import queryString from "query-string";
-import { Flex, Heading, useCheckboxGroup } from "@chakra-ui/react";
+import { Flex, Heading, Spinner, useCheckboxGroup } from "@chakra-ui/react";
 
 import { sites } from "../constants/sites";
 import JobListing from "../components/JobListing";
@@ -42,7 +42,9 @@ function Search() {
         <Flex flexDirection="column" w="full" mt="8">
           <Heading size="sm">👨🏻‍💻 Job Listing</Heading>
           {isLoading ? (
-            "Loading..."
+            <Flex w="full" h="full" justify="center" mt="16">
+              <Spinner />
+            </Flex>
           ) : (
             <Flex flexDirection="column">
               {jobs?.map((job) => (
