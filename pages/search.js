@@ -1,22 +1,21 @@
-import { Flex, Heading, useCheckboxGroup } from "@chakra-ui/react";
-import Head from "next/head";
-import { useRouter } from "next/router";
 import React, { useEffect } from "react";
+import Head from "next/head";
 import useSWR from "swr";
+import queryString from "query-string";
+import { useRouter } from "next/router";
+import { Flex, Heading, useCheckboxGroup } from "@chakra-ui/react";
 
 import { sites } from "../constants/sites";
+import { extractQuery } from "../helpers/query";
 import JobListing from "../components/JobListing";
 import FilterCard from "../components/FilterCard";
-import { extractQuery } from "../helpers/query";
 
 const fetcher = (url) => fetch(url).then((r) => r.json());
 function Search() {
-  const { data, isLoading } = useSWR("/api/jobs", fetcher);
-  const jobs = data?.jobs;
-
   const router = useRouter();
   const techFilter = useCheckboxGroup();
   const locationFilter = useCheckboxGroup();
+
   const {
     value: techValue,
     getCheckboxProps: techGetCheckboxProps,
@@ -29,6 +28,10 @@ function Search() {
   } = locationFilter;
 
   const { tech, location } = extractQuery(router.query);
+  const query = queryString.stringify({ tech, location });
+
+  const { data, isLoading } = useSWR("/api/jobs?" + query, fetcher);
+  const jobs = data?.jobs;
 
   useEffect(() => {
     const filteredTech = tech?.filter(Boolean);
