@@ -56,9 +56,7 @@ export default function Home({ latest, remote }) {
 
         {/* Latest Jobs */}
         <Flex flexDirection="column" w="full" mt="8">
-          <HStack as={Link} href={``}>
-            <Heading size="md">⏳ Latest Jobs</Heading>
-          </HStack>
+          <Heading size="md">⏳ Latest Jobs</Heading>
           <Flex flexDirection="column">
             {latest.map((job) => (
               <JobListing key={job.id} job={job} />
@@ -67,7 +65,7 @@ export default function Home({ latest, remote }) {
         </Flex>
 
         <Flex flexDirection="column" w="full" mt="8">
-          <HStack as={Link} href={``}>
+          <HStack as={Link} href="/remote">
             <Heading size="md">🏝 Remote Jobs</Heading>
           </HStack>
           <Flex flexDirection="column">
