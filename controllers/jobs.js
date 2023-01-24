@@ -23,37 +23,12 @@ export const getJobs = async ({ tech, location }) => {
     .sort({ _id: -1 })
     .toArray();
 
-  const result = JSON.parse(JSON.stringify(cursor));
-  const jobs = result.filter((job) => {
-    const isLocal =
-      job?.schema?.jobLocation?.address?.addressCountry?.toLowerCase() ===
-      "malaysia";
-    const isRemote =
-      job?.schema?.description?.includes("remote") ||
-      job?.schema?.responsibilities?.includes("remote");
-
-    return isLocal || isRemote;
-  });
-
+  const jobs = JSON.parse(JSON.stringify(cursor));
   return { jobs };
 };
 
 const constructPipeline = ({ tech, location }) => {
   if (tech === "all") {
-    // all remote
-    if (location === "remote") {
-      return [
-        {
-          $match: {
-            $text: {
-              $search: "remote",
-            },
-          },
-        },
-      ];
-    }
-
-    // all specific
     return [
       {
         $match: {
@@ -72,21 +47,6 @@ const constructPipeline = ({ tech, location }) => {
         $match: {
           keywords: {
             $in: getTechKeywords(tech),
-          },
-        },
-      },
-    ];
-  }
-
-  if (location === "remote") {
-    return [
-      {
-        $match: {
-          keywords: {
-            $in: getTechKeywords(tech),
-          },
-          $text: {
-            $search: "remote",
           },
         },
       },
