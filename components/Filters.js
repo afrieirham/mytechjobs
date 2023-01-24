@@ -27,7 +27,7 @@ function Filters({ techGetCheckboxProps, locationGetCheckboxProps }) {
         By Location 📍
       </Heading>
 
-      <Flex flexDirection="column" mb={{ base: "16", xl: "0" }}>
+      <Flex flexDirection="column">
         {places.map((f, i) => (
           <Checkbox key={i} mt="4" {...locationGetCheckboxProps({ value: f })}>
             <HStack>

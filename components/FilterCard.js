@@ -41,6 +41,16 @@ function FilterCard(props) {
           </DrawerHeader>
           <DrawerBody>
             <Filters {...props} />
+            <Button
+              width="full"
+              colorScheme="messenger"
+              size="lg"
+              fontSize="sm"
+              my="8"
+              onClick={onClose}
+            >
+              Apply
+            </Button>
           </DrawerBody>
         </DrawerContent>
       </Drawer>
