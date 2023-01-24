@@ -72,6 +72,7 @@ export const getJobs = async ({ tech, location }) => {
     .collection("jobs")
     .aggregate(pipeline)
     .sort({ _id: -1 })
+    .limit(10)
     .toArray();
 
   const jobs = JSON.parse(JSON.stringify(cursor));

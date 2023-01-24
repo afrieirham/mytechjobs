@@ -5,9 +5,11 @@ import {
   Flex,
   Heading,
   HStack,
+  Link,
   Text,
 } from "@chakra-ui/react";
 import Head from "next/head";
+import queryString from "query-string";
 import React from "react";
 import FlagIcon from "../../components/FlagIcon";
 import JobListing from "../../components/JobListing";
@@ -54,6 +56,17 @@ function JobList({ jobs, tech, location }) {
       return capitalize(`Remote ${techName} jobs 👨🏻‍💻🏝`);
     }
     return capitalize(`${techName} jobs in ${locationName}`);
+  };
+
+  const getMoreHref = () => {
+    const query = queryString.stringify(
+      {
+        tech: tech === "tech" ? null : tech,
+        location: location === "all" ? null : location,
+      },
+      { skipNull: true }
+    );
+    return "/search?" + query;
   };
 
   return (
@@ -107,16 +120,17 @@ function JobList({ jobs, tech, location }) {
           </Heading>
           {location !== "remote" && <FlagIcon name={location} />}
         </HStack>
-        <Flex mt="4">
-          <Text fontSize="xs" color="gray.600">
-            Total jobs: {jobs.length}
-          </Text>
-        </Flex>
 
-        <Flex flexDirection="column">
+        <Flex flexDirection="column" mt="4">
           {jobs.map((job) => (
             <JobListing key={job._id} job={job} />
           ))}
+        </Flex>
+
+        <Flex justifyContent="center" my="8">
+          <Link fontSize="sm" href={getMoreHref()}>
+            Show more jobs 🚀
+          </Link>
         </Flex>
       </Flex>
     </div>
