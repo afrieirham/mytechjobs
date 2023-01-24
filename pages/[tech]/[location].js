@@ -45,15 +45,14 @@ export async function getStaticPaths() {
 }
 
 function JobList({ jobs, tech, location }) {
-  const getPageTitle = () => {
-    const techName = tech.replaceAll("-", " ");
-    const locationName =
-      location === "all" ? "malaysia 🇲🇾" : location.replaceAll("-", " ");
+  const techName = tech.replaceAll("-", " ");
+  const locationName =
+    location === "all" ? "malaysia 🇲🇾" : location.replaceAll("-", " ");
 
+  const getPageTitle = () => {
     if (location === "remote") {
       return capitalize(`Remote ${techName} jobs 👨🏻‍💻🏝`);
     }
-
     return capitalize(`${techName} jobs in ${locationName}`);
   };
 
@@ -70,11 +69,21 @@ function JobList({ jobs, tech, location }) {
             <BreadcrumbLink href={`/`}>Home</BreadcrumbLink>
           </BreadcrumbItem>
 
-          <BreadcrumbItem isCurrentPage>
-            <BreadcrumbLink href={`/`} textTransform="capitalize">
-              {getPageTitle()}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
+          {tech !== "tech" && (
+            <BreadcrumbItem>
+              <BreadcrumbLink href={`/${tech}`} textTransform="capitalize">
+                {techName}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          )}
+
+          {location !== "all" && (
+            <BreadcrumbItem>
+              <BreadcrumbLink href={`/${location}`} textTransform="capitalize">
+                {locationName}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          )}
         </Breadcrumb>
 
         <HStack mt="2">
