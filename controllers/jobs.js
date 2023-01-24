@@ -78,13 +78,61 @@ export const getJobs = async ({ tech, location }) => {
   return { jobs };
 };
 
+export const getJobsJSON = async ({ tech, location, page = 1, limit = 10 }) => {
+  const { db } = await connectToDatabase();
+
+  const serializeTech = tech?.map((t) => serialize(t)).flat();
+  const serializeLocation = location?.map((l) => serialize(l)).flat();
+  const skip = page - 1 < 0 ? 0 : page - 1;
+
+  let pipeline = [];
+
+  if (serializeTech?.length > 0) {
+    pipeline.push({
+      $match: {
+        keywords: {
+          $in: serializeTech,
+        },
+      },
+    });
+  }
+
+  if (serializeLocation?.length > 0) {
+    pipeline.push({
+      $match: {
+        keywords: {
+          $in: serializeLocation,
+        },
+      },
+    });
+  }
+
+  pipeline = [
+    ...pipeline,
+    // {
+    //   $project: {
+    //     keywords: 1,
+    //     createdAt: 1,
+    //   },
+    // },
+    { $sort: { createdAt: -1 } },
+    { $skip: skip * limit },
+    { $limit: limit },
+  ];
+
+  const cursor = await db.collection("jobs").aggregate(pipeline).toArray();
+  const jobs = JSON.parse(JSON.stringify(cursor));
+
+  return { jobs };
+};
+
 const constructPipeline = ({ tech, location }) => {
   if (tech === "all") {
     return [
       {
         $match: {
           keywords: {
-            $in: getPlaceKeywords(location),
+            $in: serialize(location),
           },
         },
       },
@@ -97,7 +145,7 @@ const constructPipeline = ({ tech, location }) => {
       {
         $match: {
           keywords: {
-            $in: getTechKeywords(tech),
+            $in: serialize(tech),
           },
         },
       },
@@ -109,31 +157,18 @@ const constructPipeline = ({ tech, location }) => {
     {
       $match: {
         keywords: {
-          $in: getTechKeywords(tech),
+          $in: serialize(tech),
         },
       },
     },
     {
       $match: {
         keywords: {
-          $in: getPlaceKeywords(location),
+          $in: serialize(location),
         },
       },
     },
   ];
 };
 
-const getTechKeywords = (query) => {
-  const term = query.replaceAll("-", " ");
-
-  if (term === "react") {
-    return ["react js", "react native"];
-  }
-
-  return [term];
-};
-
-const getPlaceKeywords = (query) => {
-  const term = query.replaceAll("-", " ");
-  return [term];
-};
+const serialize = (query) => [new RegExp(query.replaceAll("-", " "))];
