@@ -1,4 +1,8 @@
 export const places = [
+  "remote",
+  "kuala-lumpur",
+  "selangor",
+  "putrajaya",
   "johor",
   "kedah",
   "kelantan",
@@ -9,13 +13,9 @@ export const places = [
   "perlis",
   "pulau-pinang",
   "sarawak",
-  "selangor",
   "terengganu",
-  "kuala-lumpur",
   "labuan",
   "sabah",
-  "putrajaya",
-  "remote",
 ];
 
 export const frameworks = [

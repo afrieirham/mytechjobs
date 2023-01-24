@@ -1,7 +1,7 @@
 import { Img } from "@chakra-ui/react";
 import React from "react";
 
-function TechIcon({ name }) {
+function TechIcon({ name, size = "21px" }) {
   switch (name) {
     case "react-native":
     case "react-js":
@@ -10,8 +10,8 @@ function TechIcon({ name }) {
         <Img
           src="https://github.com/get-icon/geticon/raw/master/icons/react.svg"
           alt="react logo"
-          width="21px"
-          height="21px"
+          width={size}
+          height={size}
         />
       );
     case "angular":
@@ -19,8 +19,8 @@ function TechIcon({ name }) {
         <Img
           src="https://github.com/get-icon/geticon/raw/master/icons/angular-icon.svg"
           alt="angular logo"
-          width="21px"
-          height="21px"
+          width={size}
+          height={size}
         />
       );
     case "node-js":
@@ -28,8 +28,8 @@ function TechIcon({ name }) {
         <Img
           src="https://github.com/get-icon/geticon/raw/master/icons/nodejs-icon.svg"
           alt="node.js logo"
-          width="21px"
-          height="21px"
+          width={size}
+          height={size}
         />
       );
     case "flutter":
@@ -37,8 +37,8 @@ function TechIcon({ name }) {
         <Img
           src="https://github.com/get-icon/geticon/raw/master/icons/flutter.svg"
           alt="flutter logo"
-          width="21px"
-          height="21px"
+          width={size}
+          height={size}
         />
       );
     case "laravel":
@@ -46,8 +46,8 @@ function TechIcon({ name }) {
         <Img
           src="https://github.com/get-icon/geticon/raw/master/icons/laravel.svg"
           alt="laravel logo"
-          width="21px"
-          height="21px"
+          width={size}
+          height={size}
         />
       );
     case "vue":
@@ -55,8 +55,8 @@ function TechIcon({ name }) {
         <Img
           src="https://github.com/get-icon/geticon/raw/master/icons/vue.svg"
           alt="vue logo"
-          width="21px"
-          height="21px"
+          width={size}
+          height={size}
         />
       );
     case "django":
@@ -64,8 +64,8 @@ function TechIcon({ name }) {
         <Img
           src="https://github.com/get-icon/geticon/raw/master/icons/django.svg"
           alt="django logo"
-          width="21px"
-          height="21px"
+          width={size}
+          height={size}
         />
       );
     case "kotlin":
@@ -73,8 +73,8 @@ function TechIcon({ name }) {
         <Img
           src="https://github.com/get-icon/geticon/raw/master/icons/kotlin.svg"
           alt="kotlin logo"
-          width="21px"
-          height="21px"
+          width={size}
+          height={size}
         />
       );
     case "webflow":
@@ -82,8 +82,8 @@ function TechIcon({ name }) {
         <Img
           src="https://appthisway.com/wp-content/uploads/2018/08/webflow-logo.png"
           alt="webflow logo"
-          width="21px"
-          height="21px"
+          width={size}
+          height={size}
         />
       );
     case "tech":

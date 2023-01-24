@@ -69,18 +69,32 @@ function JobList({ jobs, tech, location }) {
             <BreadcrumbLink href={`/`}>Home</BreadcrumbLink>
           </BreadcrumbItem>
 
+          <BreadcrumbItem>
+            <BreadcrumbLink href={`/filters`}>Filters</BreadcrumbLink>
+          </BreadcrumbItem>
+
           {tech !== "tech" && (
             <BreadcrumbItem>
-              <BreadcrumbLink href={`/${tech}`} textTransform="capitalize">
-                {techName}
+              <BreadcrumbLink
+                as={HStack}
+                href={`/${tech}`}
+                textTransform="capitalize"
+              >
+                <TechIcon name={tech} size="15px" />
+                <Text as="span">{techName}</Text>
               </BreadcrumbLink>
             </BreadcrumbItem>
           )}
 
           {location !== "all" && (
             <BreadcrumbItem>
-              <BreadcrumbLink href={`/${location}`} textTransform="capitalize">
-                {locationName}
+              <BreadcrumbLink
+                as={HStack}
+                href={`/${location}`}
+                textTransform="capitalize"
+              >
+                <FlagIcon name={location} size="15px" />
+                <Text as="span">{locationName}</Text>
               </BreadcrumbLink>
             </BreadcrumbItem>
           )}
@@ -91,7 +105,7 @@ function JobList({ jobs, tech, location }) {
           <Heading size="md" textTransform="capitalize">
             {getPageTitle()}
           </Heading>
-          <FlagIcon name={location} />
+          {location !== "remote" && <FlagIcon name={location} />}
         </HStack>
         <Flex mt="4">
           <Text fontSize="xs" color="gray.600">

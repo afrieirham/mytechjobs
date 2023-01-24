@@ -1,19 +1,11 @@
 import Head from "next/head";
-import Link from "next/link";
-import { Button, Flex, Heading, HStack, Text } from "@chakra-ui/react";
+import NextLink from "next/link";
+import { Button, Flex, Heading, HStack, Text, Link } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
 import JobListing from "../components/JobListing";
 import { getLatestJobs, getRemoteJobs } from "../controllers/jobs";
-
-const sites = [
-  "workable.com",
-  "briohr.com",
-  "greenhouse.io",
-  "lever.co",
-  "hiredly.com",
-  "maukerja.my",
-];
+import { sites } from "../constants/sites";
 
 export const getStaticProps = async () => {
   const { jobs: latest } = await getLatestJobs(4);
@@ -54,6 +46,25 @@ export default function Home({ latest, remote }) {
           </Text>
         </Flex>
 
+        <HStack mt="8" width="full" justifyContent="center" spacing="6">
+          <Button
+            size="sm"
+            variant="solid"
+            colorScheme="gray"
+            onClick={() => router.push("/filters#tech")}
+          >
+            By Tech
+          </Button>
+          <Button
+            size="sm"
+            variant="solid"
+            colorScheme="gray"
+            onClick={() => router.push("/filters#location")}
+          >
+            By Location
+          </Button>
+        </HStack>
+
         {/* Latest Jobs */}
         <Flex flexDirection="column" w="full" mt="8">
           <Heading size="md">⏳ Latest Jobs</Heading>
@@ -65,7 +76,7 @@ export default function Home({ latest, remote }) {
         </Flex>
 
         <Flex flexDirection="column" w="full" mt="8">
-          <HStack as={Link} href="/remote">
+          <HStack as={NextLink} href="/remote">
             <Heading size="md">🏝 Remote Jobs</Heading>
           </HStack>
           <Flex flexDirection="column">
