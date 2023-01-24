@@ -52,9 +52,9 @@ function Filters({}) {
         </Flex>
 
         <Flex mt="2">
-          <UnorderedList>
+          <Flex flexDirection="column">
             {frameworks.map((f, i) => (
-              <ListItem key={i}>
+              <Flex key={i}>
                 <HStack>
                   <TechIcon name={f} size="15px" />
                   <Link
@@ -65,9 +65,9 @@ function Filters({}) {
                     {f.replaceAll("-", " ")}
                   </Link>
                 </HStack>
-              </ListItem>
+              </Flex>
             ))}
-          </UnorderedList>
+          </Flex>
         </Flex>
 
         <Flex mt="6" id="location">
@@ -77,9 +77,9 @@ function Filters({}) {
         </Flex>
 
         <Flex mt="2">
-          <UnorderedList>
+          <Flex flexDirection="column">
             {places.map((f, i) => (
-              <ListItem key={i}>
+              <Flex key={i}>
                 <HStack>
                   <FlagIcon name={f} size="15px" />
                   <Link
@@ -90,9 +90,9 @@ function Filters({}) {
                     {f.replaceAll("-", " ")}
                   </Link>
                 </HStack>
-              </ListItem>
+              </Flex>
             ))}
-          </UnorderedList>
+          </Flex>
         </Flex>
       </Flex>
     </div>
