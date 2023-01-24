@@ -1,41 +1,38 @@
 import {
   Button,
-  Checkbox,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
-  Flex,
   Heading,
-  HStack,
-  Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import React from "react";
 
-import { frameworks, places } from "../constants/paths";
-import FlagIcon from "./FlagIcon";
-import TechIcon from "./TechIcon";
+import Filters from "./Filters";
 
-function FilterCard({ techGetCheckboxProps, locationGetCheckboxProps }) {
+function FilterCard(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
       <Button
+        display={{ base: "block", xl: "none" }}
         position="fixed"
         bottom="0"
         onClick={onOpen}
         width="full"
-        colorScheme="blue"
+        colorScheme="messenger"
         borderRadius="0"
         size="lg"
+        fontSize="sm"
       >
         Filter
       </Button>
-      <Drawer onClose={onClose} isOpen={isOpen} size="md" placement="left">
+
+      <Drawer onClose={onClose} isOpen={isOpen} placement="bottom" size="full">
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
@@ -43,45 +40,7 @@ function FilterCard({ techGetCheckboxProps, locationGetCheckboxProps }) {
             🔍 Filter Jobs
           </DrawerHeader>
           <DrawerBody>
-            <Heading size="sm">By Tech ⚡️</Heading>
-
-            <Flex flexDirection="column">
-              {frameworks.map((f, i) => (
-                <Checkbox
-                  key={i}
-                  mt="4"
-                  {...techGetCheckboxProps({ value: f })}
-                >
-                  <HStack>
-                    <TechIcon name={f} size="18px" />
-                    <Text as="span" size="sm" textTransform="capitalize">
-                      {f.replaceAll("-", " ")}
-                    </Text>
-                  </HStack>
-                </Checkbox>
-              ))}
-            </Flex>
-
-            <Heading size="sm" mt="16">
-              By Location 📍
-            </Heading>
-
-            <Flex flexDirection="column" mb="8">
-              {places.map((f, i) => (
-                <Checkbox
-                  key={i}
-                  mt="4"
-                  {...locationGetCheckboxProps({ value: f })}
-                >
-                  <HStack>
-                    <FlagIcon name={f} size="24px" />
-                    <Text as="span" size="sm" textTransform="capitalize">
-                      {f.replaceAll("-", " ")}
-                    </Text>
-                  </HStack>
-                </Checkbox>
-              ))}
-            </Flex>
+            <Filters {...props} />
           </DrawerBody>
         </DrawerContent>
       </Drawer>

@@ -7,6 +7,7 @@ import { Flex, Heading, useCheckboxGroup } from "@chakra-ui/react";
 import { sites } from "../constants/sites";
 import JobListing from "../components/JobListing";
 import FilterCard from "../components/FilterCard";
+import FilterDesktop from "../components/FilterDesktop";
 
 const fetcher = (url) => fetch(url).then((r) => r.json());
 function Search() {
@@ -31,7 +32,6 @@ function Search() {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <Flex flexDirection="column" maxW="2xl" mx="auto" p="4" mb="16">
         {/* Header */}
         <Flex flexDirection="column" w="full">
@@ -53,6 +53,10 @@ function Search() {
         </Flex>
       </Flex>
       <FilterCard
+        techGetCheckboxProps={techFilter.getCheckboxProps}
+        locationGetCheckboxProps={locationFilter.getCheckboxProps}
+      />
+      <FilterDesktop
         techGetCheckboxProps={techFilter.getCheckboxProps}
         locationGetCheckboxProps={locationFilter.getCheckboxProps}
       />
