@@ -36,7 +36,7 @@ function JobListing({ job }) {
       </Text>
       <HStack mt="2">
         {job?.keywords.map((keyword) => (
-          <Tag key={keyword} size="sm">
+          <Tag key={keyword} size="sm" colorScheme="blackAlpha">
             {keyword}
           </Tag>
         ))}
