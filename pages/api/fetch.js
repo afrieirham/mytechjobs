@@ -60,10 +60,14 @@ export default async function handler(req, res) {
   }));
 
   const withKeywords = withSchmeas.map((job) => {
+    const isRemote =
+      job?.schema?.description?.includes("remote") ||
+      job?.schema?.responsibilities?.includes("remote");
     const keywords = getKeywordsFromSnippet(job.htmlSnippet);
+
     return {
       ...job,
-      keywords,
+      keywords: isRemote ? [...keywords, "remote"] : keywords,
     };
   });
 
@@ -85,7 +89,7 @@ export default async function handler(req, res) {
     }
   });
 
-  await notifyTelegram(telegram);
+  // await notifyTelegram(telegram);
 
   res.json({ status: "OK", count });
 }
