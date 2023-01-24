@@ -4,6 +4,7 @@ import { Checkbox, Flex, Heading, HStack, Text } from "@chakra-ui/react";
 import { frameworks, places } from "../constants/paths";
 import FlagIcon from "./FlagIcon";
 import TechIcon from "./TechIcon";
+import { useRouter } from "next/router";
 
 function Filters({
   setPage,
@@ -12,14 +13,17 @@ function Filters({
   techGetCheckboxProps,
   locationGetCheckboxProps,
 }) {
+  const router = useRouter();
   const onChangeTechCustom = (e) => {
     setPage(1);
     onChangeTech(e);
+    router.push({ query: null });
   };
 
   const onChangeLocationCustom = (e) => {
     setPage(1);
     onChangeLocation(e);
+    router.push({ query: null });
   };
 
   return (

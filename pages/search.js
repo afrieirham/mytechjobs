@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import useSWR from "swr";
 import queryString from "query-string";
+import { useRouter } from "next/router";
 import {
   Button,
   Flex,
@@ -17,9 +18,11 @@ import { sites } from "../constants/sites";
 import JobListing from "../components/JobListing";
 import FilterCard from "../components/FilterCard";
 import FilterDesktop from "../components/FilterDesktop";
+import { standardizeQuery } from "../helpers/query";
 
 const fetcher = (url) => fetch(url).then((r) => r.json());
 function Search() {
+  const router = useRouter();
   const [page, setPage] = useState(1);
 
   const techFilter = useCheckboxGroup();
@@ -27,8 +30,10 @@ function Search() {
 
   const query = queryString.stringify({
     page,
-    tech: techFilter.value,
-    location: locationFilter.value,
+    tech: router.query.tech ? router.query.tech : techFilter.value,
+    location: router.query.location
+      ? router.query.location
+      : locationFilter.value,
   });
 
   const { data, isLoading } = useSWR("/api/jobs?" + query, fetcher);
@@ -36,6 +41,16 @@ function Search() {
   const [hasNext, setHasNext] = useState(true);
   const [hasPrevious, setHasPrevious] = useState(true);
   const [jobs, setJobs] = useState([]);
+
+  useEffect(() => {
+    if (router?.query?.tech) {
+      techFilter.setValue(standardizeQuery(router.query.tech));
+    }
+    if (router?.query?.location) {
+      locationFilter.setValue(standardizeQuery(router.query.location));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.query.tech, router.query.location]);
 
   useEffect(() => {
     const hasNext = data?.jobs?.length === 10;

@@ -3,7 +3,7 @@ export const extractQuery = ({ tech, location }) => ({
   location: standardizeQuery(location),
 });
 
-const standardizeQuery = (params) => {
+export const standardizeQuery = (params) => {
   if (!params) {
     return null;
   }
