@@ -46,28 +46,11 @@ export default function Home({ latest, remote }) {
           </Text>
         </Flex>
 
-        <HStack mt="8" width="full" justifyContent="center" spacing="6">
-          <Button
-            size="sm"
-            variant="solid"
-            colorScheme="gray"
-            onClick={() => router.push("/filters#tech")}
-          >
-            By Tech
-          </Button>
-          <Button
-            size="sm"
-            variant="solid"
-            colorScheme="gray"
-            onClick={() => router.push("/filters#location")}
-          >
-            By Location
-          </Button>
-        </HStack>
-
         {/* Latest Jobs */}
         <Flex flexDirection="column" w="full" mt="8">
-          <Heading size="md">⏳ Latest Jobs</Heading>
+          <HStack as={Link} href="/search">
+            <Heading size="md">⏳ Latest Jobs →</Heading>
+          </HStack>
           <Flex flexDirection="column">
             {latest.map((job) => (
               <JobListing key={job.id} job={job} />
@@ -76,23 +59,13 @@ export default function Home({ latest, remote }) {
         </Flex>
 
         <Flex flexDirection="column" w="full" mt="8">
-          <HStack as={NextLink} href="/remote">
-            <Heading size="md">🏝 Remote Jobs</Heading>
+          <HStack as={Link} href="/search?location=remote">
+            <Heading size="md">🏝 Remote Jobs →</Heading>
           </HStack>
           <Flex flexDirection="column">
             {remote.map((job) => (
               <JobListing key={job.id} job={job} />
             ))}
-          </Flex>
-          <Flex mt="2" justifyContent="center">
-            <Button
-              fontSize="sm"
-              colorScheme="gray"
-              variant="solid"
-              onClick={() => router.push("/remote")}
-            >
-              Show more
-            </Button>
           </Flex>
         </Flex>
       </Flex>
