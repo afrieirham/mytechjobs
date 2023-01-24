@@ -20,10 +20,10 @@ function JobListing({ job }) {
         {job?.schema?.title}
       </Link>
       {hasCompanyDetails && (
-        <Text fontSize="sm" color="gray.600" textTransform="capitalize">
-          {job?.schema?.hiringOrganization?.name?.toLowerCase()} @{" "}
-          {job?.schema?.jobLocation?.address?.streetAddress?.toLowerCase() ||
-            job?.schema?.jobLocation?.address?.addressLocality?.toLowerCase()}
+        <Text fontSize="sm" color="gray.600">
+          {job?.schema?.hiringOrganization?.name} @{" "}
+          {job?.schema?.jobLocation?.address?.addressRegion ||
+            job?.schema?.jobLocation?.address?.addressLocality}
         </Text>
       )}
       {!hasCompanyDetails && (
