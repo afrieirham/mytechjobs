@@ -6,8 +6,6 @@ import {
   Heading,
   HStack,
   Link,
-  ListItem,
-  UnorderedList,
 } from "@chakra-ui/react";
 import Head from "next/head";
 import React from "react";
@@ -45,7 +43,7 @@ function Filters({}) {
           </BreadcrumbItem>
         </Breadcrumb>
 
-        <Flex mt="4" id="tech">
+        <Flex mt="8" id="tech">
           <Heading size="md" textTransform="capitalize">
             Browse By Tech ⚡️
           </Heading>
@@ -54,9 +52,9 @@ function Filters({}) {
         <Flex mt="2">
           <Flex flexDirection="column">
             {frameworks.map((f, i) => (
-              <Flex key={i}>
+              <Flex key={i} mt={{ base: "6", md: "4" }}>
                 <HStack>
-                  <TechIcon name={f} size="15px" />
+                  <TechIcon name={f} size="18px" />
                   <Link
                     href={`/${f}`}
                     color="blue.500"
@@ -70,22 +68,23 @@ function Filters({}) {
           </Flex>
         </Flex>
 
-        <Flex mt="6" id="location">
+        <Flex mt="16" id="location">
           <Heading size="md" textTransform="capitalize">
             Browse By Location 📍
           </Heading>
         </Flex>
 
         <Flex mt="2">
-          <Flex flexDirection="column">
+          <Flex flexDirection="column" w="full">
             {places.map((f, i) => (
-              <Flex key={i}>
-                <HStack>
-                  <FlagIcon name={f} size="15px" />
+              <Flex key={i} mt={{ base: "6", md: "4" }}>
+                <HStack w="full">
+                  <FlagIcon name={f} size="24px" />
                   <Link
                     href={`/${f}`}
                     color="blue.500"
                     textTransform="capitalize"
+                    w="full"
                   >
                     {f.replaceAll("-", " ")}
                   </Link>
