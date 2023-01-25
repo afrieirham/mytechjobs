@@ -1,10 +1,20 @@
-import { Flex, HStack, Link, Tag, Text } from "@chakra-ui/react";
+import { Badge, Flex, HStack, Link, Tag, Text } from "@chakra-ui/react";
 import { formatDistanceToNow } from "date-fns";
 import React from "react";
+
+const checkIfToday = (someDate) => {
+  const result = formatDistanceToNow(new Date(someDate));
+  const allWords = result.split(" ");
+  const wordsIfToday = allWords.some(
+    (w) => w === "minute" || w === "minutes" || w === "hour" || w === "hours"
+  );
+  return wordsIfToday;
+};
 
 function JobListing({ job }) {
   const hasCompanyDetails = Boolean(job?.schema?.hiringOrganization?.name);
   const description = job?.schema?.description || job?.schema?.metaDescription;
+  const isToday = checkIfToday(job.createdAt);
 
   return (
     <Flex
@@ -16,9 +26,12 @@ function JobListing({ job }) {
       borderColor="gray.200"
       borderRadius="lg"
     >
-      <Link href={`/jobs/${job.slug}`} fontWeight="bold">
-        {job?.schema?.title}
-      </Link>
+      <HStack>
+        <Link href={`/jobs/${job.slug}`} fontWeight="bold">
+          {job?.schema?.title}
+        </Link>
+        {isToday && <Badge colorScheme="green">New</Badge>}
+      </HStack>
       {hasCompanyDetails && (
         <Text fontSize="sm" color="gray.600">
           {job?.schema?.hiringOrganization?.name} @{" "}
