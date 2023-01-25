@@ -11,7 +11,6 @@ function JobListing({ job }) {
 
   return (
     <Flex
-      key={job.id}
       flexDirection="column"
       mt="2"
       p="4"

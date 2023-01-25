@@ -43,7 +43,7 @@ export default function Home({ latest, remote }) {
           </HStack>
           <Flex flexDirection="column">
             {latest.map((job) => (
-              <JobListing key={job.id} job={job} />
+              <JobListing key={job._id} job={job} />
             ))}
           </Flex>
         </Flex>
@@ -54,7 +54,7 @@ export default function Home({ latest, remote }) {
           </HStack>
           <Flex flexDirection="column">
             {remote.map((job) => (
-              <JobListing key={job.id} job={job} />
+              <JobListing key={job._id} job={job} />
             ))}
           </Flex>
         </Flex>

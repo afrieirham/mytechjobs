@@ -1,9 +1,16 @@
 import { Analytics } from "@vercel/analytics/react";
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 
 function MyApp({ Component, pageProps }) {
   return (
-    <ChakraProvider>
+    <ChakraProvider
+      theme={extendTheme({
+        fonts: {
+          heading: `'Inconsolata', monospace`,
+          body: `'Inconsolata', monospace`,
+        },
+      })}
+    >
       <Component {...pageProps} />
       <Analytics />
     </ChakraProvider>
