@@ -27,7 +27,7 @@ function JobListing({ job }) {
       borderRadius="lg"
     >
       <HStack>
-        <Link href={`/jobs/${job.slug}`} fontWeight="bold">
+        <Link href={`/jobs/${job.slug}`} fontWeight="bold" noOfLines="1">
           {job?.schema?.title}
         </Link>
         {isToday && <Badge colorScheme="green">New</Badge>}
