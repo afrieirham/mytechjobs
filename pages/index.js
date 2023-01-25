@@ -15,6 +15,8 @@ export const getStaticProps = async () => {
       latest,
       remote,
     },
+    // revalidate every 1 hour
+    revalidate: 60 * 60 * 1,
   };
 };
 

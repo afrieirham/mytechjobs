@@ -30,6 +30,8 @@ export const getStaticProps = async (context) => {
       location,
       tech: tech === "all" ? "tech" : tech,
     },
+    // revalidate every 1 hour
+    revalidate: 60 * 60 * 1,
   };
 };
 

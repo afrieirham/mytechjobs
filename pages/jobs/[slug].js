@@ -28,6 +28,8 @@ export const getStaticProps = async (context) => {
 
   return {
     props: { job, slug },
+    // revalidate every 2 hour
+    revalidate: 60 * 60 * 2,
   };
 };
 
