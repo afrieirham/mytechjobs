@@ -137,6 +137,12 @@ function JobDescription({ job, slug }) {
             ✍️ Job Description
           </Heading>
           <Box
+            mt="2"
+            p="8"
+            borderWidth="1px"
+            borderRadius="lg"
+            borderColor="gray.300"
+            fontFamily="sans-serif"
             dangerouslySetInnerHTML={{
               __html: jobDescription,
             }}

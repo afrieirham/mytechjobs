@@ -18,7 +18,7 @@ function FilterDesktop(props) {
         p="4"
         bg="white"
         borderWidth="1px"
-        borderColor="gray.200"
+        borderColor="gray.300"
         borderRadius="lg"
         flexDirection="column"
       >

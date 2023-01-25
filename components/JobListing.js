@@ -15,7 +15,7 @@ function JobListing({ job }) {
       mt="2"
       p="4"
       borderWidth="1px"
-      borderColor="gray.200"
+      borderColor="gray.300"
       borderRadius="lg"
     >
       <HStack>
