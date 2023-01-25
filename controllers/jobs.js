@@ -173,3 +173,27 @@ const constructPipeline = ({ tech, location }) => {
 };
 
 const serialize = (query) => [new RegExp(query.replaceAll("-", " "))];
+
+export const getAllSlugs = async () => {
+  const { db } = await connectToDatabase();
+
+  const cursor = await db
+    .collection("jobs")
+    .find()
+    .project({ slug: 1 })
+    .toArray();
+
+  const jobs = JSON.parse(JSON.stringify(cursor));
+
+  return { jobs };
+};
+
+export const getJobBySlug = async (slug) => {
+  const { db } = await connectToDatabase();
+
+  const cursor = await db.collection("jobs").findOne({ slug });
+
+  const job = JSON.parse(JSON.stringify(cursor));
+
+  return { job };
+};

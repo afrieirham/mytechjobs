@@ -16,7 +16,7 @@ function JobListing({ job }) {
       borderColor="gray.200"
       borderRadius="lg"
     >
-      <Link isExternal href={job.link} color="blue.500" fontWeight="bold">
+      <Link href={`/jobs/${job.slug}`} fontWeight="bold">
         {job?.schema?.title}
       </Link>
       {hasCompanyDetails && (
