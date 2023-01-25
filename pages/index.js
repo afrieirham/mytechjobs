@@ -48,7 +48,7 @@ export default function Home({ latest, remote }) {
 
         {/* Latest Jobs */}
         <Flex flexDirection="column" w="full" mt="8">
-          <HStack as={Link} href="/search">
+          <HStack as={Link} href="/jobs">
             <Heading size="md">⏳ Latest Jobs →</Heading>
           </HStack>
           <Flex flexDirection="column">
@@ -59,7 +59,7 @@ export default function Home({ latest, remote }) {
         </Flex>
 
         <Flex flexDirection="column" w="full" mt="8">
-          <HStack as={Link} href="/search?location=remote">
+          <HStack as={Link} href="/jobs?location=remote">
             <Heading size="md">🏝 Remote Jobs →</Heading>
           </HStack>
           <Flex flexDirection="column">

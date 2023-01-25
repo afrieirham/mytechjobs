@@ -14,11 +14,11 @@ import {
   useCheckboxGroup,
 } from "@chakra-ui/react";
 
-import { sites } from "../constants/sites";
-import JobListing from "../components/JobListing";
-import FilterCard from "../components/FilterCard";
-import FilterDesktop from "../components/FilterDesktop";
-import { standardizeQuery } from "../helpers/query";
+import { sites } from "../../constants/sites";
+import { standardizeQuery } from "../../helpers/query";
+import JobListing from "../../components/JobListing";
+import FilterCard from "../../components/FilterCard";
+import FilterDesktop from "../../components/FilterDesktop";
 
 const fetcher = (url) => fetch(url).then((r) => r.json());
 function Search() {

@@ -87,7 +87,7 @@ function JobDescription({ job, slug }) {
           </BreadcrumbItem>
 
           <BreadcrumbItem>
-            <BreadcrumbLink href="/search">Jobs</BreadcrumbLink>
+            <BreadcrumbLink href="/jobs">Jobs</BreadcrumbLink>
           </BreadcrumbItem>
 
           <BreadcrumbItem isCurrentPage>

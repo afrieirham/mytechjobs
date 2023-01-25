@@ -66,7 +66,7 @@ function JobList({ jobs, tech, location }) {
       },
       { skipNull: true }
     );
-    return "/search?" + query;
+    return "/jobs?" + query;
   };
 
   return (
