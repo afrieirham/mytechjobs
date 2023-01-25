@@ -1,10 +1,11 @@
 import fetch from "node-fetch";
-import { stringifyUrl } from "query-string";
+import queryString from "query-string";
 import { createManyJobs } from "../../controllers/jobs";
 import { constructUrlQuery } from "../../helpers/constructUrlQuery";
 import { extractJobDetails } from "../../helpers/extractJobDetails";
 import { getKeywordsFromSnippet } from "../../helpers/getKeywordsFromSnippet";
 import { notifyTelegram } from "../../helpers/notifyTelegram";
+import { slugify } from "../../helpers/slugify";
 
 const URL = "https://www.googleapis.com/customsearch/v1";
 
@@ -27,7 +28,7 @@ export default async function handler(req, res) {
   let start = 1;
 
   while (true) {
-    const requestUrl = stringifyUrl({
+    const requestUrl = queryString.stringifyUrl({
       url: URL,
       query: { start, cx, key, q },
     });
@@ -71,7 +72,9 @@ export default async function handler(req, res) {
     };
   });
 
-  await createManyJobs(withKeywords);
+  const withSlug = withKeywords.map((job) => ({ ...job, slug: slugify(job) }));
+
+  await createManyJobs(withSlug);
 
   // Send alert to telegram
   const count = withKeywords.length;
@@ -89,7 +92,7 @@ export default async function handler(req, res) {
     }
   });
 
-  // await notifyTelegram(telegram);
+  await notifyTelegram(telegram);
 
   res.json({ status: "OK", count });
 }

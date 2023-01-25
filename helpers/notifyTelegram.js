@@ -1,4 +1,4 @@
-import { stringifyUrl } from "query-string";
+import queryString from "query-string";
 import fetch from "node-fetch";
 
 export const notifyTelegram = (text) => {
@@ -7,7 +7,7 @@ export const notifyTelegram = (text) => {
 
   // send telegram notification
   const url = `https://api.telegram.org/bot${token}/sendMessage`;
-  const telegramUrl = stringifyUrl({
+  const telegramUrl = queryString.stringifyUrl({
     url,
     query: { chat_id, text },
   });
