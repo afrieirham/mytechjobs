@@ -2,14 +2,7 @@ import { Badge, Flex, HStack, Link, Tag, Text } from "@chakra-ui/react";
 import { formatDistanceToNow } from "date-fns";
 import React from "react";
 
-const checkIfToday = (someDate) => {
-  const result = formatDistanceToNow(new Date(someDate));
-  const allWords = result.split(" ");
-  const wordsIfToday = allWords.some(
-    (w) => w === "minute" || w === "minutes" || w === "hour" || w === "hours"
-  );
-  return wordsIfToday;
-};
+import { checkIfToday } from "../helpers/checkIfToday";
 
 function JobListing({ job }) {
   const hasCompanyDetails = Boolean(job?.schema?.hiringOrganization?.name);

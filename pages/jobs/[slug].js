@@ -1,6 +1,7 @@
 import Head from "next/head";
 import React from "react";
 import {
+  Badge,
   Box,
   Breadcrumb,
   BreadcrumbItem,
@@ -18,6 +19,7 @@ import { format } from "date-fns";
 import { getAllSlugs, getJobBySlug } from "../../controllers/jobs";
 import PinIcon from "../../icons/PinIcon";
 import CalendarIcon from "../../icons/CalendarIcon";
+import { checkIfToday } from "../../helpers/checkIfToday";
 
 export const getStaticProps = async (context) => {
   const { slug } = context.params;
@@ -72,6 +74,7 @@ function JobDescription({ job, slug }) {
     : jobTitle;
 
   const pageTitle = pageTitleWithoutBrand + " | MY Tech Jobs 🇲🇾";
+  const isToday = checkIfToday(job.createdAt);
 
   return (
     <div>
@@ -80,6 +83,7 @@ function JobDescription({ job, slug }) {
         <meta name="description" content={pageTitle} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
       <Flex flexDirection="column" maxW="2xl" mx="auto" p="4" mt="8">
         <Breadcrumb>
           <BreadcrumbItem>
@@ -119,6 +123,7 @@ function JobDescription({ job, slug }) {
                 ? format(new Date(datePosted), "d MMM yyyy")
                 : "Unspecified"}
             </Text>
+            {isToday && <Badge colorScheme="green">New</Badge>}
           </HStack>
         </Flex>
         <Flex mt="8">
