@@ -77,18 +77,19 @@ export default async function handler(req, res) {
   await createManyJobs(withSlug);
 
   // Send alert to telegram
-  const count = withKeywords.length;
+  const count = withSlug.length;
   let telegram = `${count} new jobs!\n\n`;
 
-  withKeywords.forEach((job) => {
-    const { schema, title, link } = job;
+  withSlug.forEach((job) => {
+    const { schema, title, slug } = job;
+    const applyUrl = "https://kerja-it.com/jobs/" + slug;
     if (schema) {
       const { title, hiringOrganization, url } = schema;
       const company = hiringOrganization?.name;
       const text = `${title} @ ${company}\n${url}\n\n\n`;
       telegram += text;
     } else {
-      telegram += `${title}\n${link}\n\n\n`;
+      telegram += `${title}\n${applyUrl}\n\n\n`;
     }
   });
 

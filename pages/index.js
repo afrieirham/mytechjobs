@@ -1,11 +1,10 @@
 import Head from "next/head";
-import NextLink from "next/link";
-import { Button, Flex, Heading, HStack, Text, Link } from "@chakra-ui/react";
+import { Flex, Heading, HStack, Link } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 
-import JobListing from "../components/JobListing";
+import { siteDescription } from "../constants/SEO";
 import { getLatestJobs, getRemoteJobs } from "../controllers/jobs";
-import { sites } from "../constants/sites";
+import JobListing from "../components/JobListing";
 
 export const getStaticProps = async () => {
   const { jobs: latest } = await getLatestJobs(4);
@@ -24,26 +23,15 @@ export default function Home({ latest, remote }) {
   return (
     <div>
       <Head>
-        <title>Malaysia Tech Jobs 🇲🇾</title>
-        <meta
-          name="description"
-          content={`Daily tech jobs sourced from ${sites.join(", ")}.`}
-        />
+        <title>Tech Jobs In Malaysia 🇲🇾 | Kerja IT</title>
+        <meta name="description" content={siteDescription} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <Flex flexDirection="column" maxW="2xl" mx="auto" p="4">
         {/* Header */}
-        <Flex flexDirection="column" w="full">
-          <Heading size="lg">Malaysia Tech Jobs 🇲🇾</Heading>
-          <Text fontSize="sm">Find your next tech jobs in Malaysia.</Text>
-          <Text fontSize="2xs" color="gray.600">
-            Jobs are sourced from {sites.join(", ")}{" "}
-            <Text as="span" fontWeight="bold">
-              daily
-            </Text>
-            .
-          </Text>
+        <Flex flexDirection="column" w="full" alignItems="center" mt="4">
+          <Heading size="lg">Daily Tech Jobs In Malaysia 🇲🇾</Heading>
         </Flex>
 
         {/* Latest Jobs */}

@@ -14,7 +14,7 @@ import {
   useCheckboxGroup,
 } from "@chakra-ui/react";
 
-import { sites } from "../../constants/sites";
+import { siteDescription } from "../../constants/SEO";
 import { standardizeQuery } from "../../helpers/query";
 import JobListing from "../../components/JobListing";
 import FilterCard from "../../components/FilterCard";
@@ -69,13 +69,8 @@ function Search() {
   return (
     <div>
       <Head>
-        <title>Find your next tech jobs with MY Tech Jobs 🇲🇾</title>
-        <meta
-          name="description"
-          content={`MYtechjobs.com is a job board that compiles tech jobs from sites like ${sites.join(
-            ", "
-          )} daily.`}
-        />
+        <title>Find your next tech jobs in Malaysia 🇲🇾 | Kerja IT</title>
+        <meta name="description" content={siteDescription} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Flex flexDirection="column" maxW="2xl" mx="auto" p="4" mb="16">

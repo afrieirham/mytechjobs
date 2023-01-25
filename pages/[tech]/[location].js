@@ -11,12 +11,14 @@ import {
 import Head from "next/head";
 import queryString from "query-string";
 import React from "react";
+
+import { getJobs } from "../../controllers/jobs";
+import { capitalize } from "../../helpers/capitalize";
+import { siteDescription } from "../../constants/SEO";
+import { frameworks, places } from "../../constants/paths";
 import FlagIcon from "../../components/FlagIcon";
 import JobListing from "../../components/JobListing";
 import TechIcon from "../../components/TechIcon";
-import { frameworks, places } from "../../constants/paths";
-import { getJobs } from "../../controllers/jobs";
-import { capitalize } from "../../helpers/capitalize";
 
 export const getStaticProps = async (context) => {
   const { tech, location } = context.params;
@@ -72,8 +74,8 @@ function JobList({ jobs, tech, location }) {
   return (
     <div>
       <Head>
-        <title>{getPageTitle()}</title>
-        <meta name="description" content={getPageTitle()} />
+        <title>{getPageTitle() + " | Kerja IT"}</title>
+        <meta name="description" content={siteDescription} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Flex flexDirection="column" maxW="2xl" mx="auto" p="4">
@@ -83,7 +85,7 @@ function JobList({ jobs, tech, location }) {
           </BreadcrumbItem>
 
           <BreadcrumbItem>
-            <BreadcrumbLink href={`/filters`}>Filters</BreadcrumbLink>
+            <BreadcrumbLink href={`/jobs`}>Jobs</BreadcrumbLink>
           </BreadcrumbItem>
 
           {tech !== "tech" && (

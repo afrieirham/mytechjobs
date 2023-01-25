@@ -16,10 +16,11 @@ import {
 } from "@chakra-ui/react";
 import { format } from "date-fns";
 
+import { checkIfToday } from "../../helpers/checkIfToday";
+import { siteDescription } from "../../constants/SEO";
 import { getAllSlugs, getJobBySlug } from "../../controllers/jobs";
 import PinIcon from "../../icons/PinIcon";
 import CalendarIcon from "../../icons/CalendarIcon";
-import { checkIfToday } from "../../helpers/checkIfToday";
 
 export const getStaticProps = async (context) => {
   const { slug } = context.params;
@@ -73,14 +74,14 @@ function JobDescription({ job, slug }) {
     ? `${jobTitle} – ${companyName}`
     : jobTitle;
 
-  const pageTitle = pageTitleWithoutBrand + " | MY Tech Jobs 🇲🇾";
+  const pageTitle = pageTitleWithoutBrand + " | Kerja IT 🇲🇾";
   const isToday = checkIfToday(job.createdAt);
 
   return (
     <div>
       <Head>
         <title>{pageTitle}</title>
-        <meta name="description" content={pageTitle} />
+        <meta name="description" content={siteDescription} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
