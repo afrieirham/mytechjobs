@@ -123,7 +123,7 @@ function JobDescription({ job, slug }) {
             <CalendarIcon />
             <Text fontSize="sm">
               {datePosted
-                ? format(new Date(datePosted), "d MMM yyyy")
+                ? "Posted on " + format(new Date(datePosted), "do MMM yyyy")
                 : "Unspecified"}
             </Text>
             {isToday && <Badge colorScheme="green">New</Badge>}
