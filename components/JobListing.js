@@ -11,12 +11,12 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-import { checkIfToday } from "../helpers/checkIfToday";
+import { checkIfThisWeek } from "../helpers/checkIfThisWeek";
 import PinIcon from "../icons/PinIcon";
 import CalendarIcon from "../icons/CalendarIcon";
 
 function JobListing({ job }) {
-  const isToday = checkIfToday(job?.schema?.datePosted ?? job?.createdAt);
+  const thisWeek = checkIfThisWeek(job?.schema?.datePosted ?? job?.createdAt);
 
   const companyName = job?.schema?.hiringOrganization?.name;
   const datePosted = job?.postedAt;
@@ -42,7 +42,7 @@ function JobListing({ job }) {
           </Text>
         </NextLink>
 
-        {isToday && <Badge colorScheme="green">New</Badge>}
+        {thisWeek && <Badge colorScheme="green">New</Badge>}
       </HStack>
       <Flex flexDirection="column" fontSize="sm" color="gray.600">
         {companyName && <Text>{companyName}</Text>}
@@ -57,7 +57,6 @@ function JobListing({ job }) {
               ? "Posted on " + format(new Date(datePosted), "do MMM yyyy")
               : "Unspecified"}
           </Text>
-          {isToday && <Badge colorScheme="green">New</Badge>}
         </HStack>
       </Flex>
       <HStack mt="4">

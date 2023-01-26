@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { format } from "date-fns";
 
-import { checkIfToday } from "../../helpers/checkIfToday";
+import { checkIfThisWeek } from "../../helpers/checkIfThisWeek";
 import { siteDescription } from "../../constants/SEO";
 import { getAllSlugs, getJobBySlug } from "../../controllers/jobs";
 import PinIcon from "../../icons/PinIcon";
@@ -77,7 +77,7 @@ function JobDescription({ job, slug }) {
     : jobTitle;
 
   const pageTitle = pageTitleWithoutBrand + " | Kerja IT 🇲🇾";
-  const isToday = checkIfToday(job?.schema?.datePosted ?? job?.createdAt);
+  const thisWeek = checkIfThisWeek(job?.schema?.datePosted ?? job?.createdAt);
 
   return (
     <div>
@@ -126,7 +126,7 @@ function JobDescription({ job, slug }) {
                 ? "Posted on " + format(new Date(datePosted), "do MMM yyyy")
                 : "Unspecified"}
             </Text>
-            {isToday && <Badge colorScheme="green">New</Badge>}
+            {thisWeek && <Badge colorScheme="green">New</Badge>}
           </HStack>
         </Flex>
         <Flex mt="8">
