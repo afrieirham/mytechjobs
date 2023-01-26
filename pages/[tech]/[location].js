@@ -1,16 +1,8 @@
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  Flex,
-  Heading,
-  HStack,
-  Link,
-  Text,
-} from "@chakra-ui/react";
 import Head from "next/head";
-import queryString from "query-string";
 import React from "react";
+import NextLink from "next/link";
+import queryString from "query-string";
+import { Box, Flex, Heading, HStack, Link } from "@chakra-ui/react";
 
 import { getJobs } from "../../controllers/jobs";
 import { capitalize } from "../../helpers/capitalize";
@@ -19,6 +11,7 @@ import { frameworks, places } from "../../constants/paths";
 import FlagIcon from "../../components/FlagIcon";
 import JobListing from "../../components/JobListing";
 import TechIcon from "../../components/TechIcon";
+import GlobalHeader from "../../components/GlobalHeader";
 
 export const getStaticProps = async (context) => {
   const { tech, location } = context.params;
@@ -74,50 +67,16 @@ function JobList({ jobs, tech, location }) {
   };
 
   return (
-    <div>
+    <Box bg="gray.50">
       <Head>
         <title>{getPageTitle() + " | Kerja IT"}</title>
         <meta name="description" content={siteDescription} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <GlobalHeader />
+
       <Flex flexDirection="column" maxW="2xl" mx="auto" p="4">
-        <Breadcrumb>
-          <BreadcrumbItem>
-            <BreadcrumbLink href={`/`}>Home</BreadcrumbLink>
-          </BreadcrumbItem>
-
-          <BreadcrumbItem>
-            <BreadcrumbLink href={`/jobs`}>Jobs</BreadcrumbLink>
-          </BreadcrumbItem>
-
-          {tech !== "tech" && (
-            <BreadcrumbItem>
-              <BreadcrumbLink
-                as={HStack}
-                href={`/${tech}`}
-                textTransform="capitalize"
-              >
-                <TechIcon name={tech} size="15px" />
-                <Text as="span">{techName}</Text>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-          )}
-
-          {location !== "all" && (
-            <BreadcrumbItem>
-              <BreadcrumbLink
-                as={HStack}
-                href={`/${location}`}
-                textTransform="capitalize"
-              >
-                <FlagIcon name={location} size="15px" />
-                <Text as="span">{locationName}</Text>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-          )}
-        </Breadcrumb>
-
-        <HStack mt="2">
+        <HStack mt="2" mx="auto">
           <TechIcon name={tech} />
           <Heading size="md" textTransform="capitalize">
             {getPageTitle()}
@@ -132,12 +91,12 @@ function JobList({ jobs, tech, location }) {
         </Flex>
 
         <Flex justifyContent="center" my="8">
-          <Link fontSize="sm" href={getMoreHref()}>
-            Show more jobs 🚀
-          </Link>
+          <NextLink href={getMoreHref()} legacyBehavior passHref>
+            <Link fontSize="sm">Show more jobs 🚀</Link>
+          </NextLink>
         </Flex>
       </Flex>
-    </div>
+    </Box>
   );
 }
 
