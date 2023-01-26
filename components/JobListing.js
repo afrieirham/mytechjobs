@@ -1,6 +1,15 @@
-import { Badge, Flex, HStack, Link, Tag, Text } from "@chakra-ui/react";
-import { formatDistanceToNow } from "date-fns";
 import React from "react";
+import NextLink from "next/link";
+import { formatDistanceToNow } from "date-fns";
+import {
+  Badge,
+  Flex,
+  HStack,
+  LinkBox,
+  LinkOverlay,
+  Tag,
+  Text,
+} from "@chakra-ui/react";
 
 import { checkIfToday } from "../helpers/checkIfToday";
 
@@ -10,7 +19,8 @@ function JobListing({ job }) {
   const isToday = checkIfToday(job.createdAt);
 
   return (
-    <Flex
+    <LinkBox
+      as={Flex}
       flexDirection="column"
       mt="2"
       p="4"
@@ -19,9 +29,12 @@ function JobListing({ job }) {
       borderRadius="lg"
     >
       <HStack>
-        <Link href={`/jobs/${job.slug}`} fontWeight="bold" noOfLines="1">
-          {job?.schema?.title}
-        </Link>
+        <NextLink href={`/jobs/${job.slug}`} legacyBehavior passHref>
+          <LinkOverlay fontWeight="bold" noOfLines="1">
+            {job?.schema?.title}
+          </LinkOverlay>
+        </NextLink>
+
         {isToday && <Badge colorScheme="green">New</Badge>}
       </HStack>
       {hasCompanyDetails && (
@@ -46,7 +59,7 @@ function JobListing({ job }) {
           </Tag>
         ))}
       </HStack>
-    </Flex>
+    </LinkBox>
   );
 }
 
