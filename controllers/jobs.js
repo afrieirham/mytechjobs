@@ -1,13 +1,22 @@
+import { ObjectId } from "mongodb";
 import { places } from "../constants/paths";
 import { connectToDatabase } from "../libs/mongo";
 
 export const createManyJobs = async (data) => {
   const { db } = await connectToDatabase();
   const createdAt = new Date().toISOString();
-  const formattedData = data.map((d) => ({
-    ...d,
-    createdAt,
-  }));
+
+  const formattedData = data.map((d) => {
+    const postedAt = Boolean(d?.schema?.datePosted)
+      ? d?.schema?.datePosted
+      : createdAt;
+
+    return {
+      ...d,
+      createdAt,
+      postedAt,
+    };
+  });
 
   const jobs = await db.collection("jobs").insertMany(formattedData);
   return jobs;

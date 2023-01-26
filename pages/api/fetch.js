@@ -84,9 +84,9 @@ export default async function handler(req, res) {
     const { schema, title, slug } = job;
     const applyUrl = "https://kerja-it.com/jobs/" + slug;
     if (schema) {
-      const { title, hiringOrganization, url } = schema;
+      const { title, hiringOrganization } = schema;
       const company = hiringOrganization?.name;
-      const text = `${title} @ ${company}\n${url}\n\n\n`;
+      const text = `${title} @ ${company}\n${applyUrl}\n\n\n`;
       telegram += text;
     } else {
       telegram += `${title}\n${applyUrl}\n\n\n`;
