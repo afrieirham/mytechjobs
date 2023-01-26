@@ -9,7 +9,7 @@ function FilterDesktop(props) {
       position="absolute"
       w="250px"
       top="100"
-      right="-300"
+      right="-250"
       flexDirection="column"
       justifyContent="center"
     >
@@ -20,6 +20,7 @@ function FilterDesktop(props) {
         borderColor="gray.300"
         borderRadius="lg"
         flexDirection="column"
+        mb="32"
       >
         <Heading size="sm" mb="4">
           🔍 Filter Jobs
