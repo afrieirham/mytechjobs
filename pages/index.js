@@ -21,12 +21,18 @@ export const getStaticProps = async () => {
 };
 
 export default function Home({ latest, remote }) {
-  const router = useRouter();
+  const title = "Find Tech Jobs In Malaysia 🇲🇾 | Kerja IT";
   return (
     <div>
       <Head>
-        <title>Tech Jobs In Malaysia 🇲🇾 | Kerja IT</title>
+        <title>{title}</title>
         <meta name="description" content={siteDescription} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={siteDescription} />
+        <meta property="og:image" content="https://kerja-it.com/og.png" />
+        <meta property="og:url" content="https://kerja-it.com" />
+        <meta property="og:site_name" content="Kerja IT" />
+        <meta name="twitter:card" content="summary_large_image" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
