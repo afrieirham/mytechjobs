@@ -1,6 +1,6 @@
 import React from "react";
 import NextLink from "next/link";
-import { formatDistanceToNow } from "date-fns";
+import { format } from "date-fns";
 import {
   Badge,
   Flex,
@@ -12,11 +12,18 @@ import {
 } from "@chakra-ui/react";
 
 import { checkIfToday } from "../helpers/checkIfToday";
+import PinIcon from "../icons/PinIcon";
+import CalendarIcon from "../icons/CalendarIcon";
 
 function JobListing({ job }) {
-  const hasCompanyDetails = Boolean(job?.schema?.hiringOrganization?.name);
-  const description = job?.schema?.description || job?.schema?.metaDescription;
-  const isToday = checkIfToday(job.createdAt);
+  const isToday = checkIfToday(job?.schema?.datePosted ?? job?.createdAt);
+
+  const companyName = job?.schema?.hiringOrganization?.name;
+  const datePosted = job?.schema?.datePosted;
+  const jobLocation =
+    job?.schema?.jobLocation?.address?.stressAddress ||
+    job?.schema?.jobLocation?.address?.addressLocality ||
+    job?.schema?.jobLocation?.address?.addressRegion;
 
   return (
     <LinkBox
@@ -30,29 +37,30 @@ function JobListing({ job }) {
     >
       <HStack>
         <NextLink href={`/jobs/${job.slug}`} legacyBehavior passHref>
-          <LinkOverlay fontWeight="bold" noOfLines="1">
+          <Text as={LinkOverlay} noOfLines="1" fontWeight="bold">
             {job?.schema?.title}
-          </LinkOverlay>
+          </Text>
         </NextLink>
 
         {isToday && <Badge colorScheme="green">New</Badge>}
       </HStack>
-      {hasCompanyDetails && (
-        <Text fontSize="sm" color="gray.600">
-          {job?.schema?.hiringOrganization?.name} @{" "}
-          {job?.schema?.jobLocation?.address?.addressRegion ||
-            job?.schema?.jobLocation?.address?.addressLocality}
-        </Text>
-      )}
-      {!hasCompanyDetails && (
-        <Text fontSize="sm" color="gray.600" textTransform="capitalize">
-          {description}
-        </Text>
-      )}
-      <Text fontSize="xs" color="gray.500">
-        {formatDistanceToNow(new Date(job.createdAt), { addSuffix: true })}
-      </Text>
-      <HStack mt="2">
+      <Flex flexDirection="column" fontSize="sm" color="gray.600">
+        {companyName && <Text>{companyName}</Text>}
+        <HStack mt="2">
+          <PinIcon />
+          <Text>{jobLocation ?? "Unspecified"}</Text>
+        </HStack>
+        <HStack>
+          <CalendarIcon />
+          <Text>
+            {datePosted
+              ? "Posted on " + format(new Date(datePosted), "do MMM yyyy")
+              : "Unspecified"}
+          </Text>
+          {isToday && <Badge colorScheme="green">New</Badge>}
+        </HStack>
+      </Flex>
+      <HStack mt="4">
         {job?.keywords.map((keyword) => (
           <Tag key={keyword} size="sm" colorScheme="blackAlpha">
             {keyword}

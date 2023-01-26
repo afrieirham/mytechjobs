@@ -77,7 +77,7 @@ function JobDescription({ job, slug }) {
     : jobTitle;
 
   const pageTitle = pageTitleWithoutBrand + " | Kerja IT 🇲🇾";
-  const isToday = checkIfToday(job.createdAt);
+  const isToday = checkIfToday(job?.schema?.datePosted ?? job?.createdAt);
 
   return (
     <div>
