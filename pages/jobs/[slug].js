@@ -22,6 +22,7 @@ import { siteDescription } from "../../constants/SEO";
 import { getAllSlugs, getJobBySlug } from "../../controllers/jobs";
 import PinIcon from "../../icons/PinIcon";
 import CalendarIcon from "../../icons/CalendarIcon";
+import GlobalHeader from "../../components/GlobalHeader";
 
 export const getStaticProps = async (context) => {
   const { slug } = context.params;
@@ -46,7 +47,7 @@ export async function getStaticPaths() {
 
 function ApplyButton({ link }) {
   return (
-    <Link href={link} isExternal w={{ base: "full", sm: "xs" }}>
+    <Link href={link} isExternal w={{ base: "full", lg: "200px" }}>
       <Button
         py="8"
         bg="black"
@@ -92,7 +93,7 @@ function JobDescription({ job, slug }) {
   );
 
   return (
-    <div>
+    <Box bg="gray.50" pb="16">
       <Head>
         <title>{pageTitle}</title>
         <meta name="description" content={siteDescription} />
@@ -104,24 +105,33 @@ function JobDescription({ job, slug }) {
         <meta property="og:site_name" content="Kerja IT" />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
+      <GlobalHeader />
+      <Breadcrumb mt="8" maxW="2xl" mb="4" mx={{ base: "4", md: "auto" }}>
+        <BreadcrumbItem>
+          <BreadcrumbLink href="/">Home</BreadcrumbLink>
+        </BreadcrumbItem>
 
-      <Flex flexDirection="column" maxW="2xl" mx="auto" p="4" mt="8">
-        <Breadcrumb>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/">Home</BreadcrumbLink>
-          </BreadcrumbItem>
+        <BreadcrumbItem>
+          <BreadcrumbLink href="/jobs">Jobs</BreadcrumbLink>
+        </BreadcrumbItem>
 
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/jobs">Jobs</BreadcrumbLink>
-          </BreadcrumbItem>
-
-          <BreadcrumbItem isCurrentPage>
-            <BreadcrumbLink href={`/jobs/${slug}`} noOfLines="1">
-              {pageTitleWithoutBrand}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-        </Breadcrumb>
-        <HStack mt="6">
+        <BreadcrumbItem isCurrentPage>
+          <BreadcrumbLink href={`/jobs/${slug}`} noOfLines="1">
+            {pageTitleWithoutBrand}
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+      </Breadcrumb>
+      <Flex
+        flexDirection="column"
+        maxW="2xl"
+        mx="auto"
+        p="8"
+        bg="white"
+        borderWidth={{ base: "none", md: "1px" }}
+        borderColor="gray.300"
+        borderRadius={{ base: "none", md: "lg" }}
+      >
+        <HStack>
           {job?.keywords.map((keyword) => (
             <Tag key={keyword} size="sm" colorScheme="blackAlpha">
               {keyword}
@@ -156,21 +166,18 @@ function JobDescription({ job, slug }) {
           </Heading>
           <Box
             mt="2"
-            p="8"
-            borderWidth="1px"
-            borderRadius="lg"
-            borderColor="gray.300"
+            p={{ base: "4", md: "8" }}
             fontFamily="sans-serif"
             dangerouslySetInnerHTML={{
               __html: jobDescription,
             }}
           />
         </Flex>
-        <Flex mt="8" mb="32">
+        <Flex mt="8">
           <ApplyButton link={job?.link} />
         </Flex>
       </Flex>
-    </div>
+    </Box>
   );
 }
 

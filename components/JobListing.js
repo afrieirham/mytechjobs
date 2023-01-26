@@ -34,6 +34,7 @@ function JobListing({ job }) {
       borderWidth="1px"
       borderColor="gray.300"
       borderRadius="lg"
+      bg="white"
     >
       <HStack>
         <NextLink href={`/jobs/${job.slug}`} legacyBehavior passHref>

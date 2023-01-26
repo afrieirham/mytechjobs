@@ -4,6 +4,7 @@ import useSWR from "swr";
 import queryString from "query-string";
 import { useRouter } from "next/router";
 import {
+  Box,
   Button,
   Flex,
   Heading,
@@ -19,6 +20,7 @@ import { standardizeQuery } from "../../helpers/query";
 import JobListing from "../../components/JobListing";
 import FilterCard from "../../components/FilterCard";
 import FilterDesktop from "../../components/FilterDesktop";
+import GlobalHeader from "../../components/GlobalHeader";
 
 const fetcher = (url) => fetch(url).then((r) => r.json());
 function Search() {
@@ -67,13 +69,20 @@ function Search() {
   const hasTags = tags?.length > 0;
 
   return (
-    <div>
+    <Box bg="gray.50" pb="16">
       <Head>
         <title>Find your next tech jobs in Malaysia 🇲🇾 | Kerja IT</title>
         <meta name="description" content={siteDescription} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Flex flexDirection="column" maxW="2xl" mx="auto" p="4" mb="16">
+      <GlobalHeader />
+      <Flex
+        flexDirection="column"
+        maxW="2xl"
+        mx="auto"
+        p="4"
+        position="relative"
+      >
         {/* Header */}
         <Flex flexDirection="column" w="full" alignItems="center" mt="4">
           <Heading size="lg">Find Tech Jobs in Malaysia 🇲🇾</Heading>
@@ -130,6 +139,13 @@ function Search() {
             </Flex>
           )}
         </Flex>
+        <FilterDesktop
+          setPage={setPage}
+          onChangeTech={techFilter.onChange}
+          onChangeLocation={locationFilter.onChange}
+          techGetCheckboxProps={techFilter.getCheckboxProps}
+          locationGetCheckboxProps={locationFilter.getCheckboxProps}
+        />
       </Flex>
       <FilterCard
         setPage={setPage}
@@ -138,14 +154,7 @@ function Search() {
         techGetCheckboxProps={techFilter.getCheckboxProps}
         locationGetCheckboxProps={locationFilter.getCheckboxProps}
       />
-      <FilterDesktop
-        setPage={setPage}
-        onChangeTech={techFilter.onChange}
-        onChangeLocation={locationFilter.onChange}
-        techGetCheckboxProps={techFilter.getCheckboxProps}
-        locationGetCheckboxProps={locationFilter.getCheckboxProps}
-      />
-    </div>
+    </Box>
   );
 }
 

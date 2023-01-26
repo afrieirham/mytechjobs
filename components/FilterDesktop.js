@@ -8,10 +8,9 @@ function FilterDesktop(props) {
       display={{ base: "none", xl: "block" }}
       position="absolute"
       w="250px"
-      top="0"
+      top="100"
+      right="-300"
       flexDirection="column"
-      mt="100px"
-      ml="40px"
       justifyContent="center"
     >
       <Flex
