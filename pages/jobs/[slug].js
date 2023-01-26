@@ -15,6 +15,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { format } from "date-fns";
+import queryString from "query-string";
 
 import { checkIfThisWeek } from "../../helpers/checkIfThisWeek";
 import { siteDescription } from "../../constants/SEO";
@@ -79,12 +80,29 @@ function JobDescription({ job, slug }) {
   const pageTitle = pageTitleWithoutBrand + " | Kerja IT 🇲🇾";
   const thisWeek = checkIfThisWeek(job?.schema?.datePosted ?? job?.createdAt);
 
+  const og = queryString.stringifyUrl(
+    {
+      url: "https://kerja-it.com/api/og",
+      query: {
+        title: jobTitle ? jobTitle : null,
+        company: companyName ? companyName : null,
+      },
+    },
+    { skipEmptyString: true, skipNull: true }
+  );
+
   return (
     <div>
       <Head>
         <title>{pageTitle}</title>
         <meta name="description" content={siteDescription} />
         <link rel="icon" href="/favicon.ico" />
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={siteDescription} />
+        <meta property="og:image" content={og} />
+        <meta property="og:url" content={`https://kerja-it.com/jobs/${slug}`} />
+        <meta property="og:site_name" content="Kerja IT" />
+        <meta name="twitter:card" content="summary_large_image" />
       </Head>
 
       <Flex flexDirection="column" maxW="2xl" mx="auto" p="4" mt="8">
