@@ -19,7 +19,7 @@ function JobListing({ job }) {
   const isToday = checkIfToday(job?.schema?.datePosted ?? job?.createdAt);
 
   const companyName = job?.schema?.hiringOrganization?.name;
-  const datePosted = job?.schema?.datePosted;
+  const datePosted = job?.postedAt;
   const jobLocation =
     job?.schema?.jobLocation?.address?.stressAddress ||
     job?.schema?.jobLocation?.address?.addressLocality ||

@@ -38,7 +38,7 @@ export const getLatestJobs = async (limit) => {
   const cursor = await db
     .collection("jobs")
     .aggregate(pipeline)
-    .sort({ _id: -1 })
+    .sort({ postedAt: -1 })
     .limit(limit)
     .toArray();
 
@@ -63,7 +63,7 @@ export const getRemoteJobs = async (limit) => {
   const cursor = await db
     .collection("jobs")
     .aggregate(pipeline)
-    .sort({ _id: -1 })
+    .sort({ postedAt: -1 })
     .limit(limit)
     .toArray();
 
@@ -80,7 +80,7 @@ export const getJobs = async ({ tech, location }) => {
   const cursor = await db
     .collection("jobs")
     .aggregate(pipeline)
-    .sort({ _id: -1 })
+    .sort({ postedAt: -1 })
     .limit(10)
     .toArray();
 
@@ -125,7 +125,7 @@ export const getJobsJSON = async ({ tech, location, page = 1, limit = 10 }) => {
     //     createdAt: 1,
     //   },
     // },
-    { $sort: { createdAt: -1 } },
+    { $sort: { postedAt: -1 } },
     { $skip: skip * limit },
     { $limit: limit },
   ];
@@ -205,4 +205,38 @@ export const getJobBySlug = async (slug) => {
   const job = JSON.parse(JSON.stringify(cursor));
 
   return { job };
+};
+
+export const addRemoteTag = async () => {
+  const { db } = await connectToDatabase();
+
+  const fetch = JSON.parse(
+    JSON.stringify(
+      await db
+        .collection("jobs")
+        .find()
+        .project({ createdAt: 1, "schema.datePosted": 1 })
+        .toArray()
+    )
+  );
+
+  const promises = fetch.map((s) => {
+    const postedAt = Boolean(s?.schema?.datePosted)
+      ? s?.schema?.datePosted
+      : s?.createdAt;
+    return db.collection("jobs").update(
+      {
+        _id: ObjectId(s._id),
+      },
+      {
+        $set: {
+          postedAt,
+        },
+      }
+    );
+  });
+
+  // await Promise.all(promises);
+
+  return { fetch };
 };

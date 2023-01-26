@@ -64,7 +64,7 @@ function JobDescription({ job, slug }) {
   const jobTitle = job?.schema?.title ?? job?.title;
 
   const companyName = job?.schema?.hiringOrganization?.name;
-  const datePosted = job?.schema?.datePosted;
+  const datePosted = job?.postedAt;
   const jobDescription =
     job?.schema?.responsibilities || job?.schema?.description;
   const jobLocation =
