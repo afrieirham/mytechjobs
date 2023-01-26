@@ -125,7 +125,7 @@ function JobDescription({ job, slug }) {
         flexDirection="column"
         maxW="2xl"
         mx="auto"
-        p="8"
+        p={{ base: "4", md: "8" }}
         bg="white"
         borderWidth={{ base: "none", md: "1px" }}
         borderColor="gray.300"
