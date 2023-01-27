@@ -85,6 +85,16 @@ const nextConfig = {
       abbrRedirects,
       techRedirects,
       abbrAutoComplete,
+      {
+        source: "/hire",
+        destination: "https://hire.kerja-it.com",
+        permanent: false,
+      },
+      {
+        source: "/alerts",
+        destination: "https://forms.gle/87gwhwGRxBKom6gSA",
+        permanent: false,
+      },
     ].flat();
   },
 };
