@@ -74,7 +74,14 @@ export default async function handler(req, res) {
 
   const withSlug = withKeywords.map((job) => ({ ...job, slug: slugify(job) }));
 
-  await createManyJobs(withSlug);
+  const inserted = await createManyJobs(withSlug);
+
+  if (!inserted) {
+    return res.json({
+      status: "OK",
+      message: "no jobs added because duplicates",
+    });
+  }
 
   // Send alert to telegram
   const count = withSlug.length;
