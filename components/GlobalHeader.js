@@ -10,19 +10,14 @@ import {
   CloseButton,
   VStack,
   Button,
-  useColorMode,
   Spacer,
 } from "@chakra-ui/react";
 
 import { AiOutlineMenu } from "react-icons/ai";
-import { FaMoon, FaSun } from "react-icons/fa";
 import Image from "next/image";
 import NextLink from "next/link";
 
 const GlobalHeader = () => {
-  const { toggleColorMode: toggleMode } = useColorMode();
-  const text = useColorModeValue("dark", "light");
-  const SwitchIcon = useColorModeValue(FaMoon, FaSun);
   const bg = useColorModeValue("white", "gray.800");
   const ref = React.useRef(null);
   const cl = useColorModeValue("gray.800", "white");
@@ -65,6 +60,15 @@ const GlobalHeader = () => {
         href="/jobs?location=remote"
       >
         Remote Jobs
+      </Button>
+      <Button
+        w="full"
+        display="inline-flex"
+        variant="ghost"
+        as="a"
+        href="https://hire.kerja-it.com"
+      >
+        Post Jobs
       </Button>
       <Button
         display="inline-flex"
@@ -141,27 +145,25 @@ const GlobalHeader = () => {
               </HStack>
             </Flex>
             <Spacer />
-            <Button
-              as="a"
-              colorScheme="messenger"
-              href="https://forms.gle/87gwhwGRxBKom6gSA"
-              target="_blank"
-              display={{ base: "none", md: "flex" }}
-            >
-              Get Job Alerts
-            </Button>
-            <Flex justify="flex-end" align="center">
-              {/* <IconButton
-                size="md"
-                fontSize="lg"
-                aria-label={`Switch to ${text} mode`}
+            <HStack display={{ base: "none", md: "flex" }} spacing="4">
+              <Button
+                color="gray"
+                as="a"
+                href="https://hire.kerja-it.com"
                 variant="ghost"
-                color="current"
-                ml={{ base: "0", md: "3" }}
-                onClick={toggleMode}
-                icon={<SwitchIcon />}
-              /> */}
-
+              >
+                Post Jobs
+              </Button>
+              <Button
+                as="a"
+                colorScheme="messenger"
+                href="https://forms.gle/87gwhwGRxBKom6gSA"
+                target="_blank"
+              >
+                Get Job Alerts
+              </Button>
+            </HStack>
+            <Flex justify="flex-end" align="center">
               <IconButton
                 display={{ base: "flex", md: "none" }}
                 aria-label="Open menu"
