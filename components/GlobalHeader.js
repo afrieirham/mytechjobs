@@ -66,6 +66,16 @@ const GlobalHeader = () => {
       >
         Remote Jobs
       </Button>
+      <Button
+        display="inline-flex"
+        w="full"
+        as="a"
+        colorScheme="messenger"
+        href="https://forms.gle/87gwhwGRxBKom6gSA"
+        target="_blank"
+      >
+        Get Job Alerts
+      </Button>
     </VStack>
   );
 
@@ -104,7 +114,7 @@ const GlobalHeader = () => {
                   as={NextLink}
                   href="/jobs"
                   bg={bg}
-                  color="gray.500"
+                  color="gray.700"
                   display="inline-flex"
                   alignItems="center"
                   m="0"
@@ -119,7 +129,7 @@ const GlobalHeader = () => {
                   href="/jobs?location=remote"
                   m="0"
                   bg={bg}
-                  color="gray.500"
+                  color="gray.700"
                   display="inline-flex"
                   alignItems="center"
                   fontSize="md"
@@ -131,7 +141,16 @@ const GlobalHeader = () => {
               </HStack>
             </Flex>
             <Spacer />
-            <Flex justify="flex-end" align="center" color="gray.400">
+            <Button
+              as="a"
+              colorScheme="messenger"
+              href="https://forms.gle/87gwhwGRxBKom6gSA"
+              target="_blank"
+              display={{ base: "none", md: "flex" }}
+            >
+              Get Job Alerts
+            </Button>
+            <Flex justify="flex-end" align="center">
               {/* <IconButton
                 size="md"
                 fontSize="lg"
@@ -142,6 +161,7 @@ const GlobalHeader = () => {
                 onClick={toggleMode}
                 icon={<SwitchIcon />}
               /> */}
+
               <IconButton
                 display={{ base: "flex", md: "none" }}
                 aria-label="Open menu"
