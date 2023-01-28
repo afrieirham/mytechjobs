@@ -7,6 +7,8 @@ import TechIcon from "./TechIcon";
 import { useRouter } from "next/router";
 
 function Filters({
+  techValue,
+  locationValue,
   setPage,
   onChangeTech,
   onChangeLocation,
@@ -15,15 +17,46 @@ function Filters({
 }) {
   const router = useRouter();
   const onChangeTechCustom = (e) => {
+    const tech = e.target.value;
+    const isSelected = techValue.some((t) => t === tech);
+
+    let newTechValue = [];
+    if (isSelected) {
+      newTechValue = techValue.filter((t) => t !== tech);
+    } else {
+      newTechValue = [...techValue, tech];
+    }
     setPage(1);
     onChangeTech(e);
-    router.push({ query: null });
+    router.push(
+      { query: { tech: newTechValue, location: locationValue } },
+      undefined,
+      {
+        shallow: true,
+      }
+    );
   };
 
   const onChangeLocationCustom = (e) => {
+    const location = e.target.value;
+    const isSelected = locationValue.some((t) => t === location);
+
+    let newLocationValue = [];
+    if (isSelected) {
+      newLocationValue = locationValue.filter((t) => t !== location);
+    } else {
+      newLocationValue = [...locationValue, location];
+    }
+
     setPage(1);
     onChangeLocation(e);
-    router.push({ query: null });
+    router.push(
+      {
+        query: { location: newLocationValue, tech: techValue },
+      },
+      undefined,
+      { shallow: true }
+    );
   };
 
   return (

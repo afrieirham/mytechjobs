@@ -141,6 +141,8 @@ function Search() {
         </Flex>
         <FilterDesktop
           setPage={setPage}
+          techValue={techFilter.value}
+          locationValue={locationFilter.value}
           onChangeTech={techFilter.onChange}
           onChangeLocation={locationFilter.onChange}
           techGetCheckboxProps={techFilter.getCheckboxProps}
@@ -149,6 +151,8 @@ function Search() {
       </Flex>
       <FilterCard
         setPage={setPage}
+        techValue={techFilter.value}
+        locationValue={locationFilter.value}
         onChangeTech={techFilter.onChange}
         onChangeLocation={locationFilter.onChange}
         techGetCheckboxProps={techFilter.getCheckboxProps}
