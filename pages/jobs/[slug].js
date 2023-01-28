@@ -1,5 +1,6 @@
 import Head from "next/head";
 import React from "react";
+import NextLink from "next/link";
 import {
   Badge,
   Box,
@@ -10,7 +11,6 @@ import {
   Flex,
   Heading,
   HStack,
-  Link,
   Tag,
   Text,
 } from "@chakra-ui/react";
@@ -41,24 +41,21 @@ export async function getStaticPaths() {
 
   return {
     paths,
-    fallback: false,
+    fallback: true,
   };
 }
 
 function ApplyButton({ link }) {
   return (
-    <Link href={link} isExternal w={{ base: "full", lg: "200px" }}>
-      <Button
-        py="8"
-        bg="black"
-        color="white"
-        _hover={{ bg: "gray.800" }}
-        _active={{ bg: "gray.600" }}
-        w="full"
-      >
-        Apply Now 🚀
-      </Button>
-    </Link>
+    <Button
+      as="a"
+      href={link}
+      target="_blank"
+      colorScheme="messenger"
+      w={{ base: "full", lg: "200px" }}
+    >
+      Apply Now 🚀
+    </Button>
   );
 }
 
@@ -115,68 +112,92 @@ function JobDescription({ job, slug }) {
           <BreadcrumbLink href="/jobs">Jobs</BreadcrumbLink>
         </BreadcrumbItem>
 
-        <BreadcrumbItem isCurrentPage>
-          <BreadcrumbLink href={`/jobs/${slug}`} noOfLines="1">
-            {pageTitleWithoutBrand}
-          </BreadcrumbLink>
-        </BreadcrumbItem>
+        {job && (
+          <BreadcrumbItem isCurrentPage>
+            <BreadcrumbLink href={`/jobs/${slug}`} noOfLines="1">
+              {pageTitleWithoutBrand}
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+        )}
       </Breadcrumb>
-      <Flex
-        flexDirection="column"
-        maxW="2xl"
-        mx="auto"
-        p={{ base: "4", md: "8" }}
-        bg="white"
-        borderWidth={{ base: "none", md: "1px" }}
-        borderColor="gray.300"
-        borderRadius={{ base: "none", md: "lg" }}
-      >
-        <HStack>
-          {job?.keywords.map((keyword) => (
-            <Tag key={keyword} size="sm" colorScheme="blackAlpha">
-              {keyword}
-            </Tag>
-          ))}
-        </HStack>
-        <Heading size="lg" mt="2">
-          {jobTitle}
-        </Heading>
-        <Flex flexDirection="column">
-          {companyName && <Text fontSize="md">{companyName}</Text>}
-          <HStack mt="2">
-            <PinIcon />
-            <Text fontSize="sm">{jobLocation ?? "Unspecified"}</Text>
-          </HStack>
-          <HStack>
-            <CalendarIcon />
-            <Text fontSize="sm">
-              {datePosted
-                ? "Posted on " + format(new Date(datePosted), "do MMM yyyy")
-                : "Unspecified"}
-            </Text>
-            {thisWeek && <Badge colorScheme="green">New</Badge>}
-          </HStack>
-        </Flex>
-        <Flex mt="8">
-          <ApplyButton link={job?.link} />
-        </Flex>
-        <Flex flexDirection="column" mt="8">
-          <Heading size="md" mb="2">
-            ✍️ Job Description
+      {!job && (
+        <Flex
+          flexDirection="column"
+          maxW="2xl"
+          mx="auto"
+          p={{ base: "4", md: "0" }}
+          textAlign="center"
+          alignItems="center"
+        >
+          <Heading>😵‍💫 Opps...</Heading>
+          <Heading size="md" mt="2" color="gray.500">
+            Can&apos;t fint the job you&apos;re looking for.
           </Heading>
-          <Box
-            mt="2"
-            p={{ base: "4", md: "8" }}
-            fontFamily="sans-serif"
-            dangerouslySetInnerHTML={{
-              __html: jobDescription,
-            }}
-          />
+          <Flex mt="8">
+            <Button colorScheme="messenger" as={NextLink} href="/jobs">
+              Look for other jobs instead 🦄
+            </Button>
+          </Flex>
         </Flex>
-        <Flex mt="8">
-          <ApplyButton link={job?.link} />
+      )}
+      {job && (
+        <Flex
+          flexDirection="column"
+          maxW="2xl"
+          mx="auto"
+          p={{ base: "4", md: "8" }}
+          bg="white"
+          borderWidth={{ base: "none", md: "1px" }}
+          borderColor="gray.300"
+          borderRadius={{ base: "none", md: "lg" }}
+        >
+          <HStack>
+            {job?.keywords.map((keyword) => (
+              <Tag key={keyword} size="sm" colorScheme="blackAlpha">
+                {keyword}
+              </Tag>
+            ))}
+          </HStack>
+          <Heading size="lg" mt="2">
+            {jobTitle}
+          </Heading>
+          <Flex flexDirection="column">
+            {companyName && <Text fontSize="md">{companyName}</Text>}
+            <HStack mt="2">
+              <PinIcon />
+              <Text fontSize="sm">{jobLocation ?? "Unspecified"}</Text>
+            </HStack>
+            <HStack>
+              <CalendarIcon />
+              <Text fontSize="sm">
+                {datePosted
+                  ? "Posted on " + format(new Date(datePosted), "do MMM yyyy")
+                  : "Unspecified"}
+              </Text>
+              {thisWeek && <Badge colorScheme="green">New</Badge>}
+            </HStack>
+          </Flex>
+          <Flex mt="8">
+            <ApplyButton link={job?.link} />
+          </Flex>
+          <Flex flexDirection="column" mt="8">
+            <Heading size="md" mb="2">
+              ✍️ Job Description
+            </Heading>
+            <Box
+              mt="2"
+              p={{ base: "4", md: "8" }}
+              fontFamily="sans-serif"
+              dangerouslySetInnerHTML={{
+                __html: jobDescription,
+              }}
+            />
+          </Flex>
+          <Flex mt="8">
+            <ApplyButton link={job?.link} />
+          </Flex>
         </Flex>
-      </Flex>
+      )}
     </Box>
   );
 }
