@@ -89,7 +89,12 @@ function Search() {
         </Flex>
 
         {/* Job Listing */}
-        <Flex flexDirection="column" w="full" mt="4">
+        <Flex
+          w="full"
+          mt="4"
+          flexDirection="column"
+          style={{ overflowAnchor: "none" }}
+        >
           <Heading size="sm" mt="4">
             👨🏻‍💻 Explore Jobs
           </Heading>

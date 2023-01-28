@@ -49,7 +49,7 @@ function JobListing({ job }) {
         {companyName && <Text>{companyName}</Text>}
         <HStack mt="2">
           <PinIcon />
-          <Text>{jobLocation ?? "Unspecified"}</Text>
+          <Text noOfLines="1">{jobLocation ?? "Unspecified"}</Text>
         </HStack>
         <HStack>
           <CalendarIcon />
