@@ -60,7 +60,9 @@ function ApplyButton({ link }) {
 }
 
 function JobDescription({ job, slug }) {
-  const jobTitle = job?.schema?.title ?? job?.title;
+  const jobTitle =
+    (job?.schema?.title ?? job?.title) ||
+    "Opps... Can't find the job you're looking for";
 
   const companyName = job?.schema?.hiringOrganization?.name;
   const datePosted = job?.postedAt;
