@@ -48,6 +48,7 @@ export default async function handler(req, res) {
   }
 
   if (results?.length === 0) {
+    await notifyTelegram("vercel update – no jobs found");
     return res.json({ status: "OK", message: "no jobs found" });
   }
 
@@ -77,6 +78,7 @@ export default async function handler(req, res) {
   const inserted = await createManyJobs(withSlug);
 
   if (!inserted) {
+    await notifyTelegram("vercel update – no jobs added because duplicates");
     return res.json({
       status: "OK",
       message: "no jobs added because duplicates",
@@ -100,7 +102,8 @@ export default async function handler(req, res) {
     }
   });
 
-  await notifyTelegram(telegram);
+  await notifyTelegram(telegram, true);
+  await notifyTelegram(`vercel update – ${count} new jobs!`);
 
   res.json({ status: "OK", count });
 }
