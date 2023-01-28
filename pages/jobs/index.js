@@ -47,9 +47,13 @@ function Search() {
   useEffect(() => {
     if (router?.query?.tech) {
       techFilter.setValue(standardizeQuery(router.query.tech));
+    } else {
+      techFilter.setValue([]);
     }
     if (router?.query?.location) {
       locationFilter.setValue(standardizeQuery(router.query.location));
+    } else {
+      locationFilter.setValue([]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.query.tech, router.query.location]);

@@ -45,12 +45,13 @@ const GlobalHeader = () => {
         aria-label="Close menu"
         justifySelf="self-start"
         onClick={mobileNav.onClose}
+        variant="ghost"
       />
       <Button w="full" variant="ghost" as={NextLink} href="/">
-        Home
+        🏠 Home
       </Button>
       <Button w="full" variant="ghost" as={NextLink} href="/jobs">
-        Search Jobs
+        🔍 Search Jobs
       </Button>
       <Button
         display="inline-flex"
@@ -59,7 +60,7 @@ const GlobalHeader = () => {
         as={NextLink}
         href="/jobs?location=remote"
       >
-        Remote Jobs
+        🏝 Remote Jobs
       </Button>
       <Button
         w="full"
@@ -68,7 +69,7 @@ const GlobalHeader = () => {
         as="a"
         href="https://hire.kerja-it.com"
       >
-        Post Jobs
+        📢 Post Jobs
       </Button>
       <Button
         display="inline-flex"
@@ -78,7 +79,7 @@ const GlobalHeader = () => {
         href="https://forms.gle/87gwhwGRxBKom6gSA"
         target="_blank"
       >
-        Get Job Alerts
+        Get Job Alerts ⚡️
       </Button>
     </VStack>
   );
@@ -114,45 +115,22 @@ const GlobalHeader = () => {
             </Flex>
             <Flex>
               <HStack spacing="2" display={{ base: "none", md: "flex" }}>
-                <Button
-                  as={NextLink}
-                  href="/jobs"
-                  bg={bg}
-                  color="gray.700"
-                  display="inline-flex"
-                  alignItems="center"
-                  m="0"
-                  fontSize="md"
-                  _hover={{ color: cl }}
-                  _focus={{ boxShadow: "none" }}
-                >
-                  Search Jobs
+                <Button as={NextLink} href="/jobs" variant="ghost">
+                  🔍 Search Jobs
                 </Button>
                 <Button
                   as={NextLink}
                   href="/jobs?location=remote"
-                  m="0"
-                  bg={bg}
-                  color="gray.700"
-                  display="inline-flex"
-                  alignItems="center"
-                  fontSize="md"
-                  _hover={{ color: cl }}
-                  _focus={{ boxShadow: "none" }}
+                  variant="ghost"
                 >
-                  Remote Jobs
+                  🏝 Remote Jobs
                 </Button>
               </HStack>
             </Flex>
             <Spacer />
             <HStack display={{ base: "none", md: "flex" }} spacing="4">
-              <Button
-                color="gray"
-                as="a"
-                href="https://hire.kerja-it.com"
-                variant="ghost"
-              >
-                Post Jobs
+              <Button as="a" href="https://hire.kerja-it.com" variant="ghost">
+                📢 Post Jobs
               </Button>
               <Button
                 as="a"
@@ -160,7 +138,7 @@ const GlobalHeader = () => {
                 href="https://forms.gle/87gwhwGRxBKom6gSA"
                 target="_blank"
               >
-                Get Job Alerts
+                Get Job Alerts ⚡️
               </Button>
             </HStack>
             <Flex justify="flex-end" align="center">
