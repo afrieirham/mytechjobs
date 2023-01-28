@@ -48,7 +48,7 @@ export default async function handler(req, res) {
   }
 
   if (results?.length === 0) {
-    return res.json({ status: "OK", message: "no jobs added" });
+    return res.json({ status: "OK", message: "no jobs found" });
   }
 
   const schemas = await Promise.all(
