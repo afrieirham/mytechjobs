@@ -32,25 +32,30 @@ function FilterCard(props) {
         Filter
       </Button>
 
-      <Drawer onClose={onClose} isOpen={isOpen} placement="bottom" size="full">
+      <Button
+        display={isOpen ? "block" : "none"}
+        position="fixed"
+        bottom="0"
+        onClick={onClose}
+        width="full"
+        colorScheme="messenger"
+        borderRadius="0"
+        size="lg"
+        fontSize="sm"
+        zIndex="1000000"
+      >
+        Apply
+      </Button>
+
+      <Drawer onClose={onClose} isOpen={isOpen} placement="left" size="full">
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerHeader as={Heading} size="md">
             🔍 Filter Jobs
           </DrawerHeader>
-          <DrawerBody>
+          <DrawerBody pb="44">
             <Filters {...props} />
-            <Button
-              width="full"
-              colorScheme="messenger"
-              size="lg"
-              fontSize="sm"
-              my="8"
-              onClick={onClose}
-            >
-              Apply
-            </Button>
           </DrawerBody>
         </DrawerContent>
       </Drawer>
