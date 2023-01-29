@@ -133,6 +133,14 @@ export const getJobsJSON = async ({ tech, location, page = 1, limit = 10 }) => {
         },
       },
     });
+  } else {
+    pipeline.push({
+      $match: {
+        keywords: {
+          $in: places.map((p) => p.replaceAll("-", " ")),
+        },
+      },
+    });
   }
 
   pipeline = [
