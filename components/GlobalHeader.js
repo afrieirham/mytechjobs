@@ -79,7 +79,7 @@ const GlobalHeader = () => {
         href="https://forms.gle/87gwhwGRxBKom6gSA"
         target="_blank"
       >
-        Get Job Alerts ⚡️
+        Get Job Alerts 💌
       </Button>
     </VStack>
   );
@@ -138,7 +138,7 @@ const GlobalHeader = () => {
                 href="https://forms.gle/87gwhwGRxBKom6gSA"
                 target="_blank"
               >
-                Get Job Alerts ⚡️
+                Get Job Alerts 💌
               </Button>
             </HStack>
             <Flex justify="flex-end" align="center">
