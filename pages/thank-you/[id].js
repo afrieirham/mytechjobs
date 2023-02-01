@@ -36,8 +36,8 @@ function ThankYou() {
         </Heading>
         <Text fontSize="sm" mt="8">
           If you have any questions, feel free to contact me at{" "}
-          <Link href="mailto:afrieirham.work@gmail.com" target="_blank">
-            afrieirham.work@gmail.com
+          <Link href="mailto:admin@kerja-it.com" target="_blank">
+            admin@kerja-it.com
           </Link>
         </Text>
       </Flex>
