@@ -92,7 +92,7 @@ const nextConfig = {
       },
       {
         source: "/alerts",
-        destination: "https://forms.gle/87gwhwGRxBKom6gSA",
+        destination: "https://alerts.kerja-it.com",
         permanent: false,
       },
     ].flat();

@@ -76,7 +76,7 @@ const GlobalHeader = () => {
         w="full"
         as="a"
         colorScheme="messenger"
-        href="https://forms.gle/87gwhwGRxBKom6gSA"
+        href="https://alerts.kerja-it.com"
         target="_blank"
       >
         Get Job Alerts 💌
@@ -135,7 +135,7 @@ const GlobalHeader = () => {
               <Button
                 as="a"
                 colorScheme="messenger"
-                href="https://forms.gle/87gwhwGRxBKom6gSA"
+                href="https://alerts.kerja-it.com"
                 target="_blank"
               >
                 Get Job Alerts 💌
