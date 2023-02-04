@@ -92,7 +92,8 @@ const nextConfig = {
       },
       {
         source: "/alerts",
-        destination: "https://alerts.kerja-it.com",
+        destination:
+          "https://1f0b32ea.sibforms.com/serve/MUIEABbSjehs3QEh7ACtLDW0inFYOw6yH-stJTnS-GDMSl0bC3G4IGfo_unQnQrYko2qIyAK4PcWwZqjHhwYLiijP-gvwGEn9VVfjviAxghYR5skC5Vp2es7GxbhcHI5mMAmm0BLO9WA9cXeKcCWZMm6w_AJkG28XP3ixpyBiXgfEoNSh-2iKPJCOtsIPkfA2HWOlhcwseqR7Uek",
         permanent: false,
       },
     ].flat();
