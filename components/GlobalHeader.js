@@ -67,7 +67,7 @@ const GlobalHeader = () => {
         display="inline-flex"
         variant="ghost"
         as="a"
-        href="https://hire.kerja-it.com"
+        href="/hire"
       >
         📢 Post Jobs
       </Button>
@@ -76,7 +76,7 @@ const GlobalHeader = () => {
         w="full"
         as="a"
         colorScheme="messenger"
-        href="https://alerts.kerja-it.com"
+        href="/alerts"
         target="_blank"
       >
         Get Job Alerts 💌
@@ -129,13 +129,13 @@ const GlobalHeader = () => {
             </Flex>
             <Spacer />
             <HStack display={{ base: "none", md: "flex" }} spacing="4">
-              <Button as="a" href="https://hire.kerja-it.com" variant="ghost">
+              <Button as="a" href="/hire" variant="ghost">
                 📢 Post Jobs
               </Button>
               <Button
                 as="a"
                 colorScheme="messenger"
-                href="https://alerts.kerja-it.com"
+                href="/alerts"
                 target="_blank"
               >
                 Get Job Alerts 💌
