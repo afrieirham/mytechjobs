@@ -1,3 +1,4 @@
+import Cryptr from "cryptr";
 import fetch from "node-fetch";
 import queryString from "query-string";
 import nodemailer from "nodemailer";
@@ -72,7 +73,7 @@ export default async function handler(req, res) {
     return content;
   });
 
-  const email_content = jobList.join("<br/><br/>");
+  const email_body = jobList.join("<br/><br/>");
 
   // setup email & send
   const transporter = nodemailer.createTransport({
@@ -84,14 +85,29 @@ export default async function handler(req, res) {
     },
   });
 
-  const $email = subscribers.map((s) => {
+  const cryptr = new Cryptr(process.env.UNSUBSCRIPTION_SECRET);
+
+  const $email = subscribers.map((subscriber) => {
+    const { email_address, first_name } = subscriber;
+
+    // setup unsubscribe link
+    const unsubscribe_link = queryString.stringifyUrl({
+      url: "https://kerja-it.com/emails/unsubscribe",
+      query: { email: email_address, token: cryptr.encrypt(email_address) },
+    });
+
+    // setup email
+    const email_header = `Hi ${first_name}, here are new jobs this week 🥳<br/><br/>`;
+    const email_footer = `Tired of getting this email? <a href="${unsubscribe_link}" target="_blank">Unsubscribe</a>`;
+    const html = `${email_header}<br/><br/>${email_body}<br/><br/><br/><br/>${email_footer}`;
+
     const date = format(new Date(), "dd/MM");
     const subject = `New jobs this week (${date})`;
     return transporter.sendMail({
       from: '"🔔 Kerja IT Job Alerts" <alerts@kerja-it.com>',
-      to: s.email_address,
+      to: email_address,
       subject,
-      html: `Hi ${s.first_name}, here are new jobs this week 🥳<br/><br/>${email_content}`,
+      html,
     });
   });
 
