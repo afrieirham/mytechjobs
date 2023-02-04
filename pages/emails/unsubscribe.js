@@ -23,9 +23,14 @@ function Unsubscribe() {
       alignItems="center"
       w="100vw"
       h="90vh"
+      maxW="2xl"
+      mx="auto"
+      px="4"
     >
-      <Heading size="md">Thank you being an awesome subscriber!</Heading>
-      <Text>
+      <Heading size="md" textAlign="center">
+        Thank you being an awesome subscriber!
+      </Heading>
+      <Text textAlign="center">
         We hope you&apos;ve landed a job and don&apos;t need this anymore. 🥳
       </Text>
       <Text mt="8" fontSize="sm">
