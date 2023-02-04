@@ -1,7 +1,7 @@
 import Cryptr from "cryptr";
-import fetch from "node-fetch";
 import queryString from "query-string";
 import nodemailer from "nodemailer";
+import axios from "axios";
 import { format } from "date-fns";
 
 import { getWeeklyJobs } from "../../controllers/jobs";
@@ -14,39 +14,18 @@ export default async function handler(req, res) {
   }
 
   // verify valid request
-  const { secret, api_secret, form_id } = body;
-
+  const { secret } = body;
   const isSecretValid = secret === process.env.ALERT_SECRET;
-  const isValid = [secret, api_secret, form_id].some(Boolean);
-
-  if (!isSecretValid || !isValid) {
+  if (!isSecretValid) {
     return res.status(400).json({ status: "no body" });
   }
 
   // get list of subscribers
-  const baseUrl = `https://api.convertkit.com/v3/forms/${form_id}/subscriptions?api_secret=${api_secret}`;
-  let queryPage = 1;
-  let subscribers = [];
-  while (true) {
-    const requestUrl = queryString.stringifyUrl({
-      url: baseUrl,
-      query: { page: queryPage },
-    });
-
-    const result = await fetch(requestUrl).then((res) => res.json());
-    const { page, total_pages, subscriptions } = result;
-
-    const items = subscriptions?.map((s) => s.subscriber);
-
-    if (items?.length > 0) {
-      subscribers.push(...items);
-    }
-
-    if (page === total_pages) {
-      break;
-    }
-    queryPage++;
-  }
+  const url = "https://api.sendinblue.com/v3/contacts";
+  const { data } = await axios.get(url, {
+    headers: { "api-key": process.env.SENDINBLUE_API_KEY },
+  });
+  const subscribers = data?.contacts;
 
   // get new jobs of the week
   const { jobs } = await getWeeklyJobs();
@@ -88,16 +67,17 @@ export default async function handler(req, res) {
   const cryptr = new Cryptr(process.env.UNSUBSCRIPTION_SECRET);
 
   const $email = subscribers.map((subscriber) => {
-    const { email_address, first_name } = subscriber;
+    const { email, attributes } = subscriber;
+    const name = attributes.FIRSTNAME;
 
     // setup unsubscribe link
     const unsubscribe_link = queryString.stringifyUrl({
       url: "https://kerja-it.com/emails/unsubscribe",
-      query: { email: email_address, token: cryptr.encrypt(email_address) },
+      query: { email, token: cryptr.encrypt(email) },
     });
 
     // setup email
-    const email_header = `Hi ${first_name}, here are new jobs this week 🥳<br/><br/>`;
+    const email_header = `Hi ${name}, here are new jobs this week 🥳<br/><br/>`;
     const email_footer = `Tired of getting this email? <a href="${unsubscribe_link}" target="_blank">Unsubscribe</a>`;
     const html = `${email_header}<br/><br/>${email_body}<br/><br/><br/><br/>${email_footer}`;
 
@@ -105,7 +85,7 @@ export default async function handler(req, res) {
     const subject = `New jobs this week (${date})`;
     return transporter.sendMail({
       from: '"🔔 Kerja IT Job Alerts" <alerts@kerja-it.com>',
-      to: email_address,
+      to: email,
       subject,
       html,
     });
