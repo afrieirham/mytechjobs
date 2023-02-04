@@ -5,10 +5,12 @@ import { useRouter } from "next/router";
 import { Button, Flex, Heading, Tag, Text } from "@chakra-ui/react";
 
 function Unsubscribe() {
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { token, email } = router.query;
 
   const onUnsubscribe = async () => {
+    setLoading(true);
     await axios.post("/api/unsubscribe", { token });
     alert("Success");
     router.push("/");
@@ -38,6 +40,7 @@ function Unsubscribe() {
         colorScheme="messenger"
         onClick={onUnsubscribe}
         isDisabled={!email}
+        isLoading={loading}
       >
         Confirm and bye 👋
       </Button>
