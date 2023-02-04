@@ -1,3 +1,4 @@
+import { sub } from "date-fns";
 import { ObjectId } from "mongodb";
 import { places } from "../constants/paths";
 import { connectToDatabase } from "../libs/mongo";
@@ -38,6 +39,55 @@ export const createManyJobs = async (data) => {
 
   const jobs = await db.collection("jobs").insertMany(formattedData);
   return jobs;
+};
+
+export const getWeeklyJobs = async () => {
+  const { db } = await connectToDatabase();
+
+  const pipeline = [
+    {
+      $addFields: {
+        date: {
+          $dateFromString: {
+            dateString: "$postedAt",
+          },
+        },
+      },
+    },
+    {
+      $match: {
+        date: {
+          $gte: new Date(sub(new Date(), { days: 7 })),
+        },
+      },
+    },
+    {
+      $match: {
+        keywords: {
+          $in: places.map((p) => p.replaceAll("-", " ")),
+        },
+      },
+    },
+    {
+      $project: {
+        title: 1,
+        slug: 1,
+        postedAt: 1,
+        "schema.title": 1,
+        "schema.hiringOrganization.name": 1,
+      },
+    },
+  ];
+
+  const cursor = await db
+    .collection("jobs")
+    .aggregate(pipeline)
+    .sort({ postedAt: -1 })
+    .toArray();
+
+  const jobs = JSON.parse(JSON.stringify(cursor));
+
+  return { jobs };
 };
 
 export const getLatestJobs = async (limit) => {
