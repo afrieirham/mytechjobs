@@ -1,22 +1,12 @@
+import React from "react";
 import axios from "axios";
-import Cryptr from "cryptr";
-import React, { useEffect, useState } from "react";
+
 import { useRouter } from "next/router";
 import { Button, Flex, Heading, Tag, Text } from "@chakra-ui/react";
 
 function Unsubscribe() {
-  const [email, setEmail] = useState();
-
   const router = useRouter();
-  const { token } = router.query;
-
-  useEffect(() => {
-    if (token) {
-      const cryptr = new Cryptr(process.env.UNSUBSCRIPTION_SECRET);
-      const email = cryptr.decrypt(token);
-      setEmail(email);
-    }
-  }, [token]);
+  const { token, email } = router.query;
 
   const onUnsubscribe = async () => {
     await axios.post("/api/unsubscribe", { token });
