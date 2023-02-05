@@ -20,7 +20,6 @@ import NextLink from "next/link";
 const GlobalHeader = () => {
   const bg = useColorModeValue("white", "gray.800");
   const ref = React.useRef(null);
-  const cl = useColorModeValue("gray.800", "white");
   const mobileNav = useDisclosure();
 
   const MobileNavContent = (
@@ -57,10 +56,11 @@ const GlobalHeader = () => {
         display="inline-flex"
         w="full"
         variant="ghost"
-        as={NextLink}
-        href="/jobs?location=remote"
+        as="a"
+        href="/alerts"
+        target="_blank"
       >
-        🏝 Remote Jobs
+        💌 Get Job Alerts
       </Button>
       <Button
         w="full"
@@ -76,10 +76,10 @@ const GlobalHeader = () => {
         w="full"
         as="a"
         colorScheme="messenger"
-        href="/alerts"
+        href="/connect"
         target="_blank"
       >
-        Get Job Alerts 💌
+        Let employers find me 🤝
       </Button>
     </VStack>
   );
@@ -118,12 +118,8 @@ const GlobalHeader = () => {
                 <Button as={NextLink} href="/jobs" variant="ghost">
                   🔍 Search Jobs
                 </Button>
-                <Button
-                  as={NextLink}
-                  href="/jobs?location=remote"
-                  variant="ghost"
-                >
-                  🏝 Remote Jobs
+                <Button as="a" href="/alerts" variant="ghost" target="_blank">
+                  💌 Get Job Alerts
                 </Button>
               </HStack>
             </Flex>
@@ -134,11 +130,11 @@ const GlobalHeader = () => {
               </Button>
               <Button
                 as="a"
+                href="/connect"
                 colorScheme="messenger"
-                href="/alerts"
                 target="_blank"
               >
-                Get Job Alerts 💌
+                Let employers find me 🤝
               </Button>
             </HStack>
             <Flex justify="flex-end" align="center">
