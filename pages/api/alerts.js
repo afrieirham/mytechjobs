@@ -14,17 +14,18 @@ export default async function handler(req, res) {
   }
 
   // verify valid request
-  const { secret } = body;
+  const { secret, list_id } = body;
   const isSecretValid = secret === process.env.ALERT_SECRET;
-  if (!isSecretValid) {
+  if (!isSecretValid || !list_id) {
     return res.status(400).json({ status: "no body" });
   }
 
   // get list of subscribers
-  const url = "https://api.sendinblue.com/v3/contacts";
-  const { data } = await axios.get(url, {
-    headers: { "api-key": process.env.SENDINBLUE_API_KEY },
-  });
+  const url = `https://api.sendinblue.com/v3/contacts/lists/${list_id}/contacts`;
+
+  // https://developers.sendinblue.com/reference/getcontactsfromlist
+  const config = { headers: { "api-key": process.env.SENDINBLUE_API_KEY } };
+  const { data } = await axios.get(url, config);
   const subscribers = data?.contacts;
 
   // get new jobs of the week
@@ -77,8 +78,8 @@ export default async function handler(req, res) {
     });
 
     // setup email
-    const email_header = `Hi ${name}, here are new jobs this week 🥳<br/><br/>`;
-    const email_footer = `Tired of getting this email? <a href="${unsubscribe_link}" target="_blank">Unsubscribe</a>`;
+    const email_header = `Hi ${name}, here are new jobs this week 🥳`;
+    const email_footer = `No longer looking for a job? <a href="${unsubscribe_link}" target="_blank">Unsubscribe</a>`;
     const html = `${email_header}<br/><br/>${email_body}<br/><br/><br/><br/>${email_footer}`;
 
     const date = format(new Date(), "dd/MM");
