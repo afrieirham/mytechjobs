@@ -116,7 +116,7 @@ function JobDescription({ job, slug }) {
     : jobTitle;
 
   const pageTitle = pageTitleWithoutBrand + " | Kerja IT 🇲🇾";
-  const thisWeek = checkIfThisWeek(job?.schema?.datePosted ?? job?.createdAt);
+  const thisWeek = checkIfThisWeek(job?.schema?.datePosted ?? job?.postedAt);
 
   const og = queryString.stringifyUrl(
     {

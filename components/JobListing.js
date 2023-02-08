@@ -18,7 +18,7 @@ import CalendarIcon from "../icons/CalendarIcon";
 import BriefcaseIcon from "../icons/BriefcaseIcon";
 
 function JobListing({ job }) {
-  const thisWeek = checkIfThisWeek(job?.schema?.datePosted ?? job?.createdAt);
+  const thisWeek = checkIfThisWeek(job?.schema?.datePosted ?? job?.postedAt);
 
   const title = job?.schema?.title || job?.title;
   const companyName =
