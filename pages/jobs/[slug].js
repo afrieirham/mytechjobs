@@ -73,10 +73,15 @@ function JobDescription({ job, slug }) {
 
   const jobExperience = job?.experience;
 
-  const employmentType =
-    (job?.schema?.employmentType ? job?.schema?.employmentType[0] : "")
-      ?.replaceAll("_", " ")
-      .toLowerCase() ||
+  const employmentType = job?.schema?.employmentType;
+  const isEmploymentTypeArray = Array.isArray(employmentType);
+
+  const employmentTypeValue = isEmploymentTypeArray
+    ? employmentType[0]
+    : employmentType;
+
+  const employmentTypeText =
+    (employmentTypeValue ?? "")?.replaceAll("_", " ").toLowerCase() ||
     JOB_TYPE_TEXT[job?.type] ||
     "Unspecified";
 
@@ -214,7 +219,7 @@ function JobDescription({ job, slug }) {
             <HStack>
               <BriefcaseIcon />
               <Text fontSize="sm" textTransform="capitalize">
-                {employmentType}
+                {employmentTypeText}
               </Text>
             </HStack>
             <HStack>

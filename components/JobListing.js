@@ -45,10 +45,15 @@ function JobListing({ job }) {
   };
   const jobLocation = getJobLocation();
 
-  const employmentType =
-    (job?.schema?.employmentType ? job?.schema?.employmentType[0] : "")
-      ?.replaceAll("_", " ")
-      .toLowerCase() ||
+  const employmentType = job?.schema?.employmentType;
+  const isEmploymentTypeArray = Array.isArray(employmentType);
+
+  const employmentTypeValue = isEmploymentTypeArray
+    ? employmentType[0]
+    : employmentType;
+
+  const employmentTypeText =
+    (employmentTypeValue ?? "")?.replaceAll("_", " ").toLowerCase() ||
     JOB_TYPE_TEXT[job?.type] ||
     "Unspecified";
 
@@ -89,7 +94,7 @@ function JobListing({ job }) {
         <HStack>
           <BriefcaseIcon />
           <Text fontSize="sm" textTransform="capitalize">
-            {employmentType}
+            {employmentTypeText}
           </Text>
         </HStack>
       </Flex>
