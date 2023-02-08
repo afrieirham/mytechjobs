@@ -20,9 +20,13 @@ import queryString from "query-string";
 import { checkIfThisWeek } from "../../helpers/checkIfThisWeek";
 import { siteDescription } from "../../constants/SEO";
 import { getAllSlugs, getJobBySlug } from "../../controllers/jobs";
+import { JOB_EXPERIENCE_TEXT, JOB_TYPE_TEXT } from "../../types/jobs";
 import PinIcon from "../../icons/PinIcon";
 import CalendarIcon from "../../icons/CalendarIcon";
 import GlobalHeader from "../../components/GlobalHeader";
+import ChakraMarkdown from "../../components/ChakraMarkdown";
+import BriefcaseIcon from "../../icons/BriefcaseIcon";
+import ClockIcon from "../../icons/ClockIcon";
 
 export const getStaticProps = async (context) => {
   const { slug } = context.params;
@@ -45,11 +49,12 @@ export async function getStaticPaths() {
   };
 }
 
-function ApplyButton({ link }) {
+function ApplyButton({ link, email }) {
+  const href = link ? link : `mailto:${email}`;
   return (
     <Button
       as="a"
-      href={link}
+      href={href}
       target="_blank"
       colorScheme="messenger"
       w={{ base: "full", lg: "200px" }}
@@ -60,18 +65,44 @@ function ApplyButton({ link }) {
 }
 
 function JobDescription({ job, slug }) {
+  const jobLink = job?.link || job?.application?.url;
+  const jobFromAd = job?.source === "ad";
   const jobTitle =
     (job?.schema?.title ?? job?.title) ||
     "Opps... Can't find the job you're looking for";
 
-  const companyName = job?.schema?.hiringOrganization?.name;
+  const jobExperience = job?.experience;
+
+  const employmentType =
+    job?.schema?.employmentType[0]?.replaceAll("_", " ").toLowerCase() ||
+    JOB_TYPE_TEXT[job?.type] ||
+    "Unspecified";
+
+  const companyName =
+    job?.company?.name || job?.schema?.hiringOrganization?.name;
   const datePosted = job?.postedAt;
   const jobDescription =
     job?.schema?.responsibilities || job?.schema?.description;
-  const jobLocation =
-    job?.schema?.jobLocation?.address?.stressAddress ||
-    job?.schema?.jobLocation?.address?.addressLocality ||
-    job?.schema?.jobLocation?.address?.addressRegion;
+  const jobAdType = job?.location?.type;
+  const jobAdLocation = job?.location?.city + ", " + job?.location?.state;
+
+  const getJobLocation = () => {
+    switch (jobAdType) {
+      case 1:
+        return "Full Remote";
+      case 2:
+        return jobAdLocation;
+      case 3:
+        return jobAdLocation + " (Hybrid)";
+      default:
+        return (
+          job?.schema?.jobLocation?.address?.stressAddress ||
+          job?.schema?.jobLocation?.address?.addressLocality ||
+          job?.schema?.jobLocation?.address?.addressRegion
+        );
+    }
+  };
+  const jobLocation = getJobLocation();
 
   const pageTitleWithoutBrand = companyName
     ? `${jobTitle} – ${companyName}`
@@ -166,10 +197,6 @@ function JobDescription({ job, slug }) {
           <Flex flexDirection="column">
             {companyName && <Text fontSize="md">{companyName}</Text>}
             <HStack mt="2">
-              <PinIcon />
-              <Text fontSize="sm">{jobLocation ?? "Unspecified"}</Text>
-            </HStack>
-            <HStack>
               <CalendarIcon />
               <Text fontSize="sm">
                 {datePosted
@@ -178,25 +205,49 @@ function JobDescription({ job, slug }) {
               </Text>
               {thisWeek && <Badge colorScheme="green">New</Badge>}
             </HStack>
+            <HStack>
+              <PinIcon />
+              <Text fontSize="sm">{jobLocation ?? "Unspecified"}</Text>
+            </HStack>
+            <HStack>
+              <BriefcaseIcon />
+              <Text fontSize="sm" textTransform="capitalize">
+                {employmentType}
+              </Text>
+            </HStack>
+            <HStack>
+              <ClockIcon />
+              <Text fontSize="sm" textTransform="capitalize">
+                {JOB_EXPERIENCE_TEXT[jobExperience] ?? "Unspecified"}
+              </Text>
+            </HStack>
           </Flex>
           <Flex mt="8">
-            <ApplyButton link={job?.link} />
+            <ApplyButton link={jobLink} email={job?.application?.email} />
           </Flex>
           <Flex flexDirection="column" mt="8">
             <Heading size="md" mb="2">
               ✍️ Job Description
             </Heading>
-            <Box
-              mt="2"
-              p={{ base: "4", md: "8" }}
-              fontFamily="sans-serif"
-              dangerouslySetInnerHTML={{
-                __html: jobDescription,
-              }}
-            />
+            {jobFromAd ? (
+              <Box mt="2" fontFamily="sans-serif" whiteSpace="pre-line">
+                <ChakraMarkdown>
+                  {job?.description.replaceAll("\\n", "\n")}
+                </ChakraMarkdown>
+              </Box>
+            ) : (
+              <Box
+                mt="2"
+                p={{ base: "4", md: "8" }}
+                fontFamily="sans-serif"
+                dangerouslySetInnerHTML={{
+                  __html: jobDescription,
+                }}
+              />
+            )}
           </Flex>
           <Flex mt="8">
-            <ApplyButton link={job?.link} />
+            <ApplyButton link={jobLink} email={job?.application?.email} />
           </Flex>
         </Flex>
       )}
