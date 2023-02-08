@@ -45,10 +45,10 @@ function JobListing({ job }) {
   };
   const jobLocation = getJobLocation();
 
-  const jobExperience = job?.experience;
-
   const employmentType =
-    job?.schema?.employmentType[0]?.replaceAll("_", " ").toLowerCase() ||
+    (job?.schema?.employmentType[0] || "")
+      ?.replaceAll("_", " ")
+      .toLowerCase() ||
     JOB_TYPE_TEXT[job?.type] ||
     "Unspecified";
 
