@@ -74,7 +74,7 @@ function JobDescription({ job, slug }) {
   const jobExperience = job?.experience;
 
   const employmentType =
-    (job?.schema?.employmentType[0] || "")
+    (job?.schema?.employmentType ? job?.schema?.employmentType[0] : "")
       ?.replaceAll("_", " ")
       .toLowerCase() ||
     JOB_TYPE_TEXT[job?.type] ||
