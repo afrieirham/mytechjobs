@@ -33,13 +33,17 @@ export default async function handler(req, res) {
 
   // compose email body
   const jobList = jobs.map((j, i) => {
+    const isAd = j?.source === "ad";
     const url = "https://kerja-it.com/jobs/" + j?.slug;
     const n = i + 1;
     const title = j?.schema?.title ?? j?.title;
 
     let content = `${n}. <b>${title}</b>`;
 
-    const company = j?.schema?.hiringOrganization?.name;
+    const company = isAd
+      ? j?.company?.name
+      : j?.schema?.hiringOrganization?.name;
+
     const hasCompany = Boolean(company);
     if (hasCompany) {
       content += `<br/><i>${company}</i>`;

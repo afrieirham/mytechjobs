@@ -70,6 +70,8 @@ export const getWeeklyJobs = async () => {
     },
     {
       $project: {
+        source: 1,
+        company: 1,
         title: 1,
         slug: 1,
         postedAt: 1,
