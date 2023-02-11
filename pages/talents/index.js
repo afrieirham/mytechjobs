@@ -1,6 +1,7 @@
+import React from "react";
 import Head from "next/head";
 import NextLink from "next/link";
-import React, { useEffect, useState } from "react";
+import { Tag } from "@chakra-ui/tag";
 import {
   Box,
   Flex,
@@ -11,25 +12,24 @@ import {
 } from "@chakra-ui/layout";
 
 import GlobalHeader from "../../components/GlobalHeader";
-import { Tag } from "@chakra-ui/tag";
-import { fetcher } from "../../helpers/fetcher";
 
 const dataUrl = "https://kerja-it-talents.vercel.app/talents";
 
-function Talents() {
-  const [devs, setDevs] = useState([]);
+export const getStaticProps = async () => {
+  const devs = await fetch(dataUrl).then((res) => res.json());
 
+  return {
+    props: {
+      devs,
+    },
+    // revalidate every 1 minute
+    revalidate: 60 * 1,
+  };
+};
+
+function Talents({ devs }) {
   const title = "Hire Developers with Kerja IT";
-  const siteDescription = "";
-
-  useEffect(() => {
-    const fetch = async () => {
-      const data = await fetcher(dataUrl);
-      setDevs(data);
-    };
-
-    fetch();
-  }, []);
+  const siteDescription = "Hire developers from Malaysia with Kerja IT";
 
   return (
     <div>
