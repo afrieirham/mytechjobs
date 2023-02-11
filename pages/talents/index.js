@@ -6,12 +6,15 @@ import {
   Box,
   Flex,
   Heading,
+  HStack,
+  Link,
   LinkBox,
   LinkOverlay,
   Text,
 } from "@chakra-ui/layout";
 
 import GlobalHeader from "../../components/GlobalHeader";
+import { Button } from "@chakra-ui/button";
 
 const dataUrl = "https://kerja-it-talents.vercel.app/talents";
 
@@ -49,7 +52,18 @@ function Talents({ devs }) {
         <Flex flexDirection="column" w="full" alignItems="center" mt="4">
           <Heading size="lg">Hire developers with Kerja IT</Heading>
         </Flex>
-        <Box mt="4">
+        <Flex justifyContent="flex-end" mt="4">
+          <Button
+            variant="ghost"
+            as="a"
+            href="/connect"
+            target="_blank"
+            w={{ base: "full", md: "auto" }}
+          >
+            Add my profile ✍️
+          </Button>
+        </Flex>
+        <Box>
           {devs?.map((d) => {
             const activelyLooking = d["Are you actively looking?"] === "Yes";
             return (
@@ -94,6 +108,11 @@ function Talents({ devs }) {
             );
           })}
         </Box>
+        <HStack maxW="2xl" mx="auto" p="8" justifyContent="center">
+          <Link href="/connect" isExternal>
+            You&apos;re a developer? Add your profile ✍️
+          </Link>
+        </HStack>
       </Flex>
     </div>
   );

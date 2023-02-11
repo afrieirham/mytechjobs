@@ -3,7 +3,7 @@ import Head from "next/head";
 import fetch from "node-fetch";
 import { Tag } from "@chakra-ui/tag";
 import { Button } from "@chakra-ui/button";
-import { Flex, Heading, Text, VStack } from "@chakra-ui/layout";
+import { Flex, Heading, HStack, Link, Text, VStack } from "@chakra-ui/layout";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -156,6 +156,11 @@ function Profile({ profile }) {
           <HireMeButton />
         </VStack>
       </Flex>
+      <HStack maxW="2xl" mx="auto" p="8" justifyContent="center">
+        <Link href="/connect" isExternal>
+          You&apos;re a developer? Add your profile ✍️
+        </Link>
+      </HStack>
     </div>
   );
 }
