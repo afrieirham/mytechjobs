@@ -14,6 +14,7 @@ import {
   Link,
   Tag,
   Text,
+  VStack,
 } from "@chakra-ui/react";
 import { format } from "date-fns";
 import queryString from "query-string";
@@ -144,19 +145,19 @@ function JobDescription({ job, slug }) {
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
       <GlobalHeader />
-      <Breadcrumb mt="8" maxW="2xl" mb="4" mx={{ base: "4", md: "auto" }}>
-        <BreadcrumbItem>
-          <BreadcrumbLink href="/jobs">Jobs</BreadcrumbLink>
-        </BreadcrumbItem>
+      {job && (
+        <Breadcrumb mt="8" maxW="2xl" mb="4" mx={{ base: "4", md: "auto" }}>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/jobs">Jobs</BreadcrumbLink>
+          </BreadcrumbItem>
 
-        {job && (
           <BreadcrumbItem isCurrentPage>
             <BreadcrumbLink href={`/jobs/${slug}`} noOfLines="1">
               {pageTitleWithoutBrand}
             </BreadcrumbLink>
           </BreadcrumbItem>
-        )}
-      </Breadcrumb>
+        </Breadcrumb>
+      )}
       {!job && (
         <Flex
           flexDirection="column"
@@ -165,16 +166,26 @@ function JobDescription({ job, slug }) {
           p={{ base: "4", md: "0" }}
           textAlign="center"
           alignItems="center"
+          mt="8"
         >
-          <Heading>😵‍💫 Opps...</Heading>
-          <Heading size="md" mt="2" color="gray.500">
+          <Heading size="md">😵‍💫 Opps...</Heading>
+          <Heading size="sm" mt="2" color="gray.600">
             Can&apos;t fint the job you&apos;re looking for.
           </Heading>
-          <Flex mt="8">
-            <Button colorScheme="messenger" as={NextLink} href="/jobs">
-              Look for other jobs instead 🦄
+          <VStack mt="8">
+            <Link as={NextLink} href="/jobs">
+              Look for other jobs
+            </Link>
+            <Text>or</Text>
+            <Button
+              href="/connect"
+              colorScheme="messenger"
+              as="a"
+              target="_blank"
+            >
+              Drop your resume here 📥
             </Button>
-          </Flex>
+          </VStack>
         </Flex>
       )}
       {job && (
@@ -256,7 +267,7 @@ function JobDescription({ job, slug }) {
             </Flex>
           </Flex>
           <HStack maxW="2xl" mx="auto" p="8" justifyContent="center" mt="4">
-            <Link href="/connect" isExternal>
+            <Link href="/connect" isExternal textAlign="center">
               Applied but no response? Drop your resume here 📥
             </Link>
           </HStack>
