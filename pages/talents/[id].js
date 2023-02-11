@@ -37,7 +37,16 @@ export async function getStaticPaths() {
 }
 
 function HireMeButton() {
-  return <Button w={{ base: "full", lg: "200px" }}>Hire me 💼</Button>;
+  return (
+    <Button
+      as="a"
+      target="_blank"
+      w={{ base: "full", lg: "200px" }}
+      href="https://buy.stripe.com/9AQ17E1Sx1CMckE9AA"
+    >
+      Hire me 💼
+    </Button>
+  );
 }
 
 function Profile({ profile }) {
