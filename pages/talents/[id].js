@@ -157,7 +157,7 @@ function Profile({ profile }) {
         </VStack>
       </Flex>
       <HStack maxW="2xl" mx="auto" p="8" justifyContent="center">
-        <Link href="/connect" isExternal>
+        <Link href="/connect" isExternal textAlign="center">
           You&apos;re a developer? Add your profile ✍️
         </Link>
       </HStack>
