@@ -2,20 +2,18 @@ import React from "react";
 import Head from "next/head";
 import fetch from "node-fetch";
 import { Tag } from "@chakra-ui/tag";
-import { Box, Flex, Heading, HStack, Text, VStack } from "@chakra-ui/layout";
-
-import GlobalHeader from "../../components/GlobalHeader";
-import { Table, TableContainer, Tbody, Td, Tr } from "@chakra-ui/table";
+import { Flex, Heading, Text, VStack } from "@chakra-ui/layout";
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
 } from "@chakra-ui/breadcrumb";
 
-const dataUrl = "https://kerja-it-talents.vercel.app/talents/";
+import GlobalHeader from "../../components/GlobalHeader";
 
 export const getStaticProps = async (context) => {
   const { id } = context.params;
+  const dataUrl = "https://kerja-it-talents.vercel.app/talents/";
   const profile = await fetch(dataUrl + id).then((res) => res.json());
 
   return {
@@ -71,57 +69,76 @@ function Profile({ profile }) {
         mt="4"
       >
         <Heading>Developer {id}</Heading>
-        <TableContainer fontSize="sm" borderRadius="md" mt="4">
-          <Table variant="simple">
-            <Tbody>
-              <Tr>
-                <Td>Available date:</Td>
-                <Td>
-                  {profile["Available to start on"]}{" "}
-                  {activelyLooking && (
-                    <Tag size="sm" colorScheme="green">
-                      Actively looking
-                    </Tag>
-                  )}
-                </Td>
-              </Tr>
-              <Tr>
-                <Td>Can work in:</Td>
-                <Td>{profile["Work location"]}</Td>
-              </Tr>
-              <Tr>
-                <Td>Looking for:</Td>
-                <Td>{profile["Role Type"]}</Td>
-              </Tr>
-              <Tr>
-                <Td>Preferred role:</Td>
-                <Td>{profile["Preferred Role"]}</Td>
-              </Tr>
-              <Tr>
-                <Td>Interested in:</Td>
-                <Td>{profile["Role Level"]}</Td>
-              </Tr>
-              <Tr>
-                <Td>Remote:</Td>
-                <Td>{profile["Are you open to remote job?"]}</Td>
-              </Tr>
-              <Tr>
-                <Td>On-site:</Td>
-                <Td>{profile["Are you open to on-site job?"]}</Td>
-              </Tr>
-            </Tbody>
-          </Table>
-        </TableContainer>
-        <Flex flexDirection="column" mt="4">
-          <Text>Skills:</Text>
-          <Text fontSize="sm" fontFamily="sans-serif">
-            {profile["List down your skills "][" tech stacks"]}
-          </Text>
-          <Text mt="8">Profile:</Text>
-          <Text fontSize="sm" fontFamily="sans-serif" whiteSpace="pre-wrap">
-            {profile["Bio"]}
-          </Text>
-        </Flex>
+        <VStack alignItems="flex-start" spacing="6" mt="4">
+          <Flex flexDirection="column">
+            <Text fontSize="sm" fontWeight="bold">
+              Available date:
+            </Text>
+            <Text>
+              {profile["Available to start on"]}{" "}
+              {activelyLooking && (
+                <Tag size="sm" colorScheme="green">
+                  Actively looking
+                </Tag>
+              )}
+            </Text>
+          </Flex>
+          <Flex flexDirection="column">
+            <Text fontSize="sm" fontWeight="bold">
+              Available in:
+            </Text>
+            <Text>{profile["Work location"]}</Text>
+          </Flex>
+          <Flex flexDirection="column">
+            <Text fontSize="sm" fontWeight="bold">
+              Looking for:
+            </Text>
+            <Text>{profile["Role Type"]}</Text>
+          </Flex>
+          <Flex flexDirection="column">
+            <Text fontSize="sm" fontWeight="bold">
+              Preferred position:
+            </Text>
+            <Text>{profile["Preferred Role"]}</Text>
+          </Flex>
+          <Flex flexDirection="column">
+            <Text fontSize="sm" fontWeight="bold">
+              Interested in role as:
+            </Text>
+            <Text>{profile["Role Level"]}</Text>
+          </Flex>
+          <Flex flexDirection="column">
+            <Text fontSize="sm" fontWeight="bold">
+              Remote:
+            </Text>
+            <Text>{profile["Are you open to remote job?"]}</Text>
+          </Flex>
+          <Flex flexDirection="column">
+            <Text fontSize="sm" fontWeight="bold">
+              On-site:
+            </Text>
+            <Text>{profile["Are you open to on-site job?"]}</Text>
+          </Flex>
+          <Flex flexDirection="column">
+            <Text fontSize="sm" fontWeight="bold">
+              Skills:
+            </Text>
+            <Text>{profile["List down your skills "][" tech stacks"]}</Text>
+          </Flex>
+          <Flex flexDirection="column">
+            <Text fontSize="sm" fontWeight="bold">
+              Profile:
+            </Text>
+            <Text
+              fontFamily="sans-serif"
+              whiteSpace="pre-wrap"
+              fontSize="sm"
+              color="gray.600"
+            >
+              {profile["Bio"]}
+            </Text>
+          </Flex>
+        </VStack>
       </Flex>
     </div>
   );
