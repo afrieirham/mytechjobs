@@ -11,6 +11,7 @@ import {
   Flex,
   Heading,
   HStack,
+  Link,
   Tag,
   Text,
 } from "@chakra-ui/react";
@@ -130,7 +131,7 @@ function JobDescription({ job, slug }) {
   );
 
   return (
-    <Box bg="gray.50" pb="16">
+    <Box bg="gray.50">
       <Head>
         <title>{pageTitle}</title>
         <meta name="description" content={siteDescription} />
@@ -144,10 +145,6 @@ function JobDescription({ job, slug }) {
       </Head>
       <GlobalHeader />
       <Breadcrumb mt="8" maxW="2xl" mb="4" mx={{ base: "4", md: "auto" }}>
-        <BreadcrumbItem>
-          <BreadcrumbLink href="/">Home</BreadcrumbLink>
-        </BreadcrumbItem>
-
         <BreadcrumbItem>
           <BreadcrumbLink href="/jobs">Jobs</BreadcrumbLink>
         </BreadcrumbItem>
@@ -181,82 +178,89 @@ function JobDescription({ job, slug }) {
         </Flex>
       )}
       {job && (
-        <Flex
-          flexDirection="column"
-          maxW="2xl"
-          mx="auto"
-          p={{ base: "4", md: "8" }}
-          bg="white"
-          borderWidth={{ base: "none", md: "1px" }}
-          borderColor="gray.300"
-          borderRadius={{ base: "none", md: "lg" }}
-        >
-          <HStack>
-            {job?.keywords.map((keyword) => (
-              <Tag key={keyword} size="sm" colorScheme="blackAlpha">
-                {keyword}
-              </Tag>
-            ))}
-          </HStack>
-          <Heading size="lg" mt="2">
-            {jobTitle}
-          </Heading>
-          <Flex flexDirection="column">
-            {companyName && <Text fontSize="md">{companyName}</Text>}
-            <HStack mt="2">
-              <CalendarIcon />
-              <Text fontSize="sm">
-                {datePosted
-                  ? "Posted on " + format(new Date(datePosted), "do MMM yyyy")
-                  : "Unspecified"}
-              </Text>
-              {thisWeek && <Badge colorScheme="green">New</Badge>}
-            </HStack>
+        <div>
+          <Flex
+            flexDirection="column"
+            maxW="2xl"
+            mx="auto"
+            p={{ base: "4", md: "8" }}
+            bg="white"
+            borderWidth={{ base: "none", md: "1px" }}
+            borderColor="gray.300"
+            borderRadius={{ base: "none", md: "lg" }}
+          >
             <HStack>
-              <PinIcon />
-              <Text fontSize="sm">{jobLocation ?? "Unspecified"}</Text>
+              {job?.keywords.map((keyword) => (
+                <Tag key={keyword} size="sm" colorScheme="blackAlpha">
+                  {keyword}
+                </Tag>
+              ))}
             </HStack>
-            <HStack>
-              <BriefcaseIcon />
-              <Text fontSize="sm" textTransform="capitalize">
-                {employmentTypeText}
-              </Text>
-            </HStack>
-            <HStack>
-              <ClockIcon />
-              <Text fontSize="sm" textTransform="capitalize">
-                {JOB_EXPERIENCE_TEXT[jobExperience] ?? "Unspecified"}
-              </Text>
-            </HStack>
-          </Flex>
-          <Flex mt="8">
-            <ApplyButton link={jobLink} email={job?.application?.email} />
-          </Flex>
-          <Flex flexDirection="column" mt="8">
-            <Heading size="md" mb="2">
-              ✍️ Job Description
+            <Heading size="lg" mt="2">
+              {jobTitle}
             </Heading>
-            {jobFromAd ? (
-              <Box mt="2" fontFamily="sans-serif" whiteSpace="pre-line">
-                <ChakraMarkdown>
-                  {job?.description.replaceAll("\\n", "\n")}
-                </ChakraMarkdown>
-              </Box>
-            ) : (
-              <Box
-                mt="2"
-                p={{ base: "4", md: "8" }}
-                fontFamily="sans-serif"
-                dangerouslySetInnerHTML={{
-                  __html: jobDescription,
-                }}
-              />
-            )}
+            <Flex flexDirection="column">
+              {companyName && <Text fontSize="md">{companyName}</Text>}
+              <HStack mt="2">
+                <CalendarIcon />
+                <Text fontSize="sm">
+                  {datePosted
+                    ? "Posted on " + format(new Date(datePosted), "do MMM yyyy")
+                    : "Unspecified"}
+                </Text>
+                {thisWeek && <Badge colorScheme="green">New</Badge>}
+              </HStack>
+              <HStack>
+                <PinIcon />
+                <Text fontSize="sm">{jobLocation ?? "Unspecified"}</Text>
+              </HStack>
+              <HStack>
+                <BriefcaseIcon />
+                <Text fontSize="sm" textTransform="capitalize">
+                  {employmentTypeText}
+                </Text>
+              </HStack>
+              <HStack>
+                <ClockIcon />
+                <Text fontSize="sm" textTransform="capitalize">
+                  {JOB_EXPERIENCE_TEXT[jobExperience] ?? "Unspecified"}
+                </Text>
+              </HStack>
+            </Flex>
+            <Flex mt="8">
+              <ApplyButton link={jobLink} email={job?.application?.email} />
+            </Flex>
+            <Flex flexDirection="column" mt="8">
+              <Heading size="md" mb="2">
+                ✍️ Job Description
+              </Heading>
+              {jobFromAd ? (
+                <Box mt="2" fontFamily="sans-serif" whiteSpace="pre-line">
+                  <ChakraMarkdown>
+                    {job?.description.replaceAll("\\n", "\n")}
+                  </ChakraMarkdown>
+                </Box>
+              ) : (
+                <Box
+                  mt="2"
+                  p={{ base: "4", md: "8" }}
+                  fontFamily="sans-serif"
+                  dangerouslySetInnerHTML={{
+                    __html: jobDescription,
+                  }}
+                />
+              )}
+            </Flex>
+            <Flex mt="8">
+              <ApplyButton link={jobLink} email={job?.application?.email} />
+            </Flex>
           </Flex>
-          <Flex mt="8">
-            <ApplyButton link={jobLink} email={job?.application?.email} />
-          </Flex>
-        </Flex>
+          <HStack maxW="2xl" mx="auto" p="8" justifyContent="center" mt="4">
+            <Link href="/connect" isExternal>
+              Applied but no response? Drop your resume here 📥
+            </Link>
+          </HStack>
+        </div>
       )}
     </Box>
   );

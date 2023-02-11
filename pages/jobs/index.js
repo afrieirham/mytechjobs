@@ -9,6 +9,7 @@ import {
   Flex,
   Heading,
   HStack,
+  Link,
   Spinner,
   Tag,
   Text,
@@ -73,7 +74,7 @@ function Search() {
   const hasTags = tags?.length > 0;
 
   return (
-    <Box bg="gray.50" pb="16">
+    <Box bg="gray.50">
       <Head>
         <title>Find your next tech jobs in Malaysia 🇲🇾 | Kerja IT</title>
         <meta name="description" content={siteDescription} />
@@ -117,36 +118,42 @@ function Search() {
               </Tag>
             ))}
           </HStack>
-          {isLoading ? (
-            <Flex w="full" h="full" justify="center" mt="16">
-              <Spinner />
-            </Flex>
-          ) : (
-            <Flex flexDirection="column">
-              {jobs?.map((job) => (
-                <JobListing key={job._id} job={job} />
-              ))}
-              <HStack mt="4" justifyContent="center">
-                <Button
-                  display={hasPrevious ? "block" : "none"}
-                  size="sm"
-                  onClick={onLoadPrevious}
-                  isLoading={isLoading}
-                >
-                  Back
-                </Button>
-
-                <Button
-                  display={hasNext ? "block" : "none"}
-                  size="sm"
-                  onClick={onLoadNext}
-                  isLoading={isLoading}
-                >
-                  Next
-                </Button>
-              </HStack>
-            </Flex>
-          )}
+          <div>
+            {isLoading ? (
+              <Flex w="full" h="full" justify="center" mt="16">
+                <Spinner />
+              </Flex>
+            ) : (
+              <Flex flexDirection="column">
+                {jobs?.map((job) => (
+                  <JobListing key={job._id} job={job} />
+                ))}
+                <HStack mt="4" justifyContent="center">
+                  <Button
+                    display={hasPrevious ? "block" : "none"}
+                    size="sm"
+                    onClick={onLoadPrevious}
+                    isLoading={isLoading}
+                  >
+                    Back
+                  </Button>
+                  <Button
+                    display={hasNext ? "block" : "none"}
+                    size="sm"
+                    onClick={onLoadNext}
+                    isLoading={isLoading}
+                  >
+                    Next
+                  </Button>
+                </HStack>
+              </Flex>
+            )}
+            <HStack maxW="2xl" mx="auto" p="8" justifyContent="center" mt="4">
+              <Link href="/connect" isExternal>
+                Applied but no response? Drop your resume here 📥
+              </Link>
+            </HStack>
+          </div>
         </Flex>
         <FilterDesktop
           setPage={setPage}
