@@ -22,8 +22,8 @@ import JobListing from "../../components/JobListing";
 import FilterCard from "../../components/FilterCard";
 import FilterDesktop from "../../components/FilterDesktop";
 import GlobalHeader from "../../components/GlobalHeader";
+import { fetcher } from "../../helpers/fetcher";
 
-const fetcher = (url) => fetch(url).then((r) => r.json());
 function Search() {
   const router = useRouter();
   const [page, setPage] = useState(1);
