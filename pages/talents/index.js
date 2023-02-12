@@ -2,6 +2,7 @@ import React from "react";
 import Head from "next/head";
 import NextLink from "next/link";
 import { Tag } from "@chakra-ui/tag";
+import { Button } from "@chakra-ui/button";
 import {
   Box,
   Flex,
@@ -12,9 +13,9 @@ import {
   LinkOverlay,
   Text,
 } from "@chakra-ui/layout";
+import { SessionAuth } from "supertokens-auth-react/recipe/session";
 
 import GlobalHeader from "../../components/GlobalHeader";
-import { Button } from "@chakra-ui/button";
 
 const dataUrl = "https://kerja-it-talents.vercel.app/talents";
 
@@ -35,7 +36,7 @@ function Talents({ devs }) {
   const siteDescription = "Hire developers from Malaysia with Kerja IT";
 
   return (
-    <div>
+    <SessionAuth>
       <Head>
         <title>{title}</title>
         <meta name="description" content={siteDescription} />
@@ -114,7 +115,7 @@ function Talents({ devs }) {
           </Link>
         </HStack>
       </Flex>
-    </div>
+    </SessionAuth>
   );
 }
 
