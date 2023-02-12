@@ -2,8 +2,9 @@ import { Analytics } from "@vercel/analytics/react";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import SuperTokensReact, { SuperTokensWrapper } from "supertokens-auth-react";
 
-import GlobalFooter from "../components/GlobalFooter";
 import { frontendConfig } from "../config/frontendConfig";
+import GlobalFooter from "../components/GlobalFooter";
+import GlobalHeader from "../components/GlobalHeader";
 
 if (typeof window !== "undefined") {
   // we only want to call this init function on the frontend, so we check typeof window !== 'undefined'
@@ -28,6 +29,7 @@ function MyApp({ Component, pageProps }) {
       })}
     >
       <SuperTokensWrapper>
+        <GlobalHeader />
         <Component {...pageProps} />
         <Analytics />
         <GlobalFooter />

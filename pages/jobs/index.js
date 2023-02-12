@@ -21,7 +21,6 @@ import { standardizeQuery } from "../../helpers/query";
 import JobListing from "../../components/JobListing";
 import FilterCard from "../../components/FilterCard";
 import FilterDesktop from "../../components/FilterDesktop";
-import GlobalHeader from "../../components/GlobalHeader";
 import { fetcher } from "../../helpers/fetcher";
 
 function Search() {
@@ -80,7 +79,6 @@ function Search() {
         <meta name="description" content={siteDescription} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <GlobalHeader />
       <Flex
         flexDirection="column"
         maxW="2xl"

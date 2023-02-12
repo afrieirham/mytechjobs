@@ -13,7 +13,6 @@ import {
 import { siteDescription } from "../constants/SEO";
 import { getLatestJobs } from "../controllers/jobs";
 import JobListing from "../components/JobListing";
-import GlobalHeader from "../components/GlobalHeader";
 
 export const getStaticProps = async () => {
   const { jobs: latest } = await getLatestJobs(30);
@@ -42,7 +41,6 @@ export default function Home({ latest }) {
         <meta name="twitter:card" content="summary_large_image" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <GlobalHeader />
 
       <Flex flexDirection="column" maxW="4xl" mx="auto" p="4">
         {/* Header */}

@@ -11,7 +11,6 @@ import {
 } from "@chakra-ui/breadcrumb";
 import { SessionAuth } from "supertokens-auth-react/recipe/session";
 
-import GlobalHeader from "../../components/GlobalHeader";
 const dataUrl = "https://kerja-it-talents.vercel.app/talents";
 
 export const getStaticProps = async (context) => {
@@ -60,7 +59,6 @@ function Profile({ profile }) {
       <Head>
         <title>{title}</title>
       </Head>
-      <GlobalHeader />
       <Breadcrumb mt="8" maxW="2xl" mb="4" mx={{ base: "4", md: "auto" }}>
         <BreadcrumbItem>
           <BreadcrumbLink href="/talents">Talents</BreadcrumbLink>

@@ -25,7 +25,6 @@ import { getAllSlugs, getJobBySlug } from "../../controllers/jobs";
 import { JOB_EXPERIENCE_TEXT, JOB_TYPE_TEXT } from "../../types/jobs";
 import PinIcon from "../../icons/PinIcon";
 import CalendarIcon from "../../icons/CalendarIcon";
-import GlobalHeader from "../../components/GlobalHeader";
 import ChakraMarkdown from "../../components/ChakraMarkdown";
 import BriefcaseIcon from "../../icons/BriefcaseIcon";
 import ClockIcon from "../../icons/ClockIcon";
@@ -144,7 +143,6 @@ function JobDescription({ job, slug }) {
         <meta property="og:site_name" content="Kerja IT" />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
-      <GlobalHeader />
       {job && (
         <Breadcrumb mt="8" maxW="2xl" mb="4" mx={{ base: "4", md: "auto" }}>
           <BreadcrumbItem>

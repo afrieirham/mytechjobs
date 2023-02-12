@@ -11,7 +11,6 @@ import { frameworks, places } from "../../constants/paths";
 import FlagIcon from "../../components/FlagIcon";
 import JobListing from "../../components/JobListing";
 import TechIcon from "../../components/TechIcon";
-import GlobalHeader from "../../components/GlobalHeader";
 
 export const getStaticProps = async (context) => {
   const { tech, location } = context.params;
@@ -73,7 +72,6 @@ function JobList({ jobs, tech, location }) {
         <meta name="description" content={siteDescription} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <GlobalHeader />
 
       <Flex flexDirection="column" maxW="2xl" mx="auto" p="4">
         <HStack mt="2" mx="auto">

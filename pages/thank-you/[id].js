@@ -3,7 +3,6 @@ import Head from "next/head";
 import React from "react";
 
 import { siteDescription } from "../../constants/SEO";
-import GlobalHeader from "../../components/GlobalHeader";
 
 function ThankYou() {
   const title = "Thank You For You Purchase 🥳 | Kerja IT";
@@ -18,7 +17,6 @@ function ThankYou() {
         <meta property="og:site_name" content="Kerja IT" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <GlobalHeader />
       <Flex
         px="4"
         h="80vh"

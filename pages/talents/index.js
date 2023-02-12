@@ -13,9 +13,6 @@ import {
   LinkOverlay,
   Text,
 } from "@chakra-ui/layout";
-import { SessionAuth } from "supertokens-auth-react/recipe/session";
-
-import GlobalHeader from "../../components/GlobalHeader";
 
 const dataUrl = "https://kerja-it-talents.vercel.app/talents";
 
@@ -36,7 +33,7 @@ function Talents({ devs }) {
   const siteDescription = "Hire developers from Malaysia with Kerja IT";
 
   return (
-    <SessionAuth>
+    <div>
       <Head>
         <title>{title}</title>
         <meta name="description" content={siteDescription} />
@@ -48,7 +45,6 @@ function Talents({ devs }) {
         <meta name="twitter:card" content="summary_large_image" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <GlobalHeader />
       <Flex flexDirection="column" maxW="2xl" mx="auto" p="4">
         <Flex flexDirection="column" w="full" alignItems="center" mt="4">
           <Heading size="lg">Hire developers with Kerja IT</Heading>
@@ -115,7 +111,7 @@ function Talents({ devs }) {
           </Link>
         </HStack>
       </Flex>
-    </SessionAuth>
+    </div>
   );
 }
 
