@@ -9,7 +9,6 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
 } from "@chakra-ui/breadcrumb";
-import { SessionAuth } from "supertokens-auth-react/recipe/session";
 
 const dataUrl = "https://kerja-it-talents.vercel.app/talents";
 
@@ -55,7 +54,7 @@ function Profile({ profile }) {
   const activelyLooking = profile["Are you actively looking?"] === "Yes";
 
   return (
-    <SessionAuth>
+    <div>
       <Head>
         <title>{title}</title>
       </Head>
@@ -160,7 +159,7 @@ function Profile({ profile }) {
           You&apos;re a developer? Add your profile ✍️
         </Link>
       </HStack>
-    </SessionAuth>
+    </div>
   );
 }
 
