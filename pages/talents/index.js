@@ -29,7 +29,7 @@ export const getStaticProps = async () => {
 };
 
 function Talents({ devs }) {
-  const title = "Hire Developers with Kerja IT";
+  const title = "Talents | Kerja IT";
   const siteDescription = "Hire developers from Malaysia with Kerja IT";
 
   return (
@@ -47,7 +47,7 @@ function Talents({ devs }) {
       </Head>
       <Flex flexDirection="column" maxW="2xl" mx="auto" p="4">
         <Flex flexDirection="column" w="full" alignItems="center" mt="4">
-          <Heading size="lg">Hire developers with Kerja IT</Heading>
+          <Heading size="lg">Developers looking for their next job</Heading>
         </Flex>
         <Flex justifyContent="flex-end" mt="4">
           <Button

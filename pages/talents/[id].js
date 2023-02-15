@@ -41,7 +41,7 @@ function HireMeButton() {
       as="a"
       target="_blank"
       w={{ base: "full", lg: "200px" }}
-      href="https://buy.stripe.com/9AQ17E1Sx1CMckE9AA"
+      href={process.env.NEXT_PUBLIC_SUBSCRIPTION_LINK}
     >
       Hire me 💼
     </Button>
