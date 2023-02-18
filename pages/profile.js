@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -17,11 +17,52 @@ import {
   Textarea,
   UnorderedList,
 } from "@chakra-ui/react";
+import supertokensNode from "supertokens-node";
+import Session from "supertokens-node/recipe/session";
 import { SessionAuth } from "supertokens-auth-react/recipe/session";
 
 import { places } from "../constants/paths";
+import { getUserBySessionId } from "../controllers/users";
+import { backendConfig } from "../config/backendConfig";
 
-function Profile() {
+export const getServerSideProps = async (context) => {
+  supertokensNode.init(backendConfig());
+  let session;
+
+  try {
+    session = await Session.getSession(context.req, context.res);
+  } catch (err) {
+    if (err.type === Session.Error.TRY_REFRESH_TOKEN) {
+      return { props: { fromSupertokens: "needs-refresh" } };
+    } else if (err.type === Session.Error.UNAUTHORISED) {
+      return { props: { fromSupertokens: "needs-refresh" } };
+    }
+
+    throw err;
+  }
+
+  if (!session) {
+    return { notFound: true };
+  }
+
+  try {
+    const userId = session.getUserId();
+    const { user } = await getUserBySessionId(userId);
+    return {
+      props: {
+        user: JSON.parse(JSON.stringify(user)),
+      },
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      notFound: true,
+    };
+  }
+};
+
+function Profile({ user }) {
+  const [data, setData] = useState(user);
   const locations = places
     .filter((p) => p !== "remote")
     .map((p) => p.replaceAll("-", " "));
@@ -44,13 +85,13 @@ function Profile() {
             <Text fontSize="md" fontWeight="bold">
               Name
             </Text>
-            <Input />
+            <Input value={data?.name} />
           </Flex>
           <Flex flexDirection="column" w="full">
             <Text fontSize="md" fontWeight="bold">
               Email
             </Text>
-            <Input readOnly />
+            <Input readOnly value={data?.email} />
           </Flex>
           <Flex flexDirection="column" w="full">
             <Text fontSize="md" fontWeight="bold">
