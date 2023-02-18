@@ -4,6 +4,7 @@ import Dashboard from "supertokens-node/recipe/dashboard";
 import UserMetadata from "supertokens-node/recipe/usermetadata";
 
 import { appInfo } from "./appInfo";
+import { createUser } from "../controllers/users";
 
 export const backendConfig = () => {
   return {
@@ -25,18 +26,25 @@ export const backendConfig = () => {
             return {
               ...originalImplementation,
               // add name to user metadata
-              signUpPOST: async function (input) {
+              signUpPOST: async (input) => {
                 if (originalImplementation.signUpPOST === undefined) {
                   throw Error("Should never come here");
                 }
                 const response = await originalImplementation.signUpPOST(input);
                 if (response.status === "OK") {
                   const formFields = input?.formFields;
-                  const field = formFields?.find((f) => f.id === "name");
+                  const name = formFields?.find((f) => f.id === "name");
+                  const email = formFields?.find((f) => f.id === "email");
                   const userId = response.user.id;
 
                   await UserMetadata.updateUserMetadata(userId, {
-                    first_name: field.value,
+                    first_name: name.value,
+                  });
+
+                  await createUser({
+                    name: name.value,
+                    email: email.value,
+                    superTokensId: userId,
                   });
                 }
                 return response;
@@ -51,7 +59,7 @@ export const backendConfig = () => {
           functions: (originalImplementation) => {
             return {
               ...originalImplementation,
-              createNewSession: async function (input) {
+              createNewSession: async (input) => {
                 const { userId } = input;
                 const { metadata } = await UserMetadata.getUserMetadata(userId);
 

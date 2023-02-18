@@ -29,7 +29,7 @@ const GlobalHeader = () => {
 
   const sessionContext = useSessionContext();
   const { doesSessionExist, accessTokenPayload } = sessionContext;
-  const name = accessTokenPayload?.first_name;
+  const name = accessTokenPayload?.first_name ?? "User";
 
   const onLogout = async () => {
     router.push("/");

@@ -5,10 +5,9 @@ import {
   Button,
   Flex,
   Heading,
-  HStack,
   SimpleGrid,
+  Stack,
   Text,
-  VStack,
 } from "@chakra-ui/react";
 
 import { siteDescription } from "../constants/SEO";
@@ -58,8 +57,8 @@ export default function Home({ latest }) {
           </Text>
         </Flex>
 
-        <VStack mt="8">
-          <HStack>
+        <Stack direction="column" align="center" mt="8">
+          <Stack direction={{ base: "column", md: "row" }}>
             <Button
               color="white"
               bg="gray.900"
@@ -73,26 +72,26 @@ export default function Home({ latest }) {
             <Button as="a" href="/jobs" variant="outline">
               🔍 I want to browse for jobs
             </Button>
-          </HStack>
-        </VStack>
+          </Stack>
+        </Stack>
 
         {/* Latest Jobs */}
         <Flex flexDirection="column" w="full" mt="16">
-          <HStack>
+          <Stack>
             <Heading size="md" as={NextLink} href="/jobs">
               ⏳ Latest Jobs →
             </Heading>
-          </HStack>
+          </Stack>
           <SimpleGrid columns={{ base: 1, sm: 2 }} spacingX="2">
             {latest.map((job) => (
               <JobListing key={job._id} job={job} />
             ))}
           </SimpleGrid>
-          <VStack mt="8">
+          <Stack direction="column" align="center" mt="8">
             <Button as={NextLink} href="/jobs">
               Search 239+ more jobs
             </Button>
-          </VStack>
+          </Stack>
         </Flex>
       </Flex>
     </Box>
