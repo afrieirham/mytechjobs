@@ -7,6 +7,7 @@ import {
   Heading,
   HStack,
   SimpleGrid,
+  Text,
   VStack,
 } from "@chakra-ui/react";
 
@@ -44,12 +45,39 @@ export default function Home({ latest }) {
 
       <Flex flexDirection="column" maxW="4xl" mx="auto" p="4">
         {/* Header */}
-        <Flex flexDirection="column" w="full" alignItems="center" mt="4">
-          <Heading size="lg">Daily Tech Jobs In Malaysia 🇲🇾</Heading>
+        <Flex
+          flexDirection="column"
+          w="full"
+          alignItems="center"
+          textAlign="center"
+          mt="4"
+        >
+          <Heading>Find Tech Jobs In Malaysia 🇲🇾</Heading>
+          <Text color="gray.600">
+            Let employers find you. Or apply to companies directly.
+          </Text>
         </Flex>
 
+        <VStack mt="8">
+          <HStack>
+            <Button
+              color="white"
+              bg="gray.900"
+              _hover={{ bg: "gray.700" }}
+              _active={{ bg: "gray.700" }}
+              as="a"
+              href="/auth?show=signup"
+            >
+              🎯 I want companies to find me
+            </Button>
+            <Button as="a" href="/jobs" variant="outline">
+              🔍 I want to browse for jobs
+            </Button>
+          </HStack>
+        </VStack>
+
         {/* Latest Jobs */}
-        <Flex flexDirection="column" w="full" mt="8">
+        <Flex flexDirection="column" w="full" mt="16">
           <HStack>
             <Heading size="md" as={NextLink} href="/jobs">
               ⏳ Latest Jobs →

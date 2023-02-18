@@ -1,6 +1,7 @@
 import EmailPasswordNode from "supertokens-node/recipe/emailpassword";
 import SessionNode from "supertokens-node/recipe/session";
 import Dashboard from "supertokens-node/recipe/dashboard";
+import UserMetadata from "supertokens-node/recipe/usermetadata";
 
 import { appInfo } from "./appInfo";
 
@@ -11,13 +12,62 @@ export const backendConfig = () => {
       connectionURI: process.env.SUPERTOKENS_CONNECTION_URI,
       apiKey: process.env.SUPERTOKENS_API_KEY,
     },
-    appInfo,
+    appInfo: {
+      ...appInfo,
+      apiDomain: process.env.VERCEL_URL,
+      websiteDomain: process.env.VERCEL_URL,
+    },
     recipeList: [
-      EmailPasswordNode.init(),
-      SessionNode.init(),
-      Dashboard.init({
-        apiKey: process.env.SUPERTOKENS_DASHBOARD_KEY,
+      EmailPasswordNode.init({
+        signUpFeature: { formFields: [{ id: "name" }] },
+        override: {
+          apis: (originalImplementation) => {
+            return {
+              ...originalImplementation,
+              // add name to user metadata
+              signUpPOST: async function (input) {
+                if (originalImplementation.signUpPOST === undefined) {
+                  throw Error("Should never come here");
+                }
+                const response = await originalImplementation.signUpPOST(input);
+                if (response.status === "OK") {
+                  const formFields = input?.formFields;
+                  const field = formFields?.find((f) => f.id === "name");
+                  const userId = response.user.id;
+
+                  await UserMetadata.updateUserMetadata(userId, {
+                    first_name: field.value,
+                  });
+                }
+                return response;
+              },
+            };
+          },
+        },
       }),
+      SessionNode.init({
+        override: {
+          // pass metadata to accessTokenPayload
+          functions: (originalImplementation) => {
+            return {
+              ...originalImplementation,
+              createNewSession: async function (input) {
+                const { userId } = input;
+                const { metadata } = await UserMetadata.getUserMetadata(userId);
+
+                input.accessTokenPayload = {
+                  ...input.accessTokenPayload,
+                  ...metadata,
+                };
+
+                return originalImplementation.createNewSession(input);
+              },
+            };
+          },
+        },
+      }),
+      UserMetadata.init(),
+      Dashboard.init({ apiKey: process.env.SUPERTOKENS_DASHBOARD_KEY }),
     ],
     isInServerlessEnv: true,
   };

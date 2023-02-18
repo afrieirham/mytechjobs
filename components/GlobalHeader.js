@@ -11,7 +11,13 @@ import {
   VStack,
   Button,
   Spacer,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
 } from "@chakra-ui/react";
+import { useSessionContext } from "supertokens-auth-react/recipe/session";
+import { signOut } from "supertokens-auth-react/recipe/emailpassword";
 
 import { AiOutlineMenu } from "react-icons/ai";
 import Image from "next/image";
@@ -21,6 +27,12 @@ const GlobalHeader = () => {
   const bg = useColorModeValue("white", "gray.800");
   const ref = React.useRef(null);
   const mobileNav = useDisclosure();
+
+  const sessionContext = useSessionContext();
+  const { doesSessionExist, accessTokenPayload } = sessionContext;
+  const name = accessTokenPayload?.first_name;
+
+  const onLogout = async () => await signOut();
 
   const MobileNavContent = (
     <VStack
@@ -113,29 +125,26 @@ const GlobalHeader = () => {
                 </HStack>
               </Link>
             </Flex>
-            <Flex>
-              <HStack spacing="2" display={{ base: "none", md: "flex" }}>
-                <Button as={NextLink} href="/jobs" variant="ghost">
-                  🔍 Search Jobs
-                </Button>
-                <Button as="a" href="/alerts" variant="ghost" target="_blank">
-                  💌 Get Job Alerts
-                </Button>
-              </HStack>
-            </Flex>
             <Spacer />
-            <HStack display={{ base: "none", md: "flex" }} spacing="4">
-              <Button as="a" href="/hire" variant="ghost">
-                📢 Post Jobs
-              </Button>
-              <Button
-                as="a"
-                href="/connect"
-                colorScheme="messenger"
-                target="_blank"
-              >
-                Let employers find me 🤝
-              </Button>
+            <HStack display={{ base: "none", md: "flex" }} spacing="2">
+              {!doesSessionExist && (
+                <>
+                  <Button variant="ghost" as="a" href="/auth?show=signin">
+                    Login
+                  </Button>
+                  <Button as="a" href="/auth?show=signup">
+                    Register
+                  </Button>
+                </>
+              )}
+              {doesSessionExist && (
+                <Menu placement="bottom-end">
+                  <MenuButton as={Button}>{name}</MenuButton>
+                  <MenuList>
+                    <MenuItem onClick={onLogout}>Sign Out</MenuItem>
+                  </MenuList>
+                </Menu>
+              )}
             </HStack>
             <Flex justify="flex-end" align="center">
               <IconButton

@@ -6,8 +6,27 @@ import { appInfo } from "./appInfo";
 
 export const frontendConfig = () => {
   return {
-    appInfo,
-    recipeList: [EmailPasswordReact.init(), SessionReact.init()],
+    appInfo: {
+      ...appInfo,
+      apiDomain: window.location.origin,
+      websiteDomain: window.location.origin,
+    },
+    recipeList: [
+      SessionReact.init(),
+      EmailPasswordReact.init({
+        signInAndUpFeature: {
+          signUpForm: {
+            formFields: [
+              {
+                id: "name",
+                label: "Full name",
+                placeholder: "e.g. Ahmad Farah",
+              },
+            ],
+          },
+        },
+      }),
+    ],
     windowHandler: (oI) => {
       return {
         ...oI,
