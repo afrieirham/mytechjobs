@@ -64,12 +64,12 @@ export default function Home({ latest }) {
               bg="gray.900"
               _hover={{ bg: "gray.700" }}
               _active={{ bg: "gray.700" }}
-              as="a"
+              as={NextLink}
               href="/auth?show=signup"
             >
               🎯 I want companies to find me
             </Button>
-            <Button as="a" href="/jobs" variant="outline">
+            <Button as={NextLink} href="/jobs" variant="outline">
               🔍 I want to browse for jobs
             </Button>
           </Stack>
