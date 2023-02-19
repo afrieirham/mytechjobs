@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { format } from "date-fns";
 import {
   Box,
   Button,
@@ -16,6 +18,7 @@ import {
   Text,
   Textarea,
   UnorderedList,
+  useCheckboxGroup,
 } from "@chakra-ui/react";
 import supertokensNode from "supertokens-node";
 import Session from "supertokens-node/recipe/session";
@@ -47,10 +50,14 @@ export const getServerSideProps = async (context) => {
 
   try {
     const userId = session.getUserId();
-    const { user } = await getUserBySessionId(userId);
+    const raw = await getUserBySessionId(userId);
+    const data = JSON.parse(JSON.stringify(raw.user));
+
+    const { __v, createdAt, updatedAt, ...rest } = data;
+
     return {
       props: {
-        user: JSON.parse(JSON.stringify(user)),
+        user: rest,
       },
     };
   } catch (error) {
@@ -62,59 +69,122 @@ export const getServerSideProps = async (context) => {
 };
 
 function Profile({ user }) {
-  const [data, setData] = useState(user);
-  const locations = places
+  const [loading, setLoading] = useState(false);
+  const [profile, setProfile] = useState(user);
+  const {
+    headline,
+    name,
+    email,
+    phone,
+    city,
+    state,
+    bio,
+    positions,
+    status,
+    jobTypes,
+    jobLevels,
+    arrangements,
+    locations,
+    availableDate,
+    website,
+    github,
+    linkedin,
+    jobAlerts,
+  } = profile;
+
+  const positionsCheckbox = useCheckboxGroup({ defaultValue: positions });
+  const jobTypesCheckbox = useCheckboxGroup({ defaultValue: jobTypes });
+  const jobLevelsCheckbox = useCheckboxGroup({ defaultValue: jobLevels });
+  const arrangementsCheckbox = useCheckboxGroup({ defaultValue: arrangements });
+  const locationsCheckbox = useCheckboxGroup({ defaultValue: locations });
+
+  const onChangeText = (e) =>
+    setProfile({ ...profile, [e.target.name]: e.target.value });
+  const onChangeCheckbox = (e) =>
+    setProfile({ ...profile, [e.target.name]: e.target.checked });
+  const onChangeRadio = (name, value) =>
+    setProfile({ ...profile, [name]: value });
+
+  const states = places
     .filter((p) => p !== "remote")
     .map((p) => p.replaceAll("-", " "));
 
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const newProfile = {
+      ...profile,
+      positions: positionsCheckbox.value,
+      jobTypes: jobTypesCheckbox.value,
+      jobLevels: jobLevelsCheckbox.value,
+      arrangements: arrangementsCheckbox.value,
+      locations: locationsCheckbox.value,
+    };
+    const { data, error } = await axios.post("/api/users", newProfile);
+    setLoading(false);
+    alert(data.msg || error.msg);
+  };
+
   return (
     <SessionAuth>
-      <Box maxW="2xl" mt="8" mx="auto">
+      <Box maxW="2xl" mt="8" mx="auto" as="form" onSubmit={onSubmit}>
         <Heading fontSize="2xl" px={{ base: "4", md: "0" }}>
           Your developer profile
         </Heading>
         <SectionContainer>
           <Heading size="md">Personal Info</Heading>
           <Flex flexDirection="column" w="full">
-            <Text fontSize="md" fontWeight="bold">
-              Headline
-            </Text>
-            <Input placeholder="e.g. React Developer with 10+ years of experience" />
+            <Text fontWeight="bold">Headline</Text>
+            <Input
+              name="headline"
+              value={headline}
+              onChange={onChangeText}
+              placeholder="e.g. React Developer with 10+ years of experience"
+            />
           </Flex>
           <Flex flexDirection="column" w="full">
-            <Text fontSize="md" fontWeight="bold">
-              Name
-            </Text>
-            <Input value={data?.name} />
+            <Text fontWeight="bold">Name</Text>
+            <Input name="name" value={name} onChange={onChangeText} />
           </Flex>
           <Flex flexDirection="column" w="full">
-            <Text fontSize="md" fontWeight="bold">
-              Email
-            </Text>
-            <Input readOnly value={data?.email} />
+            <Text fontWeight="bold">Email</Text>
+            <Input readOnly value={email} />
           </Flex>
           <Flex flexDirection="column" w="full">
-            <Text fontSize="md" fontWeight="bold">
-              Phone
-            </Text>
+            <Text fontWeight="bold">Phone</Text>
             <InputGroup>
               <InputLeftAddon>+60</InputLeftAddon>
-              <Input type="tel" placeholder="12 345 6789" />
+              <Input
+                type="tel"
+                name="phone"
+                value={phone}
+                onChange={onChangeText}
+                placeholder="12 345 6789"
+              />
             </InputGroup>
           </Flex>
           <Flex flexDirection="column" w="full">
-            <Text fontSize="md" fontWeight="bold">
-              City
-            </Text>
-            <Input placeholder="e.g. Shah Alam" />
+            <Text fontWeight="bold">City</Text>
+            <Input
+              name="city"
+              value={city}
+              onChange={onChangeText}
+              placeholder="e.g. Shah Alam"
+            />
           </Flex>
           <Flex flexDirection="column" w="full">
-            <Text fontSize="md" fontWeight="bold">
-              State
-            </Text>
-            <Select placeholder="State" textTransform="capitalize">
-              {locations.map((p) => (
-                <option key={p}>{p}</option>
+            <Text fontWeight="bold">State</Text>
+            <Select
+              name="state"
+              onChange={onChangeText}
+              value={state}
+              placeholder="State"
+              textTransform="capitalize"
+            >
+              {states.map((p) => (
+                <option key={p} value={p}>
+                  {p}
+                </option>
               ))}
             </Select>
           </Flex>
@@ -122,9 +192,7 @@ function Profile({ user }) {
         <SectionContainer>
           <Heading size="md">Your Skills</Heading>
           <Flex flexDirection="column" w="full">
-            <Text fontSize="md" fontWeight="bold">
-              Bio
-            </Text>
+            <Text fontWeight="bold">Bio</Text>
             <Text>
               Share a few paragraphs on what makes you unique as a developer.
               This is your chance to market yourself to potential employers –
@@ -139,21 +207,37 @@ function Profile({ user }) {
               <ListItem>Any recent milestones or accomplishments</ListItem>
               <ListItem>How you can help where others can&apos;t</ListItem>
             </UnorderedList>
-            <Textarea minH="400px" mt="2" />
+            <Textarea
+              mt="2"
+              minH="400px"
+              name="bio"
+              value={bio}
+              onChange={onChangeText}
+            />
           </Flex>
           <Flex flexDirection="column" w="full">
-            <Text fontSize="md" fontWeight="bold">
-              Preferred Role
-            </Text>
-            <Stack direction="column" mt="2">
-              <Checkbox>
-                <Text fontSize="md">Frontend Developer</Text>
+            <Text fontWeight="bold">Preferred Positions</Text>
+            <Stack mt="2" direction="column">
+              <Checkbox
+                {...positionsCheckbox.getCheckboxProps({
+                  value: "frontend_developer",
+                })}
+              >
+                <Text>Frontend Developer</Text>
               </Checkbox>
-              <Checkbox>
-                <Text fontSize="md">Backend Developer</Text>
+              <Checkbox
+                {...positionsCheckbox.getCheckboxProps({
+                  value: "backend_developer",
+                })}
+              >
+                <Text>Backend Developer</Text>
               </Checkbox>
-              <Checkbox>
-                <Text fontSize="md">Fullstack Developer</Text>
+              <Checkbox
+                {...positionsCheckbox.getCheckboxProps({
+                  value: "fullstack_developer",
+                })}
+              >
+                <Text>Fullstack Developer</Text>
               </Checkbox>
             </Stack>
           </Flex>
@@ -161,25 +245,27 @@ function Profile({ user }) {
         <SectionContainer>
           <Heading size="md">Work Preferences</Heading>
           <Flex flexDirection="column" w="full">
-            <Text fontSize="md" fontWeight="bold">
-              Search status
-            </Text>
-            <RadioGroup mt="2">
+            <Text fontWeight="bold">Search status</Text>
+            <RadioGroup
+              mt="2"
+              name="status"
+              value={status}
+              onChange={(e) => onChangeRadio("status", e)}
+            >
               <Stack direction="column">
-                <Radio value="1">
+                <Radio value="active">
                   <Text>Actively looking</Text>
                 </Radio>
-                <Radio value="2">
+                <Radio value="open">
                   <Text>Open to opportunities</Text>
                 </Radio>
-                <Radio value="3">
+                <Radio value="not_interested">
                   <Text>Not interested</Text>
                   <Text fontSize="xs">
-                    Your profile will not be listed but people can still access
-                    with links.
+                    Only people with links can see you profile.
                   </Text>
                 </Radio>
-                <Radio value="4">
+                <Radio value="invisible">
                   <Text>Invisible</Text>
                   <Text fontSize="xs">
                     Your profile is hidden and can only be seen by yourself.
@@ -189,126 +275,172 @@ function Profile({ user }) {
             </RadioGroup>
           </Flex>
           <Flex flexDirection="column" w="full">
-            <Text fontSize="md" fontWeight="bold">
-              Role Type
-            </Text>
+            <Text fontWeight="bold">Role Type</Text>
             <Text fontSize="xs">
               Select all roles that you would consider taking.
             </Text>
             <Stack direction="column" mt="2">
-              <Checkbox>
-                <Text fontSize="md">Full-time employment</Text>
+              <Checkbox
+                {...jobTypesCheckbox.getCheckboxProps({
+                  value: "full-time_employment",
+                })}
+              >
+                <Text>Full-time employment</Text>
               </Checkbox>
-              <Checkbox>
-                <Text fontSize="md">Contract</Text>
+              <Checkbox
+                {...jobTypesCheckbox.getCheckboxProps({
+                  value: "contract",
+                })}
+              >
+                <Text>Contract</Text>
               </Checkbox>
-              <Checkbox>
-                <Text fontSize="md">Freelance</Text>
+              <Checkbox
+                {...jobTypesCheckbox.getCheckboxProps({
+                  value: "freelance",
+                })}
+              >
+                <Text>Freelance</Text>
               </Checkbox>
             </Stack>
           </Flex>
           <Flex flexDirection="column" w="full">
-            <Text fontSize="md" fontWeight="bold">
-              Role Level
-            </Text>
+            <Text fontWeight="bold">Role Level</Text>
             <Text fontSize="xs">
               Select all the experience levels you would consider taking.
             </Text>
             <Stack direction="column" mt="2">
-              <Checkbox>
-                <Text fontSize="md">Junior</Text>
+              <Checkbox
+                {...jobLevelsCheckbox.getCheckboxProps({
+                  value: "junior",
+                })}
+              >
+                <Text>Junior</Text>
               </Checkbox>
-              <Checkbox>
-                <Text fontSize="md">Mid-level</Text>
+              <Checkbox
+                {...jobLevelsCheckbox.getCheckboxProps({
+                  value: "mid-level",
+                })}
+              >
+                <Text>Mid-level</Text>
               </Checkbox>
-              <Checkbox>
-                <Text fontSize="md">Senior</Text>
+              <Checkbox
+                {...jobLevelsCheckbox.getCheckboxProps({
+                  value: "senior",
+                })}
+              >
+                <Text>Senior</Text>
               </Checkbox>
-              <Checkbox>
-                <Text fontSize="md">Principal / Staff</Text>
+              <Checkbox
+                {...jobLevelsCheckbox.getCheckboxProps({
+                  value: "princial_staff",
+                })}
+              >
+                <Text>Principal / Staff</Text>
               </Checkbox>
-              <Checkbox>
-                <Text fontSize="md">C-level</Text>
+              <Checkbox
+                {...jobLevelsCheckbox.getCheckboxProps({
+                  value: "c-level",
+                })}
+              >
+                <Text>C-level</Text>
               </Checkbox>
             </Stack>
           </Flex>
           <Flex flexDirection="column" w="full">
-            <Text fontSize="md" fontWeight="bold">
-              Working Arrangements
-            </Text>
+            <Text fontWeight="bold">Working Arrangements</Text>
             <Text fontSize="xs">Select all if you are open for hybrid.</Text>
             <Stack direction="column" mt="2">
-              <Checkbox>
-                <Text fontSize="md">Remote</Text>
+              <Checkbox
+                {...arrangementsCheckbox.getCheckboxProps({
+                  value: "remote",
+                })}
+              >
+                <Text>Remote</Text>
               </Checkbox>
-              <Checkbox>
-                <Text fontSize="md">On-site</Text>
+              <Checkbox
+                {...arrangementsCheckbox.getCheckboxProps({
+                  value: "on_site",
+                })}
+              >
+                <Text>On-site</Text>
               </Checkbox>
             </Stack>
           </Flex>
           <Flex flexDirection="column" w="full">
-            <Text fontSize="md" fontWeight="bold">
-              Work Location
-            </Text>
+            <Text fontWeight="bold">Work Location</Text>
             <Text fontSize="xs">Select all locations you are available.</Text>
             <Stack direction="column" mt="2">
-              {locations.map((p) => (
-                <Checkbox key={p}>
-                  <Text fontSize="md" textTransform="capitalize">
-                    {p}
-                  </Text>
+              {states.map((p) => (
+                <Checkbox
+                  key={p}
+                  {...locationsCheckbox.getCheckboxProps({
+                    value: p.replaceAll(" ", "_"),
+                  })}
+                >
+                  <Text textTransform="capitalize">{p}</Text>
                 </Checkbox>
               ))}
             </Stack>
           </Flex>
           <Flex flexDirection="column" w="full">
-            <Text fontSize="md" fontWeight="bold">
-              Available to start on
-            </Text>
-            <Input type="date" />
+            <Text fontWeight="bold">Available to start on</Text>
+            <Input
+              type="date"
+              name="availableDate"
+              value={
+                availableDate
+                  ? format(new Date(availableDate), "yyyy-MM-dd")
+                  : ""
+              }
+              onChange={onChangeText}
+            />
           </Flex>
         </SectionContainer>
         <SectionContainer>
           <Heading size="md">Online Presence</Heading>
           <Flex flexDirection="column" w="full">
-            <Text fontSize="md" fontWeight="bold">
-              Website
-            </Text>
+            <Text fontWeight="bold">Website</Text>
             <InputGroup>
               <InputLeftAddon>https://</InputLeftAddon>
-              <Input />
+              <Input name="website" value={website} onChange={onChangeText} />
             </InputGroup>
             <Text fontSize="xs">Your personal website or portfolio</Text>
           </Flex>
           <Flex flexDirection="column" w="full">
-            <Text fontSize="md" fontWeight="bold">
-              GitHub
-            </Text>
+            <Text fontWeight="bold">GitHub</Text>
             <InputGroup>
               <InputLeftAddon>github.com/</InputLeftAddon>
-              <Input />
+              <Input name="github" value={github} onChange={onChangeText} />
             </InputGroup>
           </Flex>
           <Flex flexDirection="column" w="full">
-            <Text fontSize="md" fontWeight="bold">
-              LinkedIn
-            </Text>
+            <Text fontWeight="bold">LinkedIn</Text>
             <InputGroup>
               <InputLeftAddon>linkedin.com/in/</InputLeftAddon>
-              <Input />
+              <Input name="linkedin" value={linkedin} onChange={onChangeText} />
             </InputGroup>
           </Flex>
         </SectionContainer>
         <SectionContainer>
           <Heading size="md">Email notifications</Heading>
           <Stack direction="column">
-            <Checkbox>Get weekly job alerts via email</Checkbox>
+            <Checkbox
+              name="jobAlerts"
+              value={jobAlerts}
+              checked={jobAlerts}
+              defaultChecked={jobAlerts}
+              onChange={onChangeCheckbox}
+            >
+              Get weekly job alerts via email
+            </Checkbox>
           </Stack>
         </SectionContainer>
         <Flex mt="4" justifyContent="flex-end" px={{ base: "4", md: "0" }}>
           <Button
-            size={{ base: "lg", md: "md" }}
+            type="submit"
+            isLoading={loading}
             colorScheme="messenger"
+            size={{ base: "lg", md: "md" }}
             w={{ base: "full", md: "auto" }}
           >
             Save

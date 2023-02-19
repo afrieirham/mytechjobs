@@ -12,3 +12,15 @@ export const getUserBySessionId = async (id) => {
   if (!user) throw new Error("Invalid user");
   return { user };
 };
+
+export const updateProfile = async (profile) => {
+  await connect();
+  const { superTokensId } = profile;
+
+  try {
+    await User.findOneAndUpdate({ superTokensId }, profile);
+    return [true, null];
+  } catch (error) {
+    return [false, error];
+  }
+};
