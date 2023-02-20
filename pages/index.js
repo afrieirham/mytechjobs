@@ -65,7 +65,7 @@ export default function Home({ latest }) {
               _hover={{ bg: "gray.700" }}
               _active={{ bg: "gray.700" }}
               as={NextLink}
-              href="/auth?show=signup"
+              href="/profile"
             >
               🎯 I want companies to find me
             </Button>

@@ -131,10 +131,10 @@ const GlobalHeader = () => {
           <HStack display={{ base: "none", md: "flex" }} spacing="2">
             {!doesSessionExist && (
               <>
-                <Button variant="ghost" as={NextLink} href="/auth?show=signin">
+                <Button variant="ghost" as="a" href="/auth?show=signin">
                   Login
                 </Button>
-                <Button as={NextLink} href="/auth?show=signup">
+                <Button as="a" href="/auth?show=signup">
                   Register
                 </Button>
               </>
@@ -144,7 +144,10 @@ const GlobalHeader = () => {
                 <MenuButton as={Button}>{name}</MenuButton>
                 <MenuList>
                   <MenuItem as={NextLink} href="/profile">
-                    Profile
+                    Developer Profile
+                  </MenuItem>
+                  <MenuItem as={NextLink} href="/account">
+                    Account Settings
                   </MenuItem>
                   <MenuItem onClick={onLogout}>Sign Out</MenuItem>
                 </MenuList>

@@ -27,6 +27,7 @@ import { SessionAuth } from "supertokens-auth-react/recipe/session";
 import { places } from "../constants/paths";
 import { getUserBySessionId } from "../controllers/users";
 import { backendConfig } from "../config/backendConfig";
+import SectionContainer from "../components/SectionContainer";
 
 export const getServerSideProps = async (context) => {
   supertokensNode.init(backendConfig());
@@ -37,15 +38,16 @@ export const getServerSideProps = async (context) => {
   } catch (err) {
     if (err.type === Session.Error.TRY_REFRESH_TOKEN) {
       return { props: { fromSupertokens: "needs-refresh" } };
-    } else if (err.type === Session.Error.UNAUTHORISED) {
-      return { props: { fromSupertokens: "needs-refresh" } };
     }
 
-    throw err;
-  }
-
-  if (!session) {
-    return { notFound: true };
+    if (err.type === Session.Error.UNAUTHORISED) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/auth?redirectToPath=profile",
+        },
+      };
+    }
   }
 
   try {
@@ -63,7 +65,10 @@ export const getServerSideProps = async (context) => {
   } catch (error) {
     console.log(error);
     return {
-      notFound: true,
+      redirect: {
+        permanent: false,
+        destination: "/auth?redirectToPath=profile",
+      },
     };
   }
 };
@@ -129,12 +134,12 @@ function Profile({ user }) {
     <SessionAuth>
       <Box maxW="2xl" mt="8" mx="auto" as="form" onSubmit={onSubmit}>
         <Heading fontSize="2xl" px={{ base: "4", md: "0" }}>
-          Your developer profile
+          Developer Profile
         </Heading>
         <SectionContainer>
-          <Heading size="md">Personal Info</Heading>
+          <Heading size="md">Personal info</Heading>
           <Flex flexDirection="column" w="full">
-            <Text fontWeight="bold">Headline</Text>
+            <Text fontWeight="semibold">Headline</Text>
             <Input
               name="headline"
               value={headline}
@@ -143,15 +148,15 @@ function Profile({ user }) {
             />
           </Flex>
           <Flex flexDirection="column" w="full">
-            <Text fontWeight="bold">Name</Text>
+            <Text fontWeight="semibold">Name</Text>
             <Input name="name" value={name} onChange={onChangeText} />
           </Flex>
           <Flex flexDirection="column" w="full">
-            <Text fontWeight="bold">Email</Text>
+            <Text fontWeight="semibold">Email</Text>
             <Input readOnly value={email} />
           </Flex>
           <Flex flexDirection="column" w="full">
-            <Text fontWeight="bold">Phone</Text>
+            <Text fontWeight="semibold">Phone</Text>
             <InputGroup>
               <InputLeftAddon>+60</InputLeftAddon>
               <Input
@@ -164,7 +169,7 @@ function Profile({ user }) {
             </InputGroup>
           </Flex>
           <Flex flexDirection="column" w="full">
-            <Text fontWeight="bold">City</Text>
+            <Text fontWeight="semibold">City</Text>
             <Input
               name="city"
               value={city}
@@ -173,7 +178,7 @@ function Profile({ user }) {
             />
           </Flex>
           <Flex flexDirection="column" w="full">
-            <Text fontWeight="bold">State</Text>
+            <Text fontWeight="semibold">State</Text>
             <Select
               name="state"
               onChange={onChangeText}
@@ -190,9 +195,9 @@ function Profile({ user }) {
           </Flex>
         </SectionContainer>
         <SectionContainer>
-          <Heading size="md">Your Skills</Heading>
+          <Heading size="md">Your skills</Heading>
           <Flex flexDirection="column" w="full">
-            <Text fontWeight="bold">Bio</Text>
+            <Text fontWeight="semibold">Bio</Text>
             <Text>
               Share a few paragraphs on what makes you unique as a developer.
               This is your chance to market yourself to potential employers –
@@ -216,7 +221,7 @@ function Profile({ user }) {
             />
           </Flex>
           <Flex flexDirection="column" w="full">
-            <Text fontWeight="bold">Preferred Positions</Text>
+            <Text fontWeight="semibold">Preferred Positions</Text>
             <Stack mt="2" direction="column">
               <Checkbox
                 {...positionsCheckbox.getCheckboxProps({
@@ -243,9 +248,9 @@ function Profile({ user }) {
           </Flex>
         </SectionContainer>
         <SectionContainer>
-          <Heading size="md">Work Preferences</Heading>
+          <Heading size="md">Work preferences</Heading>
           <Flex flexDirection="column" w="full">
-            <Text fontWeight="bold">Search status</Text>
+            <Text fontWeight="semibold">Search status</Text>
             <RadioGroup
               mt="2"
               name="status"
@@ -275,7 +280,7 @@ function Profile({ user }) {
             </RadioGroup>
           </Flex>
           <Flex flexDirection="column" w="full">
-            <Text fontWeight="bold">Role Type</Text>
+            <Text fontWeight="semibold">Role Type</Text>
             <Text fontSize="xs">
               Select all roles that you would consider taking.
             </Text>
@@ -304,7 +309,7 @@ function Profile({ user }) {
             </Stack>
           </Flex>
           <Flex flexDirection="column" w="full">
-            <Text fontWeight="bold">Role Level</Text>
+            <Text fontWeight="semibold">Role Level</Text>
             <Text fontSize="xs">
               Select all the experience levels you would consider taking.
             </Text>
@@ -347,7 +352,7 @@ function Profile({ user }) {
             </Stack>
           </Flex>
           <Flex flexDirection="column" w="full">
-            <Text fontWeight="bold">Working Arrangements</Text>
+            <Text fontWeight="semibold">Working Arrangements</Text>
             <Text fontSize="xs">Select all if you are open for hybrid.</Text>
             <Stack direction="column" mt="2">
               <Checkbox
@@ -367,7 +372,7 @@ function Profile({ user }) {
             </Stack>
           </Flex>
           <Flex flexDirection="column" w="full">
-            <Text fontWeight="bold">Work Location</Text>
+            <Text fontWeight="semibold">Work Location</Text>
             <Text fontSize="xs">Select all locations you are available.</Text>
             <Stack direction="column" mt="2">
               {states.map((p) => (
@@ -383,7 +388,7 @@ function Profile({ user }) {
             </Stack>
           </Flex>
           <Flex flexDirection="column" w="full">
-            <Text fontWeight="bold">Available to start on</Text>
+            <Text fontWeight="semibold">Available to start on</Text>
             <Input
               type="date"
               name="availableDate"
@@ -397,9 +402,9 @@ function Profile({ user }) {
           </Flex>
         </SectionContainer>
         <SectionContainer>
-          <Heading size="md">Online Presence</Heading>
+          <Heading size="md">Online presence</Heading>
           <Flex flexDirection="column" w="full">
-            <Text fontWeight="bold">Website</Text>
+            <Text fontWeight="semibold">Website</Text>
             <InputGroup>
               <InputLeftAddon>https://</InputLeftAddon>
               <Input name="website" value={website} onChange={onChangeText} />
@@ -407,14 +412,14 @@ function Profile({ user }) {
             <Text fontSize="xs">Your personal website or portfolio</Text>
           </Flex>
           <Flex flexDirection="column" w="full">
-            <Text fontWeight="bold">GitHub</Text>
+            <Text fontWeight="semibold">GitHub</Text>
             <InputGroup>
               <InputLeftAddon>github.com/</InputLeftAddon>
               <Input name="github" value={github} onChange={onChangeText} />
             </InputGroup>
           </Flex>
           <Flex flexDirection="column" w="full">
-            <Text fontWeight="bold">LinkedIn</Text>
+            <Text fontWeight="semibold">LinkedIn</Text>
             <InputGroup>
               <InputLeftAddon>linkedin.com/in/</InputLeftAddon>
               <Input name="linkedin" value={linkedin} onChange={onChangeText} />
@@ -448,26 +453,6 @@ function Profile({ user }) {
         </Flex>
       </Box>
     </SessionAuth>
-  );
-}
-
-function SectionContainer({ children }) {
-  return (
-    <Flex
-      mt="4"
-      flexDirection="column"
-      maxW="2xl"
-      mx="auto"
-      p={{ base: "4", md: "8" }}
-      bg="white"
-      borderWidth={{ base: "none", md: "1px" }}
-      borderColor="gray.300"
-      borderRadius={{ base: "none", md: "lg" }}
-    >
-      <Stack direction="column" spacing="6">
-        {children}
-      </Stack>
-    </Flex>
   );
 }
 
