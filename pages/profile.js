@@ -426,7 +426,7 @@ function Profile({ user }) {
             </InputGroup>
           </Flex>
         </SectionContainer>
-        <SectionContainer>
+        {/* <SectionContainer>
           <Heading size="md">Email notifications</Heading>
           <Stack direction="column">
             <Checkbox
@@ -439,7 +439,7 @@ function Profile({ user }) {
               Get weekly job alerts via email
             </Checkbox>
           </Stack>
-        </SectionContainer>
+        </SectionContainer> */}
         <Flex mt="4" justifyContent="flex-end" px={{ base: "4", md: "0" }}>
           <Button
             type="submit"

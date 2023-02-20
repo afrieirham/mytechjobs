@@ -4,14 +4,14 @@ import React from "react";
 function SectionContainer({ children, outerContainerProps, ...props }) {
   return (
     <Flex
-      mt="4"
-      flexDirection="column"
-      maxW="2xl"
-      mx="auto"
-      p={{ base: "4", md: "8" }}
       bg="white"
-      borderWidth={{ base: "none", md: "1px" }}
+      mx="auto"
+      maxW="2xl"
+      flexDirection="column"
+      mt={{ base: "8", md: "4" }}
+      p={{ base: "4", md: "8" }}
       borderColor="gray.300"
+      borderWidth={{ base: "1px 0", md: "1px" }}
       borderRadius={{ base: "none", md: "lg" }}
       {...outerContainerProps}
     >

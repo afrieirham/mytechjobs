@@ -85,6 +85,18 @@ function Account() {
             </Button>
           </Flex>
         </SectionContainer>
+        <Flex mt="4" px="4">
+          <Button
+            mx="auto"
+            as="a"
+            href="/alerts"
+            variant="ghost"
+            target="_blank"
+            w={{ base: "full", md: "auto" }}
+          >
+            💌 Get Job Alerts
+          </Button>
+        </Flex>
       </Box>
     </SessionAuth>
   );

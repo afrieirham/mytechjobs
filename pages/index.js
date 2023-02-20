@@ -13,6 +13,7 @@ import {
 import { siteDescription } from "../constants/SEO";
 import { getLatestJobs } from "../controllers/jobs";
 import JobListing from "../components/JobListing";
+import { useSessionContext } from "supertokens-auth-react/recipe/session";
 
 export const getStaticProps = async () => {
   const { jobs: latest } = await getLatestJobs(30);
@@ -28,6 +29,7 @@ export const getStaticProps = async () => {
 
 export default function Home({ latest }) {
   const title = "Find Tech Jobs In Malaysia 🇲🇾 | Kerja IT";
+  const { doesSessionExist } = useSessionContext();
   return (
     <Box bg="gray.50" pb="16">
       <Head>
@@ -67,10 +69,12 @@ export default function Home({ latest }) {
               as={NextLink}
               href="/profile"
             >
-              🎯 I want companies to find me
+              {doesSessionExist
+                ? "✍️ Setup my profile"
+                : "🎯 I want companies to find me"}
             </Button>
             <Button as={NextLink} href="/jobs" variant="outline">
-              🔍 I want to browse for jobs
+              🔍 Search Jobs
             </Button>
           </Stack>
         </Stack>

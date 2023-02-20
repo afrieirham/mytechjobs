@@ -24,6 +24,8 @@ import { AiOutlineMenu } from "react-icons/ai";
 
 const GlobalHeader = () => {
   const router = useRouter();
+  const isHome = router.pathname === "/";
+  const hideSearchJobs = ["/jobs", "/"].includes(router.pathname);
   const ref = React.useRef(null);
   const mobileNav = useDisclosure();
 
@@ -34,6 +36,7 @@ const GlobalHeader = () => {
   const onLogout = async () => {
     router.push("/");
     await signOut();
+    mobileNav.onClose();
   };
 
   const MobileNavContent = (
@@ -60,41 +63,94 @@ const GlobalHeader = () => {
         onClick={mobileNav.onClose}
         variant="ghost"
       />
-      <Button w="full" variant="ghost" as={NextLink} href="/">
-        🏠 Home
-      </Button>
-      <Button w="full" variant="ghost" as={NextLink} href="/jobs">
-        🔍 Search Jobs
-      </Button>
       <Button
-        display="inline-flex"
+        onClick={mobileNav.onClose}
         w="full"
         variant="ghost"
-        as="a"
-        href="/alerts"
-        target="_blank"
+        as={NextLink}
+        href="/"
       >
-        💌 Get Job Alerts
+        🏠 Home
       </Button>
       <Button
+        onClick={mobileNav.onClose}
         w="full"
-        display="inline-flex"
         variant="ghost"
         as="a"
         href="/hire"
       >
         📢 Post Jobs
       </Button>
-      <Button
-        display="inline-flex"
-        w="full"
-        as="a"
-        colorScheme="messenger"
-        href="/connect"
-        target="_blank"
-      >
-        Let employers find me 🤝
-      </Button>
+      {!doesSessionExist && (
+        <>
+          <Button
+            onClick={mobileNav.onClose}
+            display="inline-flex"
+            w="full"
+            variant="ghost"
+            as="a"
+            href="/alerts"
+            target="_blank"
+          >
+            💌 Get Job Alerts
+          </Button>
+          <Button
+            onClick={mobileNav.onClose}
+            w="full"
+            variant="ghost"
+            as="a"
+            href="/auth?show=signin"
+          >
+            ☁️ Login
+          </Button>
+          <Button
+            onClick={mobileNav.onClose}
+            w="full"
+            as="a"
+            href="/auth?show=signup"
+            color="white"
+            bg="gray.900"
+            _hover={{ bg: "gray.700" }}
+            _active={{ bg: "gray.700" }}
+          >
+            Register
+          </Button>
+        </>
+      )}
+      {doesSessionExist && (
+        <>
+          <Button
+            onClick={mobileNav.onClose}
+            variant="ghost"
+            w="full"
+            as={NextLink}
+            href="/jobs"
+          >
+            🔍 Search Jobs
+          </Button>
+          <Button
+            onClick={mobileNav.onClose}
+            variant="ghost"
+            w="full"
+            as={NextLink}
+            href="/profile"
+          >
+            📝 My Profile
+          </Button>
+          <Button
+            onClick={mobileNav.onClose}
+            variant="ghost"
+            w="full"
+            as={NextLink}
+            href="/account"
+          >
+            ⚙️ Account
+          </Button>
+          <Button variant="ghost" w="full" onClick={onLogout}>
+            🚶🏻‍♂️ Sign Out
+          </Button>
+        </>
+      )}
     </VStack>
   );
 
@@ -129,29 +185,69 @@ const GlobalHeader = () => {
           </Flex>
           <Spacer />
           <HStack display={{ base: "none", md: "flex" }} spacing="2">
+            <Button as="a" href="/hire" variant="ghost">
+              📢 Post Jobs
+            </Button>
             {!doesSessionExist && (
               <>
+                <Button as="a" href="/alerts" variant="ghost" target="_blank">
+                  💌 Get Job Alerts
+                </Button>
                 <Button variant="ghost" as="a" href="/auth?show=signin">
-                  Login
+                  ☁️ Login
                 </Button>
-                <Button as="a" href="/auth?show=signup">
-                  Register
-                </Button>
+                {isHome ? (
+                  <Button
+                    as="a"
+                    href="/auth?show=signup"
+                    _hover={{ bg: "gray.900", color: "white" }}
+                    _active={{ bg: "gray.900", color: "white" }}
+                    variant="outline"
+                  >
+                    ✨ Register
+                  </Button>
+                ) : (
+                  <Button
+                    as="a"
+                    href="/auth?show=signup"
+                    color="white"
+                    bg="gray.900"
+                    _hover={{ bg: "gray.700" }}
+                    _active={{ bg: "gray.700" }}
+                  >
+                    ✨ Register
+                  </Button>
+                )}
               </>
             )}
             {doesSessionExist && (
-              <Menu placement="bottom-end">
-                <MenuButton as={Button}>{name}</MenuButton>
-                <MenuList>
-                  <MenuItem as={NextLink} href="/profile">
-                    Developer Profile
-                  </MenuItem>
-                  <MenuItem as={NextLink} href="/account">
-                    Account Settings
-                  </MenuItem>
-                  <MenuItem onClick={onLogout}>Sign Out</MenuItem>
-                </MenuList>
-              </Menu>
+              <>
+                {!hideSearchJobs && (
+                  <Button as={NextLink} href="/jobs" variant="ghost">
+                    🔍 Search Jobs
+                  </Button>
+                )}
+                <Menu placement="bottom-end">
+                  <MenuButton
+                    as={Button}
+                    color="white"
+                    bg="gray.900"
+                    _hover={{ bg: "gray.700" }}
+                    _active={{ bg: "gray.700" }}
+                  >
+                    👋 {name}
+                  </MenuButton>
+                  <MenuList>
+                    <MenuItem as={NextLink} href="/profile">
+                      📝 My Profile
+                    </MenuItem>
+                    <MenuItem as={NextLink} href="/account">
+                      ⚙️ Account
+                    </MenuItem>
+                    <MenuItem onClick={onLogout}>🚶🏻‍♂️ Sign Out</MenuItem>
+                  </MenuList>
+                </Menu>
+              </>
             )}
           </HStack>
           <Flex justify="flex-end" align="center">
