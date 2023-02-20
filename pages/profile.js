@@ -94,7 +94,6 @@ function Profile({ user }) {
     website,
     github,
     linkedin,
-    jobAlerts,
   } = profile;
 
   const positionsCheckbox = useCheckboxGroup({ defaultValue: positions });
@@ -364,7 +363,7 @@ function Profile({ user }) {
               </Checkbox>
               <Checkbox
                 {...arrangementsCheckbox.getCheckboxProps({
-                  value: "on_site",
+                  value: "on-site",
                 })}
               >
                 <Text>On-site</Text>

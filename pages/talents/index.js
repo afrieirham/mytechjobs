@@ -1,6 +1,8 @@
 import React from "react";
 import Head from "next/head";
+import useSWR from "swr";
 import NextLink from "next/link";
+import { Spinner } from "@chakra-ui/react";
 import { Tag } from "@chakra-ui/tag";
 import { Button } from "@chakra-ui/button";
 import {
@@ -11,24 +13,13 @@ import {
   Link,
   LinkBox,
   LinkOverlay,
+  Stack,
   Text,
 } from "@chakra-ui/layout";
+import { fetcher } from "../../helpers/fetcher";
 
-const dataUrl = "https://kerja-it-talents.vercel.app/talents";
-
-export const getStaticProps = async () => {
-  const devs = await fetch(dataUrl).then((res) => res.json());
-
-  return {
-    props: {
-      devs,
-    },
-    // revalidate every 1 minute
-    revalidate: 60 * 1,
-  };
-};
-
-function Talents({ devs }) {
+function Talents() {
+  const { data, isLoading } = useSWR("/api/devs", fetcher);
   const title = "Talents | Kerja IT";
   const siteDescription = "Hire developers from Malaysia with Kerja IT";
 
@@ -46,64 +37,90 @@ function Talents({ devs }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Flex flexDirection="column" maxW="2xl" mx="auto" p="4">
-        <Flex flexDirection="column" w="full" alignItems="center" mt="4">
-          <Heading size="lg">Developers looking for their next job</Heading>
+        <Flex
+          flexDirection="column"
+          w="full"
+          alignItems="center"
+          textAlign="center"
+          mt="4"
+        >
+          <Heading>Find Developers in Malaysia 🇲🇾</Heading>
+          <Text color="gray.600">
+            Why wait for candidates to apply? Connect with developers ready to
+            move today!
+          </Text>
         </Flex>
-        <Flex justifyContent="flex-end" mt="4">
-          <Button
-            variant="ghost"
-            as="a"
-            href="/connect"
-            target="_blank"
-            w={{ base: "full", md: "auto" }}
-          >
-            Add my profile ✍️
-          </Button>
-        </Flex>
-        <Box>
-          {devs?.map((d) => {
-            const activelyLooking = d["Are you actively looking?"] === "Yes";
-            return (
-              <LinkBox
-                as={Flex}
-                key={d.id}
-                flexDirection="column"
-                mt="2"
-                p="4"
-                borderWidth="1px"
-                borderColor="gray.300"
-                borderRadius="lg"
-                bg="white"
-              >
-                <Flex justifyContent="space-between">
-                  <NextLink href={`/talents/${d.id}`} legacyBehavior passHref>
-                    <Text
-                      as={LinkOverlay}
-                      noOfLines="1"
-                      fontWeight="bold"
-                      fontSize="lg"
-                    >
-                      Developer {d.id}
-                    </Text>
-                  </NextLink>
-                  {activelyLooking && (
-                    <Tag size="sm" colorScheme="green">
-                      Actively looking
-                    </Tag>
-                  )}
-                </Flex>
-                <Text
-                  noOfLines={5}
-                  fontFamily="sans-serif"
-                  fontSize="sm"
+        <Stack direction="column" align="center" mt="8">
+          <Stack direction={{ base: "column", md: "row" }}>
+            <Button
+              as="a"
+              target="_blank"
+              href={process.env.NEXT_PUBLIC_SUBSCRIPTION_LINK}
+              color="white"
+              bg="gray.900"
+              _hover={{ bg: "gray.700" }}
+              _active={{ bg: "gray.700" }}
+            >
+              🤝 Get access to developers today
+            </Button>
+          </Stack>
+        </Stack>
+        <Box mt="8">
+          {isLoading ? (
+            <Flex w="full" h="full" justify="center" mt="16">
+              <Spinner />
+            </Flex>
+          ) : (
+            data?.devs?.map((d) => {
+              const activelyLooking = d?.status === "active";
+              return (
+                <LinkBox
+                  as={Flex}
+                  key={d._id}
+                  flexDirection="column"
                   mt="2"
-                  color="gray.600"
+                  p="4"
+                  borderWidth="1px"
+                  borderColor="gray.300"
+                  borderRadius="lg"
+                  bg="white"
                 >
-                  {d.Bio}
-                </Text>
-              </LinkBox>
-            );
-          })}
+                  <Stack spacing="2">
+                    {activelyLooking && (
+                      <Box>
+                        <Tag size="sm" colorScheme="green">
+                          Actively looking
+                        </Tag>
+                      </Box>
+                    )}
+                    <NextLink
+                      href={`/talents/${d._id}`}
+                      legacyBehavior
+                      passHref
+                    >
+                      <Text
+                        as={LinkOverlay}
+                        noOfLines="2"
+                        fontWeight="bold"
+                        fontSize="lg"
+                      >
+                        {d?.headline ?? `Developer ${d._id}`}
+                      </Text>
+                    </NextLink>
+                  </Stack>
+                  <Text
+                    noOfLines={5}
+                    fontFamily="sans-serif"
+                    fontSize="sm"
+                    mt="4"
+                    color="gray.600"
+                  >
+                    {d?.bio}
+                  </Text>
+                </LinkBox>
+              );
+            })
+          )}
         </Box>
         <HStack maxW="2xl" mx="auto" p="8" justifyContent="center">
           <Link href="/connect" isExternal textAlign="center">

@@ -1,60 +1,55 @@
 import React from "react";
 import Head from "next/head";
-import NextLink from "next/link";
-import fetch from "node-fetch";
 import { Tag } from "@chakra-ui/tag";
 import { Button } from "@chakra-ui/button";
-import { Flex, Heading, HStack, Link, Text, VStack } from "@chakra-ui/layout";
+import {
+  Box,
+  Flex,
+  Heading,
+  HStack,
+  Link,
+  Text,
+  VStack,
+} from "@chakra-ui/layout";
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
 } from "@chakra-ui/breadcrumb";
-
-const dataUrl = "https://kerja-it-talents.vercel.app/talents";
-
-export const getStaticProps = async (context) => {
-  const { id } = context.params;
-  const profile = await fetch(`${dataUrl}/${id}`).then((res) => res.json());
-
-  return {
-    props: {
-      profile,
-    },
-    // revalidate every 1 minute
-    revalidate: 60 * 1,
-  };
-};
-
-export async function getStaticPaths() {
-  const profile = await fetch(dataUrl).then((res) => res.json());
-  const paths = profile.map(({ id }) => ({ params: { id: String(id) } }));
-
-  return {
-    paths,
-    fallback: true,
-  };
-}
+import useSWR from "swr";
+import { useRouter } from "next/router";
+import { fetcher } from "../../helpers/fetcher";
+import { format } from "date-fns";
 
 function HireMeButton() {
   return (
     <Button
       as="a"
       target="_blank"
-      w={{ base: "full", lg: "200px" }}
+      w={{ base: "full", md: "auto" }}
       href={process.env.NEXT_PUBLIC_SUBSCRIPTION_LINK}
+      borderColor="gray.900"
+      _hover={{ bg: "gray.900", color: "white" }}
+      _active={{ bg: "gray.900", color: "white" }}
+      variant="outline"
     >
-      Hire me 💼
+      💼 Contact Developer
     </Button>
   );
 }
 
-function Profile({ profile }) {
-  const hasProfile = Object.keys(profile ?? {}).length > 0;
-  const title = profile
-    ? `Developer ${profile.id} | Kerja IT`
+function Profile() {
+  const router = useRouter();
+  const { data } = useSWR("/api/devs/" + router.query.id, fetcher);
+
+  const hasProfile = Object.keys(data?.dev ?? {}).length > 0;
+  const title = data?.dev
+    ? `Developer ${data?.dev._id} | Kerja IT`
     : "Developer Not Found | Kerja IT";
-  const activelyLooking = profile?.["Are you actively looking?"] === "Yes";
+  const activelyLooking = data?.dev?.status === "active";
+
+  const formatArray = (array) =>
+    array.map((a) => a.replaceAll("_", " ")).join(", ");
 
   return (
     <div>
@@ -68,32 +63,11 @@ function Profile({ profile }) {
           </BreadcrumbItem>
 
           <BreadcrumbItem isCurrentPage>
-            <BreadcrumbLink href={`/talents/${profile.id}`}>
-              Developer {profile.id}
+            <BreadcrumbLink href={`/talents/${data?.dev?._id}`}>
+              {data?.dev?.headline}
             </BreadcrumbLink>
           </BreadcrumbItem>
         </Breadcrumb>
-      )}
-      {!hasProfile && (
-        <Flex
-          flexDirection="column"
-          maxW="2xl"
-          mx="auto"
-          p={{ base: "4", md: "0" }}
-          textAlign="center"
-          alignItems="center"
-          mt="8"
-        >
-          <Heading size="md">😵‍💫 Opps...</Heading>
-          <Heading size="sm" mt="2" color="gray.600">
-            Can&apos;t find the candidate you&apos;re looking for.
-          </Heading>
-          <VStack mt="8">
-            <Button href="/talents" as={NextLink}>
-              Find other candidates 🔎
-            </Button>
-          </VStack>
-        </Flex>
       )}
       {hasProfile && (
         <Flex
@@ -107,13 +81,15 @@ function Profile({ profile }) {
           borderRadius={{ base: "none", md: "lg" }}
           mt="4"
         >
-          <Flex w="full" justifyContent="space-between">
-            <Heading size="lg">Developer {profile.id}</Heading>
-            {activelyLooking && (
+          {activelyLooking && (
+            <Box>
               <Tag size="sm" colorScheme="green">
                 Actively looking
               </Tag>
-            )}
+            </Box>
+          )}
+          <Flex w="full" justifyContent="space-between">
+            <Heading size="lg">{data?.dev?.headline}</Heading>
           </Flex>
           <VStack alignItems="flex-start" spacing="6" mt="6">
             <HireMeButton />
@@ -121,49 +97,49 @@ function Profile({ profile }) {
               <Text fontSize="sm" fontWeight="bold">
                 Available date:
               </Text>
-              <Text>{profile["Available to start on"]} </Text>
+              <Text>
+                {format(new Date(data?.dev?.availableDate), "do MMM yyyy")}
+              </Text>
             </Flex>
             <Flex flexDirection="column">
               <Text fontSize="sm" fontWeight="bold">
                 Available in:
               </Text>
-              <Text>{profile["Work location"]}</Text>
+              <Text textTransform="capitalize">
+                {formatArray(data?.dev?.locations)}
+              </Text>
             </Flex>
             <Flex flexDirection="column">
               <Text fontSize="sm" fontWeight="bold">
                 Looking for:
               </Text>
-              <Text>{profile["Role Type"]}</Text>
+              <Text textTransform="capitalize">
+                {formatArray(data?.dev?.jobTypes)}
+              </Text>
             </Flex>
             <Flex flexDirection="column">
               <Text fontSize="sm" fontWeight="bold">
                 Preferred position:
               </Text>
-              <Text>{profile["Preferred Role"]}</Text>
+              <Text textTransform="capitalize">
+                {formatArray(data?.dev?.positions)}
+              </Text>
             </Flex>
             <Flex flexDirection="column">
               <Text fontSize="sm" fontWeight="bold">
                 Interested in role as:
               </Text>
-              <Text>{profile["Role Level"]}</Text>
+              <Text textTransform="capitalize">
+                {formatArray(data?.dev?.jobLevels)}
+              </Text>
             </Flex>
             <Flex flexDirection="column">
               <Text fontSize="sm" fontWeight="bold">
-                Remote:
+                Work arrangements:
               </Text>
-              <Text>{profile["Are you open to remote job?"]}</Text>
-            </Flex>
-            <Flex flexDirection="column">
-              <Text fontSize="sm" fontWeight="bold">
-                On-site:
+              <Text textTransform="capitalize">
+                {formatArray(data?.dev?.arrangements)}
               </Text>
-              <Text>{profile["Are you open to on-site job?"]}</Text>
-            </Flex>
-            <Flex flexDirection="column">
-              <Text fontSize="sm" fontWeight="bold">
-                Skills:
-              </Text>
-              <Text>{profile["List down your skills "][" tech stacks"]}</Text>
             </Flex>
             <Flex flexDirection="column">
               <Text fontSize="sm" fontWeight="bold">
@@ -175,7 +151,7 @@ function Profile({ profile }) {
                 fontSize="sm"
                 color="gray.700"
               >
-                {profile["Bio"]}
+                {data?.dev?.bio}
               </Text>
             </Flex>
             <HireMeButton />

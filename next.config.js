@@ -98,7 +98,7 @@ const nextConfig = {
       },
       {
         source: "/connect",
-        destination: "https://forms.gle/ZS3krGBU1NUdm1rQ6",
+        destination: "/profile",
         permanent: false,
       },
     ].flat();
