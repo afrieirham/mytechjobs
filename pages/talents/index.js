@@ -7,10 +7,10 @@ import {
   Box,
   Flex,
   Heading,
-  HStack,
   Link,
   LinkBox,
   LinkOverlay,
+  Stack,
   Text,
 } from "@chakra-ui/layout";
 
@@ -46,21 +46,34 @@ function Talents({ devs }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Flex flexDirection="column" maxW="2xl" mx="auto" p="4">
-        <Flex flexDirection="column" w="full" alignItems="center" mt="4">
-          <Heading size="lg">Developers looking for their next job</Heading>
+        <Flex
+          flexDirection="column"
+          w="full"
+          alignItems="center"
+          textAlign="center"
+          mt="4"
+        >
+          <Heading>Hire Developers in Malaysia 🇲🇾</Heading>
+          <Text color="gray.600">
+            Why wait for candidates to apply? Connect with them today!
+          </Text>
         </Flex>
-        <Flex justifyContent="flex-end" mt="4">
-          <Button
-            variant="ghost"
-            as="a"
-            href="/connect"
-            target="_blank"
-            w={{ base: "full", md: "auto" }}
-          >
-            Add my profile ✍️
-          </Button>
-        </Flex>
-        <Box>
+        <Stack direction="column" align="center" mt="8">
+          <Stack direction={{ base: "column", md: "row" }}>
+            <Button
+              as="a"
+              target="_blank"
+              href={process.env.NEXT_PUBLIC_SUBSCRIPTION_LINK}
+              color="white"
+              bg="gray.900"
+              _hover={{ bg: "gray.700" }}
+              _active={{ bg: "gray.700" }}
+            >
+              🤝 Get access to developers today
+            </Button>
+          </Stack>
+        </Stack>
+        <Box mt="8">
           {devs?.map((d) => {
             const activelyLooking = d["Are you actively looking?"] === "Yes";
             return (
@@ -105,11 +118,11 @@ function Talents({ devs }) {
             );
           })}
         </Box>
-        <HStack maxW="2xl" mx="auto" p="8" justifyContent="center">
+        <Stack maxW="2xl" mx="auto" p="8" justifyContent="center">
           <Link href="/connect" isExternal textAlign="center">
             You&apos;re a developer? Add your profile ✍️
           </Link>
-        </HStack>
+        </Stack>
       </Flex>
     </div>
   );
