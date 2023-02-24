@@ -1,5 +1,6 @@
-import Head from "next/head";
 import React from "react";
+import Head from "next/head";
+import unescape from "unescape";
 import NextLink from "next/link";
 import {
   Badge,
@@ -255,7 +256,7 @@ function JobDescription({ job, slug }) {
                   p={{ base: "4", md: "8" }}
                   fontFamily="sans-serif"
                   dangerouslySetInnerHTML={{
-                    __html: jobDescription,
+                    __html: unescape(jobDescription),
                   }}
                 />
               )}
