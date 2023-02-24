@@ -69,9 +69,7 @@ export default function Home({ latest }) {
               as={NextLink}
               href="/profile"
             >
-              {doesSessionExist
-                ? "✍️ Setup my profile"
-                : "🎯 I want companies to find me"}
+              🎯 I want companies to find me
             </Button>
             <Button as={NextLink} href="/jobs" variant="outline">
               🔍 Search Jobs
@@ -91,7 +89,7 @@ export default function Home({ latest }) {
               <JobListing key={job._id} job={job} />
             ))}
           </SimpleGrid>
-          <Stack direction="column" align="center" mt="8">
+          <Stack direction="row" mt="8" mx="auto">
             <Button as={NextLink} href="/jobs">
               Search 239+ more jobs
             </Button>

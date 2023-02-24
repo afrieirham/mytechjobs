@@ -9,7 +9,6 @@ import {
   Box,
   Flex,
   Heading,
-  HStack,
   Link,
   LinkBox,
   LinkOverlay,
@@ -44,10 +43,9 @@ function Talents() {
           textAlign="center"
           mt="4"
         >
-          <Heading>Find Developers in Malaysia 🇲🇾</Heading>
+          <Heading>Hire Developers in Malaysia 🇲🇾</Heading>
           <Text color="gray.600">
-            Why wait for candidates to apply? Connect with developers ready to
-            move today!
+            Why wait for candidates to apply? Connect with them today!
           </Text>
         </Flex>
         <Stack direction="column" align="center" mt="8">
@@ -62,6 +60,14 @@ function Talents() {
               _active={{ bg: "gray.700" }}
             >
               🤝 Get access to developers today
+            </Button>
+            <Button
+              as="a"
+              href="/hire"
+              variant="outline"
+              display={{ base: "flex", md: "none" }}
+            >
+              📢 Post Jobs
             </Button>
           </Stack>
         </Stack>
@@ -122,11 +128,11 @@ function Talents() {
             })
           )}
         </Box>
-        <HStack maxW="2xl" mx="auto" p="8" justifyContent="center">
-          <Link href="/connect" isExternal textAlign="center">
+        <Stack maxW="2xl" mx="auto" p="8" justifyContent="center">
+          <Link href="/profile" isExternal textAlign="center">
             You&apos;re a developer? Add your profile ✍️
           </Link>
-        </HStack>
+        </Stack>
       </Flex>
     </div>
   );

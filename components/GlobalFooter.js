@@ -15,7 +15,7 @@ function GlobalFooter() {
     >
       <Text>Copyright {year} Kerja IT</Text>
       <HStack spacing="6">
-        <Link href="mailto:admin@kerja-it.com" isExternal>
+        <Link href="mailto:afrie@kerja-it.com" isExternal>
           Email
         </Link>
         <Link href="https://twitter.com/afrieirham_" isExternal>

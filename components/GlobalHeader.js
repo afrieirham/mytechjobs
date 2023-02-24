@@ -11,7 +11,6 @@ import {
   IconButton,
   useDisclosure,
   CloseButton,
-  VStack,
   Button,
   Spacer,
   Menu,
@@ -19,13 +18,15 @@ import {
   MenuList,
   MenuItem,
   Box,
+  Stack,
 } from "@chakra-ui/react";
 import { AiOutlineMenu } from "react-icons/ai";
 
 const GlobalHeader = () => {
   const router = useRouter();
   const isHome = router.pathname === "/";
-  const hideSearchJobs = ["/jobs", "/"].includes(router.pathname);
+  const isTalents = router.pathname.includes("/talents");
+
   const ref = React.useRef(null);
   const mobileNav = useDisclosure();
 
@@ -40,13 +41,13 @@ const GlobalHeader = () => {
   };
 
   const MobileNavContent = (
-    <VStack
+    <Stack
+      direction="column"
       position="absolute"
       top={0}
       left={0}
       right={0}
       display={mobileNav.isOpen ? "flex" : "none"}
-      flexDirection="column"
       p={2}
       pb={4}
       m={2}
@@ -72,15 +73,28 @@ const GlobalHeader = () => {
       >
         🏠 Home
       </Button>
-      <Button
-        onClick={mobileNav.onClose}
-        w="full"
-        variant="ghost"
-        as="a"
-        href="/hire"
-      >
-        📢 Post Jobs
-      </Button>
+      {!isTalents && (
+        <Button
+          onClick={mobileNav.onClose}
+          w="full"
+          variant="ghost"
+          as={NextLink}
+          href="/talents"
+        >
+          🏹 Talents
+        </Button>
+      )}
+      {!isTalents && (
+        <Button
+          onClick={mobileNav.onClose}
+          w="full"
+          variant="ghost"
+          as="a"
+          href="/hire"
+        >
+          📢 Post Jobs
+        </Button>
+      )}
       {!doesSessionExist && (
         <>
           <Button
@@ -94,6 +108,7 @@ const GlobalHeader = () => {
           >
             💌 Get Job Alerts
           </Button>
+
           <Button
             onClick={mobileNav.onClose}
             w="full"
@@ -103,31 +118,34 @@ const GlobalHeader = () => {
           >
             ☁️ Login
           </Button>
+
           <Button
             onClick={mobileNav.onClose}
             w="full"
             as="a"
-            href="/auth?show=signup"
+            href="/profile"
             color="white"
             bg="gray.900"
             _hover={{ bg: "gray.700" }}
             _active={{ bg: "gray.700" }}
           >
-            Register
+            ✨ Register
           </Button>
         </>
       )}
       {doesSessionExist && (
         <>
-          <Button
-            onClick={mobileNav.onClose}
-            variant="ghost"
-            w="full"
-            as={NextLink}
-            href="/jobs"
-          >
-            🔍 Search Jobs
-          </Button>
+          {!isTalents && (
+            <Button
+              onClick={mobileNav.onClose}
+              variant="ghost"
+              w="full"
+              as={NextLink}
+              href="/jobs"
+            >
+              🔍 Search Jobs
+            </Button>
+          )}
           <Button
             onClick={mobileNav.onClose}
             variant="ghost"
@@ -151,7 +169,7 @@ const GlobalHeader = () => {
           </Button>
         </>
       )}
-    </VStack>
+    </Stack>
   );
 
   return (
@@ -185,31 +203,40 @@ const GlobalHeader = () => {
           </Flex>
           <Spacer />
           <HStack display={{ base: "none", md: "flex" }} spacing="2">
+            {!isTalents && (
+              <Button as={NextLink} href="/talents" variant="ghost">
+                🏹 Talents
+              </Button>
+            )}
             <Button as="a" href="/hire" variant="ghost">
               📢 Post Jobs
             </Button>
+            {!isTalents && (
+              <Button as="a" href="/alerts" variant="ghost" target="_blank">
+                💌 Get Job Alerts
+              </Button>
+            )}
             {!doesSessionExist && (
               <>
-                <Button as="a" href="/alerts" variant="ghost" target="_blank">
-                  💌 Get Job Alerts
-                </Button>
-                <Button variant="ghost" as="a" href="/auth?show=signin">
-                  ☁️ Login
-                </Button>
+                {!isTalents && (
+                  <Button variant="ghost" as="a" href="/auth?show=signin">
+                    ☁️ Login
+                  </Button>
+                )}
                 {isHome ? (
                   <Button
                     as="a"
-                    href="/auth?show=signup"
+                    href="/profile"
                     _hover={{ bg: "gray.900", color: "white" }}
                     _active={{ bg: "gray.900", color: "white" }}
                     variant="outline"
                   >
                     ✨ Register
                   </Button>
-                ) : (
+                ) : !isTalents ? (
                   <Button
                     as="a"
-                    href="/auth?show=signup"
+                    href="/profile"
                     color="white"
                     bg="gray.900"
                     _hover={{ bg: "gray.700" }}
@@ -217,16 +244,11 @@ const GlobalHeader = () => {
                   >
                     ✨ Register
                   </Button>
-                )}
+                ) : null}
               </>
             )}
             {doesSessionExist && (
               <>
-                {!hideSearchJobs && (
-                  <Button as={NextLink} href="/jobs" variant="ghost">
-                    🔍 Search Jobs
-                  </Button>
-                )}
                 <Menu placement="bottom-end">
                   <MenuButton
                     as={Button}
@@ -250,18 +272,20 @@ const GlobalHeader = () => {
               </>
             )}
           </HStack>
-          <Flex justify="flex-end" align="center">
-            <IconButton
-              display={{ base: "flex", md: "none" }}
-              aria-label="Open menu"
-              fontSize="20px"
-              color="gray.800"
-              _dark={{ color: "inherit" }}
-              variant="ghost"
-              icon={<AiOutlineMenu />}
-              onClick={mobileNav.onOpen}
-            />
-          </Flex>
+          {(!isTalents || doesSessionExist) && (
+            <Flex justify="flex-end" align="center">
+              <IconButton
+                display={{ base: "flex", md: "none" }}
+                aria-label="Open menu"
+                fontSize="20px"
+                color="gray.800"
+                _dark={{ color: "inherit" }}
+                variant="ghost"
+                icon={<AiOutlineMenu />}
+                onClick={mobileNav.onOpen}
+              />
+            </Flex>
+          )}
         </Flex>
         {MobileNavContent}
       </Box>

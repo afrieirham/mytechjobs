@@ -147,7 +147,7 @@ function Search() {
               </Flex>
             )}
             <HStack maxW="2xl" mx="auto" p="8" justifyContent="center" mt="4">
-              <Link href="/connect" isExternal textAlign="center">
+              <Link href="/profile" isExternal textAlign="center">
                 Applied but no response? Drop your resume here 📥
               </Link>
             </HStack>

@@ -177,7 +177,7 @@ function JobDescription({ job, slug }) {
             </Link>
             <Text>or</Text>
             <Button
-              href="/connect"
+              href="/profile"
               colorScheme="messenger"
               as="a"
               target="_blank"
@@ -266,7 +266,7 @@ function JobDescription({ job, slug }) {
             </Flex>
           </Flex>
           <HStack maxW="2xl" mx="auto" p="8" justifyContent="center" mt="4">
-            <Link href="/connect" isExternal textAlign="center">
+            <Link href="/profile" isExternal textAlign="center">
               Applied but no response? Drop your resume here 📥
             </Link>
           </HStack>

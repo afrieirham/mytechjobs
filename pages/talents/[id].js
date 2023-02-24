@@ -1,16 +1,9 @@
 import React from "react";
 import Head from "next/head";
+import NextLink from "next/link";
 import { Tag } from "@chakra-ui/tag";
 import { Button } from "@chakra-ui/button";
-import {
-  Box,
-  Flex,
-  Heading,
-  HStack,
-  Link,
-  Text,
-  VStack,
-} from "@chakra-ui/layout";
+import { Box, Flex, Heading, Link, Stack, Text } from "@chakra-ui/layout";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -69,6 +62,27 @@ function Profile() {
           </BreadcrumbItem>
         </Breadcrumb>
       )}
+      {!hasProfile && (
+        <Flex
+          flexDirection="column"
+          maxW="2xl"
+          mx="auto"
+          p={{ base: "4", md: "0" }}
+          textAlign="center"
+          alignItems="center"
+          mt="8"
+        >
+          <Heading size="md">😵‍💫 Opps...</Heading>
+          <Heading size="sm" mt="2" color="gray.600">
+            Can&apos;t find the candidate you&apos;re looking for.
+          </Heading>
+          <Stack direction="column" mt="8">
+            <Button href="/talents" as={NextLink}>
+              Find other candidates 🔎
+            </Button>
+          </Stack>
+        </Flex>
+      )}
       {hasProfile && (
         <Flex
           flexDirection="column"
@@ -91,7 +105,7 @@ function Profile() {
           <Flex w="full" justifyContent="space-between">
             <Heading size="lg">{data?.dev?.headline}</Heading>
           </Flex>
-          <VStack alignItems="flex-start" spacing="6" mt="6">
+          <Stack alignItems="flex-start" spacing="6" mt="6">
             <HireMeButton />
             <Flex flexDirection="column">
               <Text fontSize="sm" fontWeight="bold">
@@ -155,14 +169,14 @@ function Profile() {
               </Text>
             </Flex>
             <HireMeButton />
-          </VStack>
+          </Stack>
         </Flex>
       )}
-      <HStack maxW="2xl" mx="auto" p="8" justifyContent="center">
-        <Link href="/connect" isExternal textAlign="center">
+      <Stack maxW="2xl" mx="auto" p="8" justifyContent="center">
+        <Link href="/profile" isExternal textAlign="center">
           You&apos;re a developer? Add your profile ✍️
         </Link>
-      </HStack>
+      </Stack>
     </div>
   );
 }
