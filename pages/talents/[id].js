@@ -89,7 +89,7 @@ function Profile({ profile }) {
             Can&apos;t find the candidate you&apos;re looking for.
           </Heading>
           <VStack mt="8">
-            <Button href="/talents" as={"a"}>
+            <Button href="/talents" as={NextLink}>
               Find other candidates 🔎
             </Button>
           </VStack>
