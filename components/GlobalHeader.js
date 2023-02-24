@@ -8,10 +8,10 @@ import {
   IconButton,
   useDisclosure,
   CloseButton,
-  VStack,
   Button,
   Spacer,
   Box,
+  Stack,
 } from "@chakra-ui/react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { useRouter } from "next/router";
@@ -24,13 +24,13 @@ const GlobalHeader = () => {
   const mobileNav = useDisclosure();
 
   const MobileNavContent = (
-    <VStack
+    <Stack
+      direction="column"
       position="absolute"
       top={0}
       left={0}
       right={0}
       display={mobileNav.isOpen ? "flex" : "none"}
-      flexDirection="column"
       p={2}
       pb={4}
       m={2}
@@ -88,7 +88,7 @@ const GlobalHeader = () => {
       >
         ✨ Register
       </Button>
-    </VStack>
+    </Stack>
   );
 
   return (

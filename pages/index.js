@@ -9,7 +9,6 @@ import {
   SimpleGrid,
   Stack,
   Text,
-  VStack,
 } from "@chakra-ui/react";
 
 import { siteDescription } from "../constants/SEO";
@@ -89,11 +88,11 @@ export default function Home({ latest }) {
               <JobListing key={job._id} job={job} />
             ))}
           </SimpleGrid>
-          <VStack mt="8">
+          <Stack direction="row" mt="8" mx="auto">
             <Button as={NextLink} href="/jobs">
               Search 239+ more jobs
             </Button>
-          </VStack>
+          </Stack>
         </Flex>
       </Flex>
     </Box>

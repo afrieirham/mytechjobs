@@ -4,7 +4,7 @@ import NextLink from "next/link";
 import fetch from "node-fetch";
 import { Tag } from "@chakra-ui/tag";
 import { Button } from "@chakra-ui/button";
-import { Flex, Heading, HStack, Link, Text, VStack } from "@chakra-ui/layout";
+import { Flex, Heading, Link, Stack, Text } from "@chakra-ui/layout";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -41,10 +41,14 @@ function HireMeButton() {
     <Button
       as="a"
       target="_blank"
-      w={{ base: "full", lg: "200px" }}
+      w={{ base: "full", md: "auto" }}
       href={process.env.NEXT_PUBLIC_SUBSCRIPTION_LINK}
+      borderColor="gray.900"
+      _hover={{ bg: "gray.900", color: "white" }}
+      _active={{ bg: "gray.900", color: "white" }}
+      variant="outline"
     >
-      Hire me 💼
+      💼 Contact Developer
     </Button>
   );
 }
@@ -88,11 +92,11 @@ function Profile({ profile }) {
           <Heading size="sm" mt="2" color="gray.600">
             Can&apos;t find the candidate you&apos;re looking for.
           </Heading>
-          <VStack mt="8">
+          <Stack direction="column" mt="8">
             <Button href="/talents" as={NextLink}>
               Find other candidates 🔎
             </Button>
-          </VStack>
+          </Stack>
         </Flex>
       )}
       {hasProfile && (
@@ -115,7 +119,7 @@ function Profile({ profile }) {
               </Tag>
             )}
           </Flex>
-          <VStack alignItems="flex-start" spacing="6" mt="6">
+          <Stack alignItems="flex-start" spacing="6" mt="6">
             <HireMeButton />
             <Flex flexDirection="column">
               <Text fontSize="sm" fontWeight="bold">
@@ -179,14 +183,14 @@ function Profile({ profile }) {
               </Text>
             </Flex>
             <HireMeButton />
-          </VStack>
+          </Stack>
         </Flex>
       )}
-      <HStack maxW="2xl" mx="auto" p="8" justifyContent="center">
+      <Stack maxW="2xl" mx="auto" p="8" justifyContent="center">
         <Link href="/connect" isExternal textAlign="center">
           You&apos;re a developer? Add your profile ✍️
         </Link>
-      </HStack>
+      </Stack>
     </div>
   );
 }
