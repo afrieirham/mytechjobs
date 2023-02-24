@@ -7,7 +7,8 @@ import {
   Heading,
   HStack,
   SimpleGrid,
-  VStack,
+  Stack,
+  Text,
 } from "@chakra-ui/react";
 
 import { siteDescription } from "../constants/SEO";
@@ -44,12 +45,39 @@ export default function Home({ latest }) {
 
       <Flex flexDirection="column" maxW="4xl" mx="auto" p="4">
         {/* Header */}
-        <Flex flexDirection="column" w="full" alignItems="center" mt="4">
-          <Heading size="lg">Daily Tech Jobs In Malaysia 🇲🇾</Heading>
+        <Flex
+          flexDirection="column"
+          w="full"
+          alignItems="center"
+          textAlign="center"
+          mt="4"
+        >
+          <Heading>Find Tech Jobs In Malaysia 🇲🇾</Heading>
+          <Text color="gray.600">
+            Let employers find you. Or apply to companies directly.
+          </Text>
         </Flex>
 
+        <Stack direction="column" align="center" mt="8">
+          <Stack direction={{ base: "column", md: "row" }}>
+            <Button
+              color="white"
+              bg="gray.900"
+              _hover={{ bg: "gray.700" }}
+              _active={{ bg: "gray.700" }}
+              as={NextLink}
+              href="/connect"
+            >
+              🎯 I want companies to find me
+            </Button>
+            <Button as={NextLink} href="/jobs" variant="outline">
+              🔍 Search Jobs
+            </Button>
+          </Stack>
+        </Stack>
+
         {/* Latest Jobs */}
-        <Flex flexDirection="column" w="full" mt="8">
+        <Flex flexDirection="column" w="full" mt="16">
           <HStack>
             <Heading size="md" as={NextLink} href="/jobs">
               ⏳ Latest Jobs →
@@ -60,11 +88,11 @@ export default function Home({ latest }) {
               <JobListing key={job._id} job={job} />
             ))}
           </SimpleGrid>
-          <VStack mt="8">
+          <Stack direction="row" mt="8" mx="auto">
             <Button as={NextLink} href="/jobs">
               Search 239+ more jobs
             </Button>
-          </VStack>
+          </Stack>
         </Flex>
       </Flex>
     </Box>
