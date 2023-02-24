@@ -172,7 +172,7 @@ function JobDescription({ job, slug }) {
             Can&apos;t fint the job you&apos;re looking for.
           </Heading>
           <VStack mt="8">
-            <Link as={NextLink} href="/jobs">
+            <Link as={"a"} href="/jobs">
               Look for other jobs
             </Link>
             <Text>or</Text>

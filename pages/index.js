@@ -51,7 +51,7 @@ export default function Home({ latest }) {
         {/* Latest Jobs */}
         <Flex flexDirection="column" w="full" mt="8">
           <HStack>
-            <Heading size="md" as={NextLink} href="/jobs">
+            <Heading size="md" as={"a"} href="/jobs">
               ⏳ Latest Jobs →
             </Heading>
           </HStack>
@@ -61,7 +61,7 @@ export default function Home({ latest }) {
             ))}
           </SimpleGrid>
           <VStack mt="8">
-            <Button as={NextLink} href="/jobs">
+            <Button as={"a"} href="/jobs">
               Search 239+ more jobs
             </Button>
           </VStack>

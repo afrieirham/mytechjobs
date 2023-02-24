@@ -46,10 +46,10 @@ const GlobalHeader = () => {
         onClick={mobileNav.onClose}
         variant="ghost"
       />
-      <Button w="full" variant="ghost" as={NextLink} href="/">
+      <Button w="full" variant="ghost" as={"a"} href="/">
         🏠 Home
       </Button>
-      <Button w="full" variant="ghost" as={NextLink} href="/jobs">
+      <Button w="full" variant="ghost" as={"a"} href="/jobs">
         🔍 Search Jobs
       </Button>
       <Button
@@ -115,7 +115,7 @@ const GlobalHeader = () => {
             </Flex>
             <Flex>
               <HStack spacing="2" display={{ base: "none", md: "flex" }}>
-                <Button as={NextLink} href="/jobs" variant="ghost">
+                <Button as={"a"} href="/jobs" variant="ghost">
                   🔍 Search Jobs
                 </Button>
                 <Button as="a" href="/alerts" variant="ghost" target="_blank">
