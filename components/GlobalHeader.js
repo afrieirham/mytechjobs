@@ -19,6 +19,7 @@ import { useRouter } from "next/router";
 const GlobalHeader = () => {
   const router = useRouter();
   const isHome = router.pathname === "/";
+  const isTalents = router.pathname.includes("/talents");
 
   const ref = React.useRef(null);
   const mobileNav = useDisclosure();
@@ -56,6 +57,17 @@ const GlobalHeader = () => {
       >
         🏠 Home
       </Button>
+      {!isTalents && (
+        <Button
+          onClick={mobileNav.onClose}
+          w="full"
+          variant="ghost"
+          as={NextLink}
+          href="/talents"
+        >
+          🏹 Talents
+        </Button>
+      )}
       <Button
         onClick={mobileNav.onClose}
         w="full"
@@ -65,29 +77,33 @@ const GlobalHeader = () => {
       >
         📢 Post Jobs
       </Button>
-      <Button
-        onClick={mobileNav.onClose}
-        display="inline-flex"
-        w="full"
-        variant="ghost"
-        as="a"
-        href="/alerts"
-        target="_blank"
-      >
-        💌 Get Job Alerts
-      </Button>
-      <Button
-        onClick={mobileNav.onClose}
-        w="full"
-        as="a"
-        href="/connect"
-        color="white"
-        bg="gray.900"
-        _hover={{ bg: "gray.700" }}
-        _active={{ bg: "gray.700" }}
-      >
-        ✨ Register
-      </Button>
+      {!isTalents && (
+        <Button
+          onClick={mobileNav.onClose}
+          display="inline-flex"
+          w="full"
+          variant="ghost"
+          as="a"
+          href="/alerts"
+          target="_blank"
+        >
+          💌 Get Job Alerts
+        </Button>
+      )}
+      {!isTalents && (
+        <Button
+          onClick={mobileNav.onClose}
+          w="full"
+          as="a"
+          href="/connect"
+          color="white"
+          bg="gray.900"
+          _hover={{ bg: "gray.700" }}
+          _active={{ bg: "gray.700" }}
+        >
+          ✨ Register
+        </Button>
+      )}
     </Stack>
   );
 
@@ -122,12 +138,19 @@ const GlobalHeader = () => {
           </Flex>
           <Spacer />
           <HStack display={{ base: "none", md: "flex" }} spacing="2">
+            {!isTalents && (
+              <Button as={NextLink} href="/talents" variant="ghost">
+                🏹 Talents
+              </Button>
+            )}
             <Button as="a" href="/hire" variant="ghost">
               📢 Post Jobs
             </Button>
-            <Button as="a" href="/alerts" variant="ghost" target="_blank">
-              💌 Get Job Alerts
-            </Button>
+            {!isTalents && (
+              <Button as="a" href="/alerts" variant="ghost" target="_blank">
+                💌 Get Job Alerts
+              </Button>
+            )}
             {isHome ? (
               <Button
                 as="a"
@@ -138,7 +161,7 @@ const GlobalHeader = () => {
               >
                 ✨ Register
               </Button>
-            ) : (
+            ) : !isTalents ? (
               <Button
                 as="a"
                 href="/connect"
@@ -149,7 +172,7 @@ const GlobalHeader = () => {
               >
                 ✨ Register
               </Button>
-            )}
+            ) : null}
           </HStack>
           <Flex justify="flex-end" align="center">
             <IconButton
