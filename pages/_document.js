@@ -14,11 +14,11 @@ export default function Document() {
           href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200;300;400;500;600;700;800;900&display=swap"
           rel="stylesheet"
         />
-        {/* <script
+        <script
           src="https://beamanalytics.b-cdn.net/beam.min.js"
           data-token="52a61c07-85f9-440d-b47b-e9d0764e3c43"
           async
-        ></script> */}
+        ></script>
       </Head>
       <body>
         <Main />
