@@ -39,7 +39,7 @@ function Talents({ devs }) {
         <meta name="description" content={siteDescription} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={siteDescription} />
-        <meta property="og:image" content="https://kerja-it.com/og.png" />
+        <meta property="og:image" content="https://kerja-it.com/talents.png" />
         <meta property="og:url" content="https://kerja-it.com/talents" />
         <meta property="og:site_name" content="Talents | Kerja IT" />
         <meta name="twitter:card" content="summary_large_image" />
