@@ -23,12 +23,12 @@ import {
 import supertokensNode from "supertokens-node";
 import Session from "supertokens-node/recipe/session";
 import { SessionAuth } from "supertokens-auth-react/recipe/session";
+import { useRouter } from "next/router";
 
 import { places } from "../constants/paths";
 import { getUserBySessionId } from "../controllers/users";
 import { backendConfig } from "../config/backendConfig";
 import SectionContainer from "../components/SectionContainer";
-import { useRouter } from "next/router";
 
 export const getServerSideProps = async (context) => {
   supertokensNode.init(backendConfig());
@@ -78,6 +78,7 @@ function Profile({ user }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [profile, setProfile] = useState(user);
+
   const {
     _id,
     headline,
@@ -98,6 +99,8 @@ function Profile({ user }) {
     github,
     linkedin,
   } = profile;
+
+  const isRequired = ["active", "open"].some((s) => s === status);
 
   const positionsCheckbox = useCheckboxGroup({ defaultValue: positions });
   const jobTypesCheckbox = useCheckboxGroup({ defaultValue: jobTypes });
@@ -147,16 +150,22 @@ function Profile({ user }) {
               name="headline"
               value={headline}
               onChange={onChangeText}
+              isRequired={isRequired}
               placeholder="e.g. React Developer with 10+ years of experience"
             />
           </Flex>
           <Flex flexDirection="column" w="full">
             <Text fontWeight="semibold">Name</Text>
-            <Input name="name" value={name} onChange={onChangeText} />
+            <Input
+              name="name"
+              value={name}
+              onChange={onChangeText}
+              isRequired={isRequired}
+            />
           </Flex>
           <Flex flexDirection="column" w="full">
             <Text fontWeight="semibold">Email</Text>
-            <Input readOnly value={email} />
+            <Input isReadOnly disabled value={email} />
           </Flex>
           <Flex flexDirection="column" w="full">
             <Text fontWeight="semibold">Phone</Text>
@@ -168,6 +177,7 @@ function Profile({ user }) {
                 value={phone}
                 onChange={onChangeText}
                 placeholder="12 345 6789"
+                isRequired={isRequired}
               />
             </InputGroup>
           </Flex>
@@ -178,6 +188,7 @@ function Profile({ user }) {
               value={city}
               onChange={onChangeText}
               placeholder="e.g. Shah Alam"
+              isRequired={isRequired}
             />
           </Flex>
           <Flex flexDirection="column" w="full">
@@ -188,6 +199,7 @@ function Profile({ user }) {
               value={state}
               placeholder="State"
               textTransform="capitalize"
+              isRequired={isRequired}
             >
               {states.map((p) => (
                 <option key={p} value={p}>
@@ -220,6 +232,7 @@ function Profile({ user }) {
               minH="400px"
               name="bio"
               value={bio}
+              isRequired={isRequired}
               onChange={onChangeText}
             />
           </Flex>
@@ -395,12 +408,13 @@ function Profile({ user }) {
             <Input
               type="date"
               name="availableDate"
+              onChange={onChangeText}
+              isRequired={isRequired}
               value={
                 availableDate
                   ? format(new Date(availableDate), "yyyy-MM-dd")
                   : ""
               }
-              onChange={onChangeText}
             />
           </Flex>
         </SectionContainer>
