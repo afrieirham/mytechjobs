@@ -13,8 +13,17 @@ import useSWR from "swr";
 import { useRouter } from "next/router";
 import { fetcher } from "../../helpers/fetcher";
 import { format } from "date-fns";
+import { useSessionContext } from "supertokens-auth-react/recipe/session";
 
-function HireMeButton() {
+function HireMeButton({ isOwnPage }) {
+  if (isOwnPage) {
+    return (
+      <Button as={NextLink} href="/profile">
+        📝 Edit Profile
+      </Button>
+    );
+  }
+
   return (
     <Button
       as="a"
@@ -32,6 +41,7 @@ function HireMeButton() {
 }
 
 function Profile() {
+  const { userId } = useSessionContext();
   const router = useRouter();
   const { data } = useSWR("/api/devs/" + router.query.id, fetcher);
 
@@ -40,6 +50,7 @@ function Profile() {
     ? `Developer ${data?.dev._id} | Kerja IT`
     : "Developer Not Found | Kerja IT";
   const activelyLooking = data?.dev?.status === "active";
+  const isOwnPage = userId === data?.dev?.superTokensId;
 
   const formatArray = (array) =>
     array.map((a) => a.replaceAll("_", " ")).join(", ");
@@ -106,13 +117,14 @@ function Profile() {
             <Heading size="lg">{data?.dev?.headline}</Heading>
           </Flex>
           <Stack alignItems="flex-start" spacing="6" mt="6">
-            <HireMeButton />
+            <HireMeButton isOwnPage={isOwnPage} />
             <Flex flexDirection="column">
               <Text fontSize="sm" fontWeight="bold">
                 Available date:
               </Text>
               <Text>
-                {format(new Date(data?.dev?.availableDate), "do MMM yyyy")}
+                {data?.dev?.availableDate &&
+                  format(new Date(data?.dev?.availableDate), "do MMM yyyy")}
               </Text>
             </Flex>
             <Flex flexDirection="column">
@@ -168,7 +180,6 @@ function Profile() {
                 {data?.dev?.bio}
               </Text>
             </Flex>
-            <HireMeButton />
           </Stack>
         </Flex>
       )}

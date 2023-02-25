@@ -28,6 +28,7 @@ import { places } from "../constants/paths";
 import { getUserBySessionId } from "../controllers/users";
 import { backendConfig } from "../config/backendConfig";
 import SectionContainer from "../components/SectionContainer";
+import { useRouter } from "next/router";
 
 export const getServerSideProps = async (context) => {
   supertokensNode.init(backendConfig());
@@ -74,9 +75,11 @@ export const getServerSideProps = async (context) => {
 };
 
 function Profile({ user }) {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [profile, setProfile] = useState(user);
   const {
+    _id,
     headline,
     name,
     email,
@@ -127,6 +130,7 @@ function Profile({ user }) {
     const { data, error } = await axios.post("/api/users", newProfile);
     setLoading(false);
     alert(data.msg || error.msg);
+    router.push(`/talents/${_id}`);
   };
 
   return (

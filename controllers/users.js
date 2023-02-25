@@ -62,9 +62,10 @@ export const getPublicDeveloperById = async (id) => {
           positions: 1,
           jobTypes: 1,
           jobLevels: 1,
-          arrangements: 1,
           locations: 1,
+          arrangements: 1,
           availableDate: 1,
+          superTokensId: 1,
         },
       },
     ]);
