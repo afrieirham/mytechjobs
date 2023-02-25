@@ -5,7 +5,6 @@ import {
   Button,
   Flex,
   Heading,
-  HStack,
   SimpleGrid,
   Stack,
   Text,
@@ -14,6 +13,7 @@ import {
 import { siteDescription } from "../constants/SEO";
 import { getLatestJobs } from "../controllers/jobs";
 import JobListing from "../components/JobListing";
+import { useSessionContext } from "supertokens-auth-react/recipe/session";
 
 export const getStaticProps = async () => {
   const { jobs: latest } = await getLatestJobs(30);
@@ -29,6 +29,7 @@ export const getStaticProps = async () => {
 
 export default function Home({ latest }) {
   const title = "Find Tech Jobs In Malaysia 🇲🇾 | Kerja IT";
+  const { doesSessionExist } = useSessionContext();
   return (
     <Box bg="gray.50" pb="16">
       <Head>
@@ -66,7 +67,7 @@ export default function Home({ latest }) {
               _hover={{ bg: "gray.700" }}
               _active={{ bg: "gray.700" }}
               as={NextLink}
-              href="/connect"
+              href="/profile"
             >
               🎯 I want companies to find me
             </Button>
@@ -78,11 +79,11 @@ export default function Home({ latest }) {
 
         {/* Latest Jobs */}
         <Flex flexDirection="column" w="full" mt="16">
-          <HStack>
+          <Stack>
             <Heading size="md" as={NextLink} href="/jobs">
               ⏳ Latest Jobs →
             </Heading>
-          </HStack>
+          </Stack>
           <SimpleGrid columns={{ base: 1, sm: 2 }} spacingX="2">
             {latest.map((job) => (
               <JobListing key={job._id} job={job} />

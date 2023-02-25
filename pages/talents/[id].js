@@ -1,42 +1,29 @@
 import React from "react";
 import Head from "next/head";
 import NextLink from "next/link";
-import fetch from "node-fetch";
 import { Tag } from "@chakra-ui/tag";
 import { Button } from "@chakra-ui/button";
-import { Flex, Heading, Link, Stack, Text } from "@chakra-ui/layout";
+import { Box, Flex, Heading, Link, Stack, Text } from "@chakra-ui/layout";
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
 } from "@chakra-ui/breadcrumb";
+import useSWR from "swr";
+import { useRouter } from "next/router";
+import { fetcher } from "../../helpers/fetcher";
+import { format } from "date-fns";
+import { useSessionContext } from "supertokens-auth-react/recipe/session";
 
-const dataUrl = "https://kerja-it-talents.vercel.app/talents";
+function HireMeButton({ isOwnPage }) {
+  if (isOwnPage) {
+    return (
+      <Button as={NextLink} href="/profile">
+        📝 Edit Profile
+      </Button>
+    );
+  }
 
-export const getStaticProps = async (context) => {
-  const { id } = context.params;
-  const profile = await fetch(`${dataUrl}/${id}`).then((res) => res.json());
-
-  return {
-    props: {
-      profile,
-    },
-    // revalidate every 1 minute
-    revalidate: 60 * 1,
-  };
-};
-
-export async function getStaticPaths() {
-  const profile = await fetch(dataUrl).then((res) => res.json());
-  const paths = profile.map(({ id }) => ({ params: { id: String(id) } }));
-
-  return {
-    paths,
-    fallback: true,
-  };
-}
-
-function HireMeButton() {
   return (
     <Button
       as="a"
@@ -53,12 +40,20 @@ function HireMeButton() {
   );
 }
 
-function Profile({ profile }) {
-  const hasProfile = Object.keys(profile ?? {}).length > 0;
-  const title = profile
-    ? `Developer ${profile.id} | Kerja IT`
+function Profile() {
+  const { userId } = useSessionContext();
+  const router = useRouter();
+  const { data } = useSWR("/api/devs/" + router.query.id, fetcher);
+
+  const hasProfile = Object.keys(data?.dev ?? {}).length > 0;
+  const title = data?.dev
+    ? `Developer ${data?.dev._id} | Kerja IT`
     : "Developer Not Found | Kerja IT";
-  const activelyLooking = profile?.["Are you actively looking?"] === "Yes";
+  const activelyLooking = data?.dev?.status === "active";
+  const isOwnPage = userId === data?.dev?.superTokensId;
+
+  const formatArray = (array) =>
+    array.map((a) => a.replaceAll("_", " ")).join(", ");
 
   return (
     <div>
@@ -72,8 +67,8 @@ function Profile({ profile }) {
           </BreadcrumbItem>
 
           <BreadcrumbItem isCurrentPage>
-            <BreadcrumbLink href={`/talents/${profile.id}`}>
-              Developer {profile.id}
+            <BreadcrumbLink href={`/talents/${data?.dev?._id}`}>
+              {data?.dev?.headline}
             </BreadcrumbLink>
           </BreadcrumbItem>
         </Breadcrumb>
@@ -111,63 +106,66 @@ function Profile({ profile }) {
           borderRadius={{ base: "none", md: "lg" }}
           mt="4"
         >
-          <Flex w="full" justifyContent="space-between">
-            <Heading size="lg">Developer {profile.id}</Heading>
-            {activelyLooking && (
+          {activelyLooking && (
+            <Box>
               <Tag size="sm" colorScheme="green">
                 Actively looking
               </Tag>
-            )}
+            </Box>
+          )}
+          <Flex w="full" justifyContent="space-between">
+            <Heading size="lg">{data?.dev?.headline}</Heading>
           </Flex>
           <Stack alignItems="flex-start" spacing="6" mt="6">
-            <HireMeButton />
+            <HireMeButton isOwnPage={isOwnPage} />
             <Flex flexDirection="column">
               <Text fontSize="sm" fontWeight="bold">
                 Available date:
               </Text>
-              <Text>{profile["Available to start on"]} </Text>
+              <Text>
+                {data?.dev?.availableDate &&
+                  format(new Date(data?.dev?.availableDate), "do MMM yyyy")}
+              </Text>
             </Flex>
             <Flex flexDirection="column">
               <Text fontSize="sm" fontWeight="bold">
                 Available in:
               </Text>
-              <Text>{profile["Work location"]}</Text>
+              <Text textTransform="capitalize">
+                {formatArray(data?.dev?.locations)}
+              </Text>
             </Flex>
             <Flex flexDirection="column">
               <Text fontSize="sm" fontWeight="bold">
                 Looking for:
               </Text>
-              <Text>{profile["Role Type"]}</Text>
+              <Text textTransform="capitalize">
+                {formatArray(data?.dev?.jobTypes)}
+              </Text>
             </Flex>
             <Flex flexDirection="column">
               <Text fontSize="sm" fontWeight="bold">
                 Preferred position:
               </Text>
-              <Text>{profile["Preferred Role"]}</Text>
+              <Text textTransform="capitalize">
+                {formatArray(data?.dev?.positions)}
+              </Text>
             </Flex>
             <Flex flexDirection="column">
               <Text fontSize="sm" fontWeight="bold">
                 Interested in role as:
               </Text>
-              <Text>{profile["Role Level"]}</Text>
+              <Text textTransform="capitalize">
+                {formatArray(data?.dev?.jobLevels)}
+              </Text>
             </Flex>
             <Flex flexDirection="column">
               <Text fontSize="sm" fontWeight="bold">
-                Remote:
+                Work arrangements:
               </Text>
-              <Text>{profile["Are you open to remote job?"]}</Text>
-            </Flex>
-            <Flex flexDirection="column">
-              <Text fontSize="sm" fontWeight="bold">
-                On-site:
+              <Text textTransform="capitalize">
+                {formatArray(data?.dev?.arrangements)}
               </Text>
-              <Text>{profile["Are you open to on-site job?"]}</Text>
-            </Flex>
-            <Flex flexDirection="column">
-              <Text fontSize="sm" fontWeight="bold">
-                Skills:
-              </Text>
-              <Text>{profile["List down your skills "][" tech stacks"]}</Text>
             </Flex>
             <Flex flexDirection="column">
               <Text fontSize="sm" fontWeight="bold">
@@ -179,15 +177,14 @@ function Profile({ profile }) {
                 fontSize="sm"
                 color="gray.700"
               >
-                {profile["Bio"]}
+                {data?.dev?.bio}
               </Text>
             </Flex>
-            <HireMeButton />
           </Stack>
         </Flex>
       )}
       <Stack maxW="2xl" mx="auto" p="8" justifyContent="center">
-        <Link href="/connect" isExternal textAlign="center">
+        <Link href="/profile" isExternal textAlign="center">
           You&apos;re a developer? Add your profile ✍️
         </Link>
       </Stack>
