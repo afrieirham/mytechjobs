@@ -211,13 +211,13 @@ const GlobalHeader = () => {
             <Button as="a" href="/hire" variant="ghost">
               📢 Post Jobs
             </Button>
-            {!isTalents && (
-              <Button as="a" href="/alerts" variant="ghost" target="_blank">
-                💌 Get Job Alerts
-              </Button>
-            )}
             {!doesSessionExist && (
               <>
+                {!isTalents && (
+                  <Button as="a" href="/alerts" variant="ghost" target="_blank">
+                    💌 Get Job Alerts
+                  </Button>
+                )}
                 {!isTalents && (
                   <Button variant="ghost" as="a" href="/auth?show=signin">
                     ☁️ Login
