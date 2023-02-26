@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import Image from "next/image";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { signOut } from "supertokens-auth-react/recipe/emailpassword";
 import { useSessionContext } from "supertokens-auth-react/recipe/session";
+
 import {
   HStack,
-  Link,
   Flex,
   IconButton,
   useDisclosure,
@@ -21,6 +21,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { AiOutlineMenu } from "react-icons/ai";
+import { UserContext } from "../context/user";
 
 const GlobalHeader = () => {
   const router = useRouter();
@@ -31,8 +32,8 @@ const GlobalHeader = () => {
   const mobileNav = useDisclosure();
 
   const sessionContext = useSessionContext();
-  const { doesSessionExist, accessTokenPayload } = sessionContext;
-  const name = accessTokenPayload?.first_name ?? "User";
+  const { doesSessionExist } = sessionContext;
+  const { name } = useContext(UserContext);
 
   const onLogout = async () => {
     router.push("/");
@@ -190,7 +191,7 @@ const GlobalHeader = () => {
           justifyContent="space-between"
         >
           <Flex align="flex-start" mr="6">
-            <Link href="/">
+            <NextLink href="/">
               <HStack>
                 <Image
                   alt="Kerja IT logo"
@@ -199,7 +200,7 @@ const GlobalHeader = () => {
                   height={31}
                 />
               </HStack>
-            </Link>
+            </NextLink>
           </Flex>
           <Spacer />
           <HStack display={{ base: "none", md: "flex" }} spacing="2">

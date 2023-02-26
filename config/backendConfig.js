@@ -49,12 +49,13 @@ export const backendConfig = () => {
                     superTokensId: userId,
                   });
 
-                  await addContactToList({
-                    name: name.value,
-                    email: email.value,
-                  });
-
-                  await notifyTelegram(`new user signed up – ${email.value}`);
+                  if (process.env.NODE_ENV === "production") {
+                    await addContactToList({
+                      name: name.value,
+                      email: email.value,
+                    });
+                    await notifyTelegram(`new user signed up – ${email.value}`);
+                  }
                 }
 
                 return response;
