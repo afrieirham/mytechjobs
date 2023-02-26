@@ -47,8 +47,9 @@ function Profile() {
 
   const hasProfile = Object.keys(data?.dev ?? {}).length > 0;
   const title = data?.dev
-    ? `Developer ${data?.dev._id} | Kerja IT`
+    ? `${data?.dev?.headline} | Kerja IT`
     : "Developer Not Found | Kerja IT";
+  const description = data?.dev?.bio;
   const activelyLooking = data?.dev?.status === "active";
   const isOwnPage = userId === data?.dev?.superTokensId;
 
@@ -59,6 +60,10 @@ function Profile() {
     <div>
       <Head>
         <title>{title}</title>
+        <meta name="description" content={description} />
+        <meta property="og:title" content={title} />
+        <meta property="og:site_name" content={title} />
+        <meta property="og:description" content={description} />
       </Head>
       {hasProfile && (
         <Breadcrumb mt="8" maxW="2xl" mb="4" mx={{ base: "4", md: "auto" }}>
