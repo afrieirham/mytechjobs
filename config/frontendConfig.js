@@ -15,6 +15,7 @@ export const frontendConfig = () => {
       SessionReact.init(),
       EmailPasswordReact.init({
         signInAndUpFeature: {
+          defaultToSignUp: true,
           signUpForm: {
             formFields: [
               {
