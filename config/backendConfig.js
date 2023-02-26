@@ -5,6 +5,8 @@ import UserMetadata from "supertokens-node/recipe/usermetadata";
 
 import { appInfo } from "./appInfo";
 import { createUser } from "../controllers/users";
+import { addContactToList } from "../helpers/addContactToList";
+import { notifyTelegram } from "../helpers/notifyTelegram";
 
 export const backendConfig = () => {
   return {
@@ -46,7 +48,15 @@ export const backendConfig = () => {
                     email: email.value,
                     superTokensId: userId,
                   });
+
+                  await addContactToList({
+                    name: name.value,
+                    email: email.value,
+                  });
+
+                  await notifyTelegram(`new user signed up – ${email.value}`);
                 }
+
                 return response;
               },
             };
