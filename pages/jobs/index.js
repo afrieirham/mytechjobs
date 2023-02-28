@@ -88,15 +88,9 @@ function Search() {
         p="4"
         position="relative"
       >
-        {/* Header */}
-        <Flex flexDirection="column" w="full" alignItems="center" mt="4">
-          <Heading size="lg">Find Tech Jobs in Malaysia 🇲🇾</Heading>
-        </Flex>
-
         {/* Job Listing */}
         <Flex
           w="full"
-          mt="4"
           flexDirection="column"
           style={{ overflowAnchor: "none" }}
         >
