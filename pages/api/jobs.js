@@ -1,4 +1,4 @@
-import { getJobsJSON } from "../../controllers/jobs";
+import { getJobsJSON, getFeaturedJobs } from "../../controllers/jobs";
 import { extractQuery } from "../../helpers/query";
 
 export default async function handler(req, res) {
@@ -11,8 +11,7 @@ export default async function handler(req, res) {
   const { page } = query;
   const { tech, location } = extractQuery(query);
   const { jobs } = await getJobsJSON({ tech, location, page });
+  const { featured } = await getFeaturedJobs();
 
-  const count = jobs.length;
-
-  return res.status(200).json({ count, jobs });
+  return res.status(200).json({ jobs, featured });
 }

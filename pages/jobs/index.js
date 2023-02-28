@@ -43,6 +43,7 @@ function Search() {
   const [hasNext, setHasNext] = useState(true);
   const [hasPrevious, setHasPrevious] = useState(true);
   const [jobs, setJobs] = useState([]);
+  const featured = data?.featured;
 
   useEffect(() => {
     if (router?.query?.tech) {
@@ -123,6 +124,9 @@ function Search() {
               </Flex>
             ) : (
               <Flex flexDirection="column">
+                {featured?.map((job) => (
+                  <JobListing key={job._id} job={job} />
+                ))}
                 {jobs?.map((job) => (
                   <JobListing key={job._id} job={job} />
                 ))}

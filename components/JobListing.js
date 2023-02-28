@@ -18,6 +18,7 @@ import CalendarIcon from "../icons/CalendarIcon";
 import BriefcaseIcon from "../icons/BriefcaseIcon";
 
 function JobListing({ job }) {
+  const featured = job?.featured;
   const thisWeek = checkIfThisWeek(job?.schema?.datePosted ?? job?.postedAt);
 
   const title = job?.schema?.title || job?.title;
@@ -63,10 +64,10 @@ function JobListing({ job }) {
       flexDirection="column"
       mt="2"
       p="4"
-      borderWidth="1px"
-      borderColor="gray.300"
       borderRadius="lg"
-      bg="white"
+      bg={featured ? "teal.50" : "white"}
+      borderWidth={featured ? "3px" : "1px"}
+      borderColor={featured ? "teal.300" : "gray.300"}
     >
       <HStack>
         <NextLink href={`/jobs/${job.slug}`} legacyBehavior passHref>

@@ -197,12 +197,11 @@ export const getJobsJSON = async ({ tech, location, page = 1, limit = 10 }) => {
 
   pipeline = [
     ...pipeline,
-    // {
-    //   $project: {
-    //     keywords: 1,
-    //     createdAt: 1,
-    //   },
-    // },
+    {
+      $match: {
+        featured: null,
+      },
+    },
     { $sort: { postedAt: -1 } },
     { $skip: skip * limit },
     { $limit: limit },
@@ -212,6 +211,24 @@ export const getJobsJSON = async ({ tech, location, page = 1, limit = 10 }) => {
   const jobs = JSON.parse(JSON.stringify(cursor));
 
   return { jobs };
+};
+
+export const getFeaturedJobs = async () => {
+  const { db } = await connectToDatabase();
+
+  const pipeline = [
+    {
+      $match: {
+        featured: true,
+      },
+    },
+    { $sort: { postedAt: -1 } },
+  ];
+
+  const cursor = await db.collection("jobs").aggregate(pipeline).toArray();
+  const featured = JSON.parse(JSON.stringify(cursor));
+
+  return { featured };
 };
 
 const constructPipeline = ({ tech, location }) => {
