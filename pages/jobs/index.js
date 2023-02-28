@@ -11,6 +11,7 @@ import {
   HStack,
   Link,
   Spinner,
+  Stack,
   Tag,
   Text,
   useCheckboxGroup,
@@ -127,6 +128,19 @@ function Search() {
                 {featured?.map((job) => (
                   <JobListing key={job._id} job={job} />
                 ))}
+                <Stack
+                  mt="2"
+                  alignItems="center"
+                  justifyContent="center"
+                  direction="row"
+                >
+                  <Text fontSize="sm" textAlign="center">
+                    Want your job listed here?
+                  </Text>
+                  <Button as="a" href="/hire" size="sm" target="_blank">
+                    Post a job listing
+                  </Button>
+                </Stack>
                 {jobs?.map((job) => (
                   <JobListing key={job._id} job={job} />
                 ))}

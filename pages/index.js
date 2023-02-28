@@ -11,25 +11,26 @@ import {
 } from "@chakra-ui/react";
 
 import { siteDescription } from "../constants/SEO";
-import { getLatestJobs } from "../controllers/jobs";
+import { getFeaturedJobs, getLatestJobs } from "../controllers/jobs";
 import JobListing from "../components/JobListing";
 import { useSessionContext } from "supertokens-auth-react/recipe/session";
 
 export const getStaticProps = async () => {
   const { jobs: latest } = await getLatestJobs(30);
+  const { featured } = await getFeaturedJobs();
 
   return {
     props: {
       latest,
+      featured,
     },
     // revalidate every 1 hour
     revalidate: 60 * 60 * 1,
   };
 };
 
-export default function Home({ latest }) {
+export default function Home({ latest, featured }) {
   const title = "Find Tech Jobs In Malaysia 🇲🇾 | Kerja IT";
-  const { doesSessionExist } = useSessionContext();
   return (
     <Box bg="gray.50" pb="16">
       <Head>
@@ -78,6 +79,29 @@ export default function Home({ latest }) {
         </Stack>
 
         {/* Latest Jobs */}
+        <Flex flexDirection="column" w="full" mt="16">
+          <Stack>
+            <Heading size="md">🦄 Featured Jobs</Heading>
+          </Stack>
+          <SimpleGrid columns={1} spacingX="2">
+            {featured?.map((job) => (
+              <JobListing key={job._id} job={job} />
+            ))}
+          </SimpleGrid>
+        </Flex>
+        <Stack
+          mt="2"
+          alignItems="center"
+          justifyContent="center"
+          direction="row"
+        >
+          <Text fontSize="sm" textAlign="center">
+            Want your job listed here?
+          </Text>
+          <Button as="a" href="/hire" size="sm" target="_blank">
+            Post a job listing
+          </Button>
+        </Stack>
         <Flex flexDirection="column" w="full" mt="16">
           <Stack>
             <Heading size="md" as={NextLink} href="/jobs">

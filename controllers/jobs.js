@@ -101,6 +101,7 @@ export const getLatestJobs = async (limit) => {
         keywords: {
           $in: places.map((p) => p.replaceAll("-", " ")),
         },
+        featured: null,
       },
     },
   ];
