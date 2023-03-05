@@ -24,6 +24,11 @@ export default function Document() {
           data-domain="kerja-it.com"
           src="https://plausible.io/js/script.js"
         ></script>
+        <script
+          defer
+          data-domain="kerja-it.com"
+          src="https://plausible.io/js/script.outbound-links.js"
+        ></script>
       </Head>
       <body>
         <Main />
