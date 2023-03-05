@@ -19,6 +19,11 @@ export default function Document() {
           data-token="52a61c07-85f9-440d-b47b-e9d0764e3c43"
           async
         ></script>
+        <script
+          defer
+          data-domain="kerja-it.com"
+          src="https://plausible.io/js/script.js"
+        ></script>
       </Head>
       <body>
         <Main />
