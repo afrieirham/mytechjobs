@@ -51,10 +51,7 @@ function FilterCard(props) {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader as={Heading} size="md">
-            🔍 Filter Jobs
-          </DrawerHeader>
-          <DrawerBody pb="44">
+          <DrawerBody pb="44" pt="16">
             <Filters {...props} />
           </DrawerBody>
         </DrawerContent>

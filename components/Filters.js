@@ -1,5 +1,12 @@
 import React from "react";
-import { Checkbox, Flex, Heading, HStack, Text } from "@chakra-ui/react";
+import {
+  Checkbox,
+  Flex,
+  Heading,
+  HStack,
+  Select,
+  Text,
+} from "@chakra-ui/react";
 
 import { frameworks, places } from "../constants/paths";
 import FlagIcon from "./FlagIcon";
@@ -7,6 +14,8 @@ import TechIcon from "./TechIcon";
 import { useRouter } from "next/router";
 
 function Filters({
+  sortBy,
+  setSortBy,
   techValue,
   locationValue,
   setPage,
@@ -29,7 +38,7 @@ function Filters({
     setPage(1);
     onChangeTech(e);
     router.push(
-      { query: { tech: newTechValue, location: locationValue } },
+      { query: { tech: newTechValue, location: locationValue, sortBy } },
       undefined,
       {
         shallow: true,
@@ -52,7 +61,22 @@ function Filters({
     onChangeLocation(e);
     router.push(
       {
-        query: { location: newLocationValue, tech: techValue },
+        query: { location: newLocationValue, tech: techValue, sortBy },
+      },
+      undefined,
+      { shallow: true }
+    );
+  };
+
+  const onChangeSort = (e) => {
+    setSortBy(e.target.value);
+    router.push(
+      {
+        query: {
+          tech: techValue,
+          location: locationValue,
+          sortBy: e.target.value,
+        },
       },
       undefined,
       { shallow: true }
@@ -61,7 +85,17 @@ function Filters({
 
   return (
     <>
-      <Heading size="xs">By Tech ⚡️</Heading>
+      <Heading size="xs" mt="4">
+        Sort Jobs 🌊
+      </Heading>
+      <Select value={sortBy} onChange={onChangeSort} mt="4">
+        <option value="posted">Posted on</option>
+        <option value="added">Added on</option>
+      </Select>
+
+      <Heading size="xs" mt="8">
+        By Tech ⚡️
+      </Heading>
 
       <Flex flexDirection="column">
         {frameworks.map((f, i) => (

@@ -27,12 +27,14 @@ import { fetcher } from "../../helpers/fetcher";
 function Search() {
   const router = useRouter();
   const [page, setPage] = useState(1);
+  const [sortBy, setSortBy] = useState("posted");
 
   const techFilter = useCheckboxGroup();
   const locationFilter = useCheckboxGroup();
 
   const query = queryString.stringify({
     page,
+    sortBy: router.query.sortBy ? router.query.sortBy : sortBy,
     tech: router.query.tech ? router.query.tech : techFilter.value,
     location: router.query.location
       ? router.query.location
@@ -166,6 +168,8 @@ function Search() {
           </div>
         </Flex>
         <FilterDesktop
+          sortBy={sortBy}
+          setSortBy={setSortBy}
           setPage={setPage}
           techValue={techFilter.value}
           locationValue={locationFilter.value}
@@ -176,6 +180,8 @@ function Search() {
         />
       </Flex>
       <FilterCard
+        sortBy={sortBy}
+        setSortBy={setSortBy}
         setPage={setPage}
         techValue={techFilter.value}
         locationValue={locationFilter.value}

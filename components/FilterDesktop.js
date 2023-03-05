@@ -22,9 +22,6 @@ function FilterDesktop(props) {
         flexDirection="column"
         mb="32"
       >
-        <Heading size="sm" mb="4">
-          🔍 Filter Jobs
-        </Heading>
         <Filters {...props} />
       </Flex>
     </Flex>

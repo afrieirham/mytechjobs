@@ -19,14 +19,16 @@ import BriefcaseIcon from "../icons/BriefcaseIcon";
 
 function JobListing({ job }) {
   const featured = job?.featured;
-  const thisWeek = checkIfThisWeek(job?.schema?.datePosted ?? job?.postedAt);
 
   const title = job?.schema?.title || job?.title;
   const companyName =
     job?.company?.name || job?.schema?.hiringOrganization?.name;
   const datePosted = job?.postedAt;
+  const dateCreated = job?.createdAt;
   const jobAdType = job?.location?.type;
   const jobAdLocation = job?.location?.city + ", " + job?.location?.state;
+
+  const thisWeek = checkIfThisWeek(dateCreated);
 
   const getJobLocation = () => {
     switch (jobAdType) {
@@ -105,6 +107,14 @@ function JobListing({ job }) {
             {keyword}
           </Tag>
         ))}
+      </HStack>
+
+      <HStack mt="2">
+        {dateCreated && (
+          <Text fontSize="xs" color="gray.600" mt="2">
+            {"Added on " + format(new Date(dateCreated), "do MMM yyyy")}
+          </Text>
+        )}
       </HStack>
     </LinkBox>
   );

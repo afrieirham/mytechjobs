@@ -159,7 +159,13 @@ export const getJobs = async ({ tech, location }) => {
   return { jobs };
 };
 
-export const getJobsJSON = async ({ tech, location, page = 1, limit = 10 }) => {
+export const getJobsJSON = async ({
+  tech,
+  location,
+  page = 1,
+  limit = 10,
+  sortBy = "posted",
+}) => {
   const { db } = await connectToDatabase();
 
   const serializeTech = tech?.map((t) => serialize(t)).flat();
@@ -196,6 +202,12 @@ export const getJobsJSON = async ({ tech, location, page = 1, limit = 10 }) => {
     });
   }
 
+  if (sortBy === "posted") {
+    pipeline.push({ $sort: { postedAt: -1 } });
+  } else {
+    pipeline.push({ $sort: { createdAt: -1 } });
+  }
+
   pipeline = [
     ...pipeline,
     {
@@ -203,7 +215,6 @@ export const getJobsJSON = async ({ tech, location, page = 1, limit = 10 }) => {
         featured: null,
       },
     },
-    { $sort: { postedAt: -1 } },
     { $skip: skip * limit },
     { $limit: limit },
   ];
