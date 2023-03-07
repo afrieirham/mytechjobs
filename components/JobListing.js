@@ -52,7 +52,7 @@ function JobListing({ job }) {
   const isEmploymentTypeArray = Array.isArray(employmentType);
 
   const employmentTypeValue = isEmploymentTypeArray
-    ? employmentType[0]
+    ? employmentType.join(", ")
     : employmentType;
 
   const employmentTypeText =

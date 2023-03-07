@@ -23,8 +23,39 @@ function Filters({
   onChangeLocation,
   techGetCheckboxProps,
   locationGetCheckboxProps,
+  jobTypeValue,
+  onChangeJobType,
+  jobTypeGetCheckboxProps,
 }) {
   const router = useRouter();
+  const onChangeJobTypeCustom = (e) => {
+    const jobType = e.target.value;
+    const isSelected = jobTypeValue.some((t) => t === jobType);
+
+    let newJobTypeValue = [];
+    if (isSelected) {
+      newJobTypeValue = jobTypeValue.filter((t) => t !== jobType);
+    } else {
+      newJobTypeValue = [...jobTypeValue, jobType];
+    }
+    setPage(1);
+    onChangeJobType(e);
+    router.push(
+      {
+        query: {
+          tech: techValue,
+          location: locationValue,
+          sortBy: sortBy,
+          jobType: newJobTypeValue,
+        },
+      },
+      undefined,
+      {
+        shallow: true,
+      }
+    );
+  };
+
   const onChangeTechCustom = (e) => {
     const tech = e.target.value;
     const isSelected = techValue.some((t) => t === tech);
@@ -92,6 +123,27 @@ function Filters({
         <option value="posted">Posted on</option>
         <option value="added">Added on</option>
       </Select>
+
+      <Heading size="xs" mt="8">
+        By Job Type 👷🏻‍♂️
+      </Heading>
+
+      <Flex flexDirection="column">
+        {["full time", "part time", "contract", "internship"].map((f, i) => (
+          <Checkbox
+            key={i}
+            mt="4"
+            {...jobTypeGetCheckboxProps({ value: f })}
+            onChange={onChangeJobTypeCustom}
+          >
+            <HStack>
+              <Text as="span" size="sm" textTransform="capitalize">
+                {f.replaceAll("-", " ")}
+              </Text>
+            </HStack>
+          </Checkbox>
+        ))}
+      </Flex>
 
       <Heading size="xs" mt="8">
         By Tech ⚡️

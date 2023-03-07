@@ -29,12 +29,14 @@ function Search() {
   const [page, setPage] = useState(1);
   const [sortBy, setSortBy] = useState("posted");
 
+  const jobTypeFilter = useCheckboxGroup();
   const techFilter = useCheckboxGroup();
   const locationFilter = useCheckboxGroup();
 
   const query = queryString.stringify({
     page,
     sortBy: router.query.sortBy ? router.query.sortBy : sortBy,
+    jobType: router.query.jobType ? router.query.jobType : jobTypeFilter.value,
     tech: router.query.tech ? router.query.tech : techFilter.value,
     location: router.query.location
       ? router.query.location
@@ -59,8 +61,13 @@ function Search() {
     } else {
       locationFilter.setValue([]);
     }
+    if (router?.query?.jobType) {
+      jobTypeFilter.setValue(standardizeQuery(router.query.jobType));
+    } else {
+      jobTypeFilter.setValue([]);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.query.tech, router.query.location]);
+  }, [router.query]);
 
   useEffect(() => {
     const hasNext = data?.jobs?.length === 10;
@@ -173,10 +180,13 @@ function Search() {
           setPage={setPage}
           techValue={techFilter.value}
           locationValue={locationFilter.value}
+          jobTypeValue={jobTypeFilter.value}
           onChangeTech={techFilter.onChange}
           onChangeLocation={locationFilter.onChange}
+          onChangeJobType={jobTypeFilter.onChange}
           techGetCheckboxProps={techFilter.getCheckboxProps}
           locationGetCheckboxProps={locationFilter.getCheckboxProps}
+          jobTypeGetCheckboxProps={jobTypeFilter.getCheckboxProps}
         />
       </Flex>
       <FilterCard
@@ -185,10 +195,13 @@ function Search() {
         setPage={setPage}
         techValue={techFilter.value}
         locationValue={locationFilter.value}
+        jobTypeValue={jobTypeFilter.value}
         onChangeTech={techFilter.onChange}
         onChangeLocation={locationFilter.onChange}
+        onChangeJobType={jobTypeFilter.onChange}
         techGetCheckboxProps={techFilter.getCheckboxProps}
         locationGetCheckboxProps={locationFilter.getCheckboxProps}
+        jobTypeGetCheckboxProps={jobTypeFilter.getCheckboxProps}
       />
     </Box>
   );

@@ -165,6 +165,7 @@ export const getJobsJSON = async ({
   page = 1,
   limit = 10,
   sortBy = "posted",
+  jobType,
 }) => {
   const { db } = await connectToDatabase();
 
@@ -197,6 +198,50 @@ export const getJobsJSON = async ({
       $match: {
         keywords: {
           $in: places.map((p) => p.replaceAll("-", " ")),
+        },
+      },
+    });
+  }
+
+  if (jobType?.length > 0) {
+    const jobTypePipeline = jobType?.map((j) => {
+      const fullTime = [
+        "full-time",
+        "full time",
+        "full_time",
+        "FULL-TIME",
+        "FULL TIME",
+        "FULL_TIME",
+      ];
+      const partTime = [
+        "part-time",
+        "part time",
+        "part_time",
+        "PART-TIME",
+        "PART TIME",
+        "PART_TIME",
+      ];
+      const contract = ["contract", "CONTRACT"];
+      const internship = ["internship", "INTERNSHIP", "intern", "INTERN"];
+
+      switch (j) {
+        case "full time":
+          return fullTime;
+        case "part time":
+          return partTime;
+        case "contract":
+          return contract;
+        case "internship":
+          return internship;
+        default:
+          return;
+      }
+    });
+
+    pipeline.push({
+      $match: {
+        "schema.employmentType": {
+          $in: jobTypePipeline.flat(),
         },
       },
     });
