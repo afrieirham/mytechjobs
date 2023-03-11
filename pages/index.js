@@ -85,7 +85,10 @@ export default function Home({ latest, featured }) {
               <Stack>
                 <Heading size="md">🦄 Featured Jobs</Heading>
               </Stack>
-              <SimpleGrid columns={1} spacingX="2">
+              <SimpleGrid
+                columns={{ base: 1, md: featured?.length === 1 ? 1 : 2 }}
+                spacingX="2"
+              >
                 {featured?.map((job) => (
                   <JobListing key={job._id} job={job} featured />
                 ))}
