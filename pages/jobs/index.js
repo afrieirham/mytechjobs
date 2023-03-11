@@ -82,6 +82,7 @@ function Search() {
 
   const tags = [techFilter.value, locationFilter.value].flat();
   const hasTags = tags?.length > 0;
+  const hasFeatured = featured?.length > 0;
 
   return (
     <Box bg="gray.50">
@@ -128,22 +129,26 @@ function Search() {
               </Flex>
             ) : (
               <Flex flexDirection="column">
-                {featured?.map((job) => (
-                  <JobListing key={job._id} job={job} />
-                ))}
-                <Stack
-                  mt="2"
-                  alignItems="center"
-                  justifyContent="center"
-                  direction="row"
-                >
-                  <Text fontSize="sm" textAlign="center">
-                    Want your job listed here?
-                  </Text>
-                  <Button as="a" href="/hire" size="sm" target="_blank">
-                    Post a job listing
-                  </Button>
-                </Stack>
+                {hasFeatured && (
+                  <>
+                    {featured?.map((job) => (
+                      <JobListing key={job._id} job={job} />
+                    ))}
+                    <Stack
+                      mt="2"
+                      alignItems="center"
+                      justifyContent="center"
+                      direction="row"
+                    >
+                      <Text fontSize="sm" textAlign="center">
+                        Want your job listed here?
+                      </Text>
+                      <Button as="a" href="/hire" size="sm" target="_blank">
+                        Post a job listing
+                      </Button>
+                    </Stack>
+                  </>
+                )}
                 {jobs?.map((job) => (
                   <JobListing key={job._id} job={job} />
                 ))}
