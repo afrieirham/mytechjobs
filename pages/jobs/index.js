@@ -149,7 +149,7 @@ function Search() {
                     </Stack>
                   </>
                 )}
-                {jobs?.map((job) => (
+                {jobs?.map(({ featured, ...job }) => (
                   <JobListing key={job._id} job={job} />
                 ))}
                 <HStack mt="4" justifyContent="center">

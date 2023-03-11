@@ -13,7 +13,6 @@ import {
 import { siteDescription } from "../constants/SEO";
 import { getFeaturedJobs, getLatestJobs } from "../controllers/jobs";
 import JobListing from "../components/JobListing";
-import { useSessionContext } from "supertokens-auth-react/recipe/session";
 
 export const getStaticProps = async () => {
   const { jobs: latest } = await getLatestJobs(30);
@@ -114,7 +113,7 @@ export default function Home({ latest, featured }) {
             </Heading>
           </Stack>
           <SimpleGrid columns={{ base: 1, sm: 2 }} spacingX="2">
-            {latest.map((job) => (
+            {latest.map(({ featured, ...job }) => (
               <JobListing key={job._id} job={job} />
             ))}
           </SimpleGrid>
