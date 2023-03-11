@@ -17,9 +17,7 @@ import PinIcon from "../icons/PinIcon";
 import CalendarIcon from "../icons/CalendarIcon";
 import BriefcaseIcon from "../icons/BriefcaseIcon";
 
-function JobListing({ job }) {
-  const featured = job?.featured;
-
+function JobListing({ job, featured = false }) {
   const title = job?.schema?.title || job?.title;
   const companyName =
     job?.company?.name || job?.schema?.hiringOrganization?.name;

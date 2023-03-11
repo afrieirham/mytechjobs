@@ -87,7 +87,7 @@ export default function Home({ latest, featured }) {
               </Stack>
               <SimpleGrid columns={1} spacingX="2">
                 {featured?.map((job) => (
-                  <JobListing key={job._id} job={job} />
+                  <JobListing key={job._id} job={job} featured />
                 ))}
               </SimpleGrid>
             </Flex>

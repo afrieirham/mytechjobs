@@ -132,7 +132,7 @@ function Search() {
                 {hasFeatured && (
                   <>
                     {featured?.map((job) => (
-                      <JobListing key={job._id} job={job} />
+                      <JobListing key={job._id} job={job} featured />
                     ))}
                     <Stack
                       mt="2"

@@ -98,6 +98,11 @@ export const getLatestJobs = async (limit) => {
   const pipeline = [
     {
       $match: {
+        featuredUntil: null,
+      },
+    },
+    {
+      $match: {
         keywords: {
           $in: places.map((p) => p.replaceAll("-", " ")),
         },
@@ -252,7 +257,16 @@ export const getJobsJSON = async ({
     pipeline.push({ $sort: { createdAt: -1 } });
   }
 
-  pipeline = [...pipeline, { $skip: skip * limit }, { $limit: limit }];
+  pipeline = [
+    ...pipeline,
+    {
+      $match: {
+        featuredUntil: null,
+      },
+    },
+    { $skip: skip * limit },
+    { $limit: limit },
+  ];
 
   const cursor = await db.collection("jobs").aggregate(pipeline).toArray();
   const jobs = JSON.parse(JSON.stringify(cursor));
