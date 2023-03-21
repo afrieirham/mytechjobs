@@ -7,6 +7,7 @@ import { frontendConfig } from "../config/frontendConfig";
 import GlobalFooter from "../components/GlobalFooter";
 import GlobalHeader from "../components/GlobalHeader";
 import ReminderBanner from "../components/ReminderBanner";
+import CariKabel from "../components/CariKabel";
 
 if (typeof window !== "undefined") {
   // we only want to call this init function on the frontend, so we check typeof window !== 'undefined'
@@ -33,6 +34,7 @@ function MyApp({ Component, pageProps }) {
       <SuperTokensWrapper>
         <UserProvider>
           <GlobalHeader />
+          <CariKabel />
           <ReminderBanner />
           <Component {...pageProps} />
           <Analytics />
