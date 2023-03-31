@@ -29,6 +29,7 @@ import CalendarIcon from "../../icons/CalendarIcon";
 import ChakraMarkdown from "../../components/ChakraMarkdown";
 import BriefcaseIcon from "../../icons/BriefcaseIcon";
 import ClockIcon from "../../icons/ClockIcon";
+import CashIcon from "../../icons/CashIcon";
 
 export const getStaticProps = async (context) => {
   const { slug } = context.params;
@@ -130,6 +131,8 @@ function JobDescription({ job, slug }) {
     },
     { skipEmptyString: true, skipNull: true }
   );
+
+  const salary = job?.salary;
 
   return (
     <Box bg="gray.50">
@@ -236,6 +239,17 @@ function JobDescription({ job, slug }) {
                   {JOB_EXPERIENCE_TEXT[jobExperience] ?? "Unspecified"}
                 </Text>
               </HStack>
+              {salary && (
+                <HStack>
+                  <CashIcon />
+                  <Text fontSize="sm" textTransform="capitalize">
+                    {new Intl.NumberFormat("en-UK", {
+                      style: "currency",
+                      currency: "MYR",
+                    }).format(salary)}
+                  </Text>
+                </HStack>
+              )}
             </Flex>
             <Flex mt="8">
               <ApplyButton link={jobLink} email={job?.application?.email} />

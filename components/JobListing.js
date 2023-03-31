@@ -16,6 +16,7 @@ import { JOB_TYPE_TEXT } from "../types/jobs";
 import PinIcon from "../icons/PinIcon";
 import CalendarIcon from "../icons/CalendarIcon";
 import BriefcaseIcon from "../icons/BriefcaseIcon";
+import CashIcon from "../icons/CashIcon";
 
 function JobListing({ job, featured = false }) {
   const title = job?.schema?.title || job?.title;
@@ -58,6 +59,8 @@ function JobListing({ job, featured = false }) {
     JOB_TYPE_TEXT[job?.type] ||
     "Unspecified";
 
+  const salary = job?.salary;
+
   return (
     <LinkBox
       as={Flex}
@@ -98,6 +101,17 @@ function JobListing({ job, featured = false }) {
             {employmentTypeText}
           </Text>
         </HStack>
+        {salary && (
+          <HStack>
+            <CashIcon />
+            <Text fontSize="sm" textTransform="capitalize">
+              {new Intl.NumberFormat("en-UK", {
+                style: "currency",
+                currency: "MYR",
+              }).format(salary)}
+            </Text>
+          </HStack>
+        )}
       </Flex>
       <HStack mt="4">
         {job?.keywords.map((keyword) => (
