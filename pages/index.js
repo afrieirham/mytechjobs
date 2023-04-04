@@ -23,8 +23,8 @@ export const getStaticProps = async () => {
       latest,
       featured,
     },
-    // revalidate every 1 hour
-    revalidate: 60 * 60 * 1,
+    // revalidate every 10 minutes
+    revalidate: 60 * 10,
   };
 };
 
