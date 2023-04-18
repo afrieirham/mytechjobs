@@ -13,7 +13,13 @@ function GlobalFooter() {
       color="gray.500"
       fontSize="sm"
     >
-      <Text>Copyright {year} Kerja IT</Text>
+      <HStack spacing="6">
+        <Text>Copyright {year} Kerja IT</Text>
+        <Link href="https://github.com/afrieirham/mytechjobs" isExternal>
+          Open-Source
+        </Link>
+      </HStack>
+
       <HStack spacing="6">
         <Link href="mailto:afrie@kerja-it.com" isExternal>
           Email
