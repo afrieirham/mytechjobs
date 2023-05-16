@@ -101,7 +101,7 @@ function JobListing({ job, featured = false }) {
             {employmentTypeText}
           </Text>
         </HStack>
-        {salary && (
+        {Boolean(salary) && (
           <HStack>
             <CashIcon />
             <Text fontSize="sm" textTransform="capitalize">
