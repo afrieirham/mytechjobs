@@ -12,7 +12,7 @@ import {
 import useSWR from "swr";
 import { useRouter } from "next/router";
 import { fetcher } from "../../helpers/fetcher";
-import { format } from "date-fns";
+import { format, formatDistanceToNow } from "date-fns";
 import { useSessionContext } from "supertokens-auth-react/recipe/session";
 
 function HireMeButton({ isOwnPage }) {
@@ -123,6 +123,16 @@ function Profile() {
           </Flex>
           <Stack alignItems="flex-start" spacing="6" mt="6">
             <HireMeButton isOwnPage={isOwnPage} />
+            <Flex flexDirection="column">
+              <Text fontSize="sm" fontWeight="bold">
+                Last updated:
+              </Text>
+              <Text>
+                {formatDistanceToNow(new Date(data?.dev?.updatedAt), {
+                  addSuffix: true,
+                })}
+              </Text>
+            </Flex>
             <Flex flexDirection="column">
               <Text fontSize="sm" fontWeight="bold">
                 Available date:

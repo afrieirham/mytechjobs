@@ -67,6 +67,7 @@ export const getPublicDeveloperById = async (id) => {
           arrangements: 1,
           availableDate: 1,
           superTokensId: 1,
+          updatedAt: 1,
         },
       },
     ]);
