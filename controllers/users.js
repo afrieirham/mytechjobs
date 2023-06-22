@@ -38,8 +38,8 @@ export const getPublicDevelopers = async () => {
           },
         },
       },
-      { $sort: { createdAt: -1 } },
-      { $project: { headline: 1, bio: 1, status: 1 } },
+      { $sort: { updatedAt: -1 } },
+      { $project: { headline: 1, bio: 1, status: 1, updatedAt: 1 } },
     ]);
 
     return [users, null];

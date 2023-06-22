@@ -15,6 +15,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/layout";
+import { formatDistanceToNow } from "date-fns";
 import { fetcher } from "../../helpers/fetcher";
 
 function Talents() {
@@ -122,6 +123,12 @@ function Talents() {
                     color="gray.600"
                   >
                     {d?.bio}
+                  </Text>
+                  <Text mt="4" fontSize="xs" color="gray.600">
+                    Last updated{" "}
+                    {formatDistanceToNow(new Date(d?.updatedAt), {
+                      addSuffix: true,
+                    })}
                   </Text>
                 </LinkBox>
               );
