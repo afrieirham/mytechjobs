@@ -55,15 +55,21 @@ export async function getStaticPaths() {
 function ApplyButton({ link, email }) {
   const href = link ? link : `mailto:${email}`;
   return (
-    <Button
-      as="a"
-      href={href}
-      target="_blank"
-      colorScheme="messenger"
-      w={{ base: "full", lg: "200px" }}
-    >
-      Apply Now 🚀
-    </Button>
+    <Flex direction="column">
+      <Button
+        as="a"
+        href={href}
+        target="_blank"
+        colorScheme="messenger"
+        w={{ base: "full", lg: "200px" }}
+      >
+        Apply Now 🚀
+      </Button>
+      <Text as="span" fontSize="sm" color="gray.600" mt="2">
+        Please mention that you found the job on Kerja-IT.com, this helps us get
+        more companies to post here. Thanks.
+      </Text>
+    </Flex>
   );
 }
 
