@@ -398,3 +398,11 @@ export const addRemoteTag = async () => {
 
   return { fetch };
 };
+
+export const getJobCount = async () => {
+  const { db } = await connectToDatabase();
+
+  const cursor = await db.collection("job-count").find().limit(10000).toArray();
+  const jobCount = JSON.parse(JSON.stringify(cursor));
+  return { jobCount };
+};
