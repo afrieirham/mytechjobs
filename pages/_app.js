@@ -34,7 +34,6 @@ function MyApp({ Component, pageProps }) {
       <SuperTokensWrapper>
         <UserProvider>
           <GlobalHeader />
-          <CariKabel />
           <ReminderBanner />
           <Component {...pageProps} />
           <Analytics />
