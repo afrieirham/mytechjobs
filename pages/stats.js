@@ -124,20 +124,28 @@ function Stats({ jobCount }) {
         >
           <Heading>Kerja IT Statistics 📊</Heading>
 
-          <Input
-            placeholder="Start date"
-            size="md"
-            type="date"
-            value={range.startDate}
-            onChange={(e) => setRange({ ...range, startDate: e.target.value })}
-          />
-          <Input
-            placeholder="End date"
-            size="md"
-            type="date"
-            value={range.endDate}
-            onChange={(e) => setRange({ ...range, endDate: e.target.value })}
-          />
+          <Flex mt="4" w="100%" justifyContent="space-between">
+            <Input
+              w="auto"
+              placeholder="Start date"
+              size="md"
+              type="date"
+              variant="filled"
+              value={range.startDate}
+              onChange={(e) =>
+                setRange({ ...range, startDate: e.target.value })
+              }
+            />
+            <Input
+              w="auto"
+              placeholder="End date"
+              size="md"
+              type="date"
+              variant="filled"
+              value={range.endDate}
+              onChange={(e) => setRange({ ...range, endDate: e.target.value })}
+            />
+          </Flex>
           <Box
             mt="4"
             as={Line}
