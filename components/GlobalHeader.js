@@ -74,6 +74,15 @@ const GlobalHeader = () => {
       >
         🏠 Home
       </Button>
+      <Button
+        onClick={mobileNav.onClose}
+        w="full"
+        variant="ghost"
+        as={NextLink}
+        href="/stats"
+      >
+        📊 Stats
+      </Button>
       {!isTalents && (
         <Button
           onClick={mobileNav.onClose}
@@ -204,6 +213,9 @@ const GlobalHeader = () => {
           </Flex>
           <Spacer />
           <HStack display={{ base: "none", md: "flex" }} spacing="2">
+            <Button as={NextLink} href="/stats" variant="ghost">
+              📊 Stats
+            </Button>
             {!isTalents && (
               <Button as={NextLink} href="/talents" variant="ghost">
                 🏹 Talents
