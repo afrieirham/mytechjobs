@@ -245,7 +245,7 @@ function JobDescription({ job, slug }) {
                   {JOB_EXPERIENCE_TEXT[jobExperience] ?? "Unspecified"}
                 </Text>
               </HStack>
-              {salary && (
+              {!!salary && (
                 <HStack>
                   <CashIcon />
                   <Text fontSize="sm" textTransform="capitalize">
