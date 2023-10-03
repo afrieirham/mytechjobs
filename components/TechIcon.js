@@ -77,6 +77,15 @@ function TechIcon({ name, size = "21px" }) {
           height={size}
         />
       );
+    case "ruby-on-rails":
+      return (
+        <Img
+          src="https://github.com/get-icon/geticon/raw/master/icons/rails.svg"
+          alt="kotlin logo"
+          width={size}
+          height={size}
+        />
+      );
     case "webflow":
       return (
         <Img

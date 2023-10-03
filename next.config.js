@@ -26,6 +26,7 @@ const frameworks = [
   "flutter",
   "django",
   "kotlin",
+  "ruby-on-rails",
   "webflow",
 ];
 
