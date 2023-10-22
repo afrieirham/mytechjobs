@@ -33,6 +33,7 @@ function MyApp({ Component, pageProps }) {
     >
       <SuperTokensWrapper>
         <UserProvider>
+          <CariKabel />
           <GlobalHeader />
           <ReminderBanner />
           <Component {...pageProps} />

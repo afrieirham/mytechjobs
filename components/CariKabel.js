@@ -1,12 +1,8 @@
-import { Box, Button, Stack, Text, useDisclosure } from "@chakra-ui/react";
+import { Box, Link, Stack, Text } from "@chakra-ui/react";
 
 export default function Slides() {
-  const { isOpen, onToggle } = useDisclosure();
-
-  if (isOpen) return null;
-
   return (
-    <Box w="full" bg="black" p="4">
+    <Box w="full" bg="black" p="1">
       <Stack
         mx="auto"
         maxW="4xl"
@@ -14,31 +10,12 @@ export default function Slides() {
         alignItems="center"
         justifyContent="space-between"
       >
-        <Text color="white" fontWeight="bold" textAlign="center">
-          👻 Tired of being ghosted by employers? Apply for jobs through
-          referrals instead with CariKabel.com
+        <Text color="white" fontWeight="bold" textAlign="center" fontSize="sm">
+          Find more remote jobs at{" "}
+          <Link isExternal href="https://kerja-remote.com">
+            Kerja-Remote.com
+          </Link>
         </Text>
-        <Stack
-          w="full"
-          justifyContent="center"
-          direction={{ base: "column", md: "row" }}
-        >
-          <Button
-            as="a"
-            href="https://carikabel.com"
-            w={{ base: "full", md: "auto" }}
-          >
-            Go to CariKabel.com 🤝
-          </Button>
-          <Button
-            onClick={onToggle}
-            variant="outline"
-            colorScheme="whiteAlpha"
-            w={{ base: "full", md: "auto" }}
-          >
-            No, thank you.
-          </Button>
-        </Stack>
       </Stack>
     </Box>
   );
