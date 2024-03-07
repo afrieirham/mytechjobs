@@ -96,6 +96,7 @@ function JobDescription({ job, slug }) {
 
   const companyName =
     job?.company?.name || job?.schema?.hiringOrganization?.name;
+  const companyUrl = job?.company?.website ?? undefined;
   const datePosted = job?.postedAt;
   const jobDescription =
     job?.schema?.responsibilities || job?.schema?.description;
@@ -219,7 +220,14 @@ function JobDescription({ job, slug }) {
               {jobTitle}
             </Heading>
             <Flex flexDirection="column">
-              {companyName && <Text fontSize="md">{companyName}</Text>}
+              {companyName && companyUrl && (
+                <Text as={Link} fontSize="md" isExternal href={companyUrl}>
+                  {companyName}
+                </Text>
+              )}
+              {companyName && !companyUrl && (
+                <Text fontSize="md">{companyName}</Text>
+              )}
               <HStack mt="2">
                 <CalendarIcon />
                 <Text fontSize="sm">
