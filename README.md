@@ -32,3 +32,38 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+
+## Running on local
+
+### Pre-requisites
+
+- Make is install in your machine
+- Docker is installed
+### Steps
+
+1. After cloning the repo, type this command:
+   
+   ```
+    cd mytechjobs
+    make
+   ```
+
+It will executes a Docker command that spins up mongodb on your local, also exposes the port `27017`.
+
+It also will spin up `Supertokens` docker container however I haven't test this yet.
+
+The Makefile also will create mydb, so what left for you to do is run:
+
+ ```
+ cp .env.example .env.local 
+ ```
+ 
+ and update the file to
+
+```dosini
+# .env.local
+# database
+MONGO_DB_URI="mongodb://myuser:mypassword@localhost:27017"
+MONGO_DB_NAME="mydb"
+```
