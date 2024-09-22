@@ -11,24 +11,30 @@ import {
 } from "@chakra-ui/react";
 
 import { siteDescription } from "../constants/SEO";
-import { getFeaturedJobs, getLatestJobs } from "../controllers/jobs";
+import {
+  getFeaturedJobs,
+  getLatestJobs,
+  getTotalJobsCount,
+} from "../controllers/jobs";
 import JobListing from "../components/JobListing";
 
 export const getStaticProps = async () => {
   const { jobs: latest } = await getLatestJobs(30);
   const { featured } = await getFeaturedJobs();
+  const { count } = await getTotalJobsCount();
 
   return {
     props: {
       latest,
       featured,
+      count,
     },
     // revalidate every 10 minutes
     revalidate: 60 * 10,
   };
 };
 
-export default function Home({ latest, featured }) {
+export default function Home({ latest, featured, count }) {
   const title = "Find Tech Jobs In Malaysia 🇲🇾 | Kerja IT";
   const hasFeatured = featured?.length > 0;
   return (
@@ -122,7 +128,7 @@ export default function Home({ latest, featured }) {
           </SimpleGrid>
           <Stack direction="row" mt="8" mx="auto">
             <Button as={NextLink} href="/jobs">
-              Search 239+ more jobs
+              Search our {Math.round(count / 100) * 100}+ jobs
             </Button>
           </Stack>
         </Flex>

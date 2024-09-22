@@ -406,3 +406,10 @@ export const getJobCount = async () => {
   const jobCount = JSON.parse(JSON.stringify(cursor));
   return { jobCount };
 };
+
+export const getTotalJobsCount = async () => {
+  const { db } = await connectToDatabase();
+  const count = await db.collection("jobs").countDocuments();
+
+  return { count };
+};
