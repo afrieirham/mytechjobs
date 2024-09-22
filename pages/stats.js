@@ -26,11 +26,9 @@ ChartJS.register(
   Tooltip
 );
 
-const initialStartDate = "2022-12-17";
-
-const getDatesArrayFromPastToToday = () => {
+const getDatesArrayFromPastToToday = (initial) => {
   const today = new Date();
-  const pastDate = new Date(initialStartDate); // Replace this with your desired past date
+  const pastDate = new Date(initial); // Replace this with your desired past date
 
   const datesArray = [];
   while (pastDate <= today) {
@@ -56,8 +54,11 @@ export const getStaticProps = async () => {
 };
 
 function Stats({ jobCount }) {
-  const labels = getDatesArrayFromPastToToday();
+  const oneMonthAgo = new Date();
+  oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+  const initialStartDate = format(oneMonthAgo, "yyyy-MM-dd");
 
+  const labels = getDatesArrayFromPastToToday(initialStartDate);
   const [range, setRange] = useState({
     startDate: initialStartDate,
     endDate: format(new Date(), "yyyy-MM-dd"),
